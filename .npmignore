@@ -66,3 +66,10 @@ src/
 
 # test
 test/
+
+# build
+.babelrc
+.browserslistrc
+.eslintrc.json
+webpack.config.js
+yarn.lock
