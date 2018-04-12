@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const merge = require('webpack-merge');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const { name, dependencies } = require('./package.json');
 
@@ -53,7 +54,11 @@ const config = {
     };
 
     return externals;
-  }, {})
+  }, {}),
+
+  plugins: [
+    new CleanWebpackPlugin(['lib'], { root: __dirname }),
+  ]
 };
 
 module.exports = [
