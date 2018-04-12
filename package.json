@@ -1,0 +1,48 @@
+{
+  "name": "tote-box",
+  "version": "0.1.0",
+  "description": "NZ's utils",
+  "main": "./lib/tote-box.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack",
+    "test": "cross-env NODE_ENV=test mocha --require babel-core/register"
+  },
+  "keywords": [
+    "library",
+    "utils",
+    "library"
+  ],
+  "author": "NZ",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "cross-env": "^5.1.4",
+    "eslint": "^4.19.1",
+    "eslint-config-nz": "^1.0.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
+    "webpack-merge": "^4.1.2"
+  },
+  "dependencies": {
+    "mocha": "^5.0.5"
+  },
+  "contributors": [
+    "NZ"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nicolaszhao/tote-box.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nicolaszhao/tote-box/issues"
+  },
+  "homepage": "https://github.com/nicolaszhao/tote-box#readme"
+}
