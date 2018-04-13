@@ -8,7 +8,6 @@
     "test": "cross-env NODE_ENV=test mocha --require babel-core/register"
   },
   "keywords": [
-    "library",
     "utils",
     "library"
   ],
