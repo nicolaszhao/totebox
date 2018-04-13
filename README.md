@@ -7,7 +7,25 @@ NZ's private utils.
 
 ### listenPageVisibility( handler )
 
+### cache
 
+#### cache.get( key )
+
+#### cache.set( key, value )
+
+#### cache.remove( key )
+
+#### cache.clear()
+
+### cacheTable
+
+#### cacheTable.get( primaryKey, secondaryKey )
+
+#### cacheTable.set( primaryKey, secondaryKey, value )
+
+#### cacheTable.remote( primaryKey, secondaryKey )
+
+#### cacheTable.clear( primaryKey )
 
 ## history
 
@@ -65,19 +83,3 @@ const history = new History();
 
 ### deepAssign( target, source1 [ , source2... ] )
 
-
-## cache
-
-### cache.get( key )
-
-### cache.set( key, value )
-
-### cache.remove( key )
-
-### cache.clear()
-
-### cache.large
-
-#### cache.large.get( key, subKey )
-
-#### cache.large.set( key, subKey, value )
