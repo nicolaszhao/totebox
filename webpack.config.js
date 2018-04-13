@@ -15,8 +15,8 @@ const genEntry = () => {
   const files = fs.readdirSync(path.resolve(__dirname, 'src'));
   
   return files.reduce((entry, file) => {
-    if (/^([^.]+)\.js$/.test(file)) {
-      entry[file === 'index.js' ? name : RegExp.$1] = path.resolve(__dirname, 'src', file);
+    if (/^([^.]+)\.js$/.test(file) && file !== 'index.js') {
+      entry[RegExp.$1] = path.resolve(__dirname, 'src', file);
     }
 
     return entry;
@@ -46,8 +46,12 @@ const config = {
   },
 
   externals: Object.keys(dependencies || {}).reduce((externals, module) => {
+    const rootNameMaps = {
+      urijs: 'URI'
+    };
+
     externals[module] = {
-      root: upperCamelCase(module),
+      root: rootNameMaps[module] || upperCamelCase(module),
       amd: module,
       commonjs: module,
       commonjs2: module
@@ -62,6 +66,8 @@ const config = {
 };
 
 module.exports = [
+
+  // 分割子模块，更少的外部加载
   merge(config, {
     optimization: {
       minimize: false
@@ -70,6 +76,16 @@ module.exports = [
     output: {
       filename: `[name].js`,
       library: [upperCamelCase(name), '[name]']
+    }
+  }),
+
+  // 未压缩的版本
+  merge(config, {
+    optimization: {
+      minimize: false
+    },
+    output: {
+      filename: `${name}.js`
     }
   }),
 
