@@ -66,4 +66,18 @@ const history = new History();
 ### deepAssign( target, source1 [ , source2... ] )
 
 
+## cache
 
+### cache.get( key )
+
+### cache.set( key, value )
+
+### cache.remove( key )
+
+### cache.clear()
+
+### cache.large
+
+#### cache.large.get( key, subKey )
+
+#### cache.large.set( key, subKey, value )
