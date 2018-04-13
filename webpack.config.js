@@ -58,11 +58,7 @@ const config = {
     };
 
     return externals;
-  }, {}),
-
-  plugins: [
-    new CleanWebpackPlugin(['lib'], { root: __dirname }),
-  ]
+  }, {})
 };
 
 module.exports = [
@@ -76,7 +72,10 @@ module.exports = [
     output: {
       filename: `[name].js`,
       library: [upperCamelCase(name), '[name]']
-    }
+    },
+    plugins: [
+      new CleanWebpackPlugin(['lib'], { root: __dirname }),
+    ]
   }),
 
   // 未压缩的版本
