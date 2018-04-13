@@ -55,7 +55,7 @@ const history = new History();
 
 ## time
 
-### timeParser( time, units = [ '年', '月', '周', '天', '小时', '分钟', '秒' ] )
+### timeParser( time [ , units = [ '年', '月', '周', '天', '小时', '分钟', '秒' ] ] )
 
 
 
