@@ -43,5 +43,9 @@
   "bugs": {
     "url": "https://github.com/nicolaszhao/tote-box/issues"
   },
-  "homepage": "https://github.com/nicolaszhao/tote-box#readme"
+  "homepage": "https://github.com/nicolaszhao/tote-box#readme",
+  "dependencies": {
+    "lodash": "^4.17.5",
+    "urijs": "^1.19.1"
+  }
 }
