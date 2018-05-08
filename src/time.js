@@ -35,3 +35,32 @@ export function timeParser(time, units = '年 月 周 天 小时 分钟 秒'.spl
   
   return ret;
 }
+
+/**
+ * 秒钟倒计时工具，返回 stop 方法，执行可用来停止 tick 执行
+ * @param {Number} second 
+ * @param {Object} events: { onStart, onProgress, onEnd } 
+ * @param {Object} context 
+ */
+export function timer(second, { onStart, onProgress, onEnd }, context) {
+  let timerId;
+
+  const tick = () => {
+    timerId = setTimeout(() => {
+      if (!second) {
+        return onEnd.bind(context)(second);
+      }
+
+      onProgress.bind(context)(--second);
+      tick();
+    }, 1000);
+  };
+
+  onStart.bind(context)(second);
+  tick();
+
+  return function stop(cb) {
+    clearTimeout(timerId);
+    cb.bind(context)(second);
+  };
+}
