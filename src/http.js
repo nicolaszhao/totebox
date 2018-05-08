@@ -12,11 +12,7 @@ let http = function (url, options) {
           if (json.status === 0) {
             return json.data;
           } else {
-            return Promise.reject({
-              message: parseTextPlaceholder(message, { url, message: json.message }),
-              status: json.status,
-              data: json.data
-            });
+            return Promise.reject(json);
           }
         }, err => {
           throw new Error(parseTextPlaceholder(message, { url, message: err.message }));
