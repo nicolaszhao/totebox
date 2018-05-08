@@ -16,7 +16,9 @@ export const cache = {
     // 在有些移动端机型，同时执行 localStorage.setItem 多次会导致异常
     try {
       localStorage.setItem(key, value);
-    } catch (ex) {}
+    } catch (ex) {
+      console.error(`cache.set(${key}, ${value}) error: ${ex.message}.`);
+    }
   },
   
   remove(key) {
