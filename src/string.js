@@ -29,3 +29,5 @@ export function parseTextPlaceholder(text, data, dataReplaceable = false) {
   
   return text;
 }
+
+export function noop() {}
