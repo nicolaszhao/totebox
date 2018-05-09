@@ -42,7 +42,7 @@ export function timeParser(time, units = '年 月 周 天 小时 分钟 秒'.spl
  * @param {Object} events: { onStart, onProgress, onEnd } 
  * @param {Object} context 
  */
-export function timer(second, { onStart, onProgress, onEnd }, context) {
+export function timer(second, { onStart = noop, onProgress = noop, onEnd = noop } = {}, context) {
   let timerId;
 
   const tick = () => {
@@ -64,3 +64,5 @@ export function timer(second, { onStart, onProgress, onEnd }, context) {
     cb.bind(context)(second);
   };
 }
+
+export function noop() {}
