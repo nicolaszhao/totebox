@@ -1,5 +1,5 @@
 # Tote Box
-NZ's private utils.
+NZ 的个人工具库
 
 
 
@@ -27,25 +27,21 @@ NZ's private utils.
 
 #### cacheTable.clear( primaryKey )
 
+
+
 ## history
 
-```js
-const history = new History();
-```
+### historyInst.getPrev()
 
-### history.getActive()
+### historyInst.getNext()
 
-### history.getPrev()
+### historyInst.size()
 
-### history.getNext()
+### historyInst.add( url )
 
-### history.size()
+### historyInst.find( url )
 
-### history.add( url )
-
-### history.find( url )
-
-### history.direct( url )
+### historyInst.direct( url )
 
 
 
@@ -75,6 +71,8 @@ const history = new History();
 
 ### timeParser( time [ , units = [ '年', '月', '周', '天', '小时', '分钟', '秒' ] ] )
 
+### timer( second [ , { onStart, onProgress, onEnd }, context ] )
+
 
 
 ## util
@@ -83,3 +81,18 @@ const history = new History();
 
 ### deepAssign( target, source1 [ , source2... ] )
 
+
+
+## query
+
+### getQuerys( [ url ] )
+
+### addQuerys( [ url, querys ] )
+
+### querys( [ url, querys ] )
+
+
+
+## Licence
+
+[MIT](LICENCE)
