@@ -93,6 +93,6 @@ NZ 的个人工具库
 
 
 
-## Licence
+## License
 
-[MIT](LICENCE)
+[MIT](LICENSE)
