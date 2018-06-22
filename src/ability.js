@@ -9,7 +9,7 @@ export const cache = {
   get(key) {
     return JSON.parse(localStorage.getItem(key));
   },
-  
+
   set(key, value) {
     value = typeof value !== 'string' ? JSON.stringify(value) : value;
 
@@ -20,7 +20,7 @@ export const cache = {
       console.error(`cache.set(${key}, ${value}) error: ${ex.message}.`);
     }
   },
-  
+
   remove(key) {
     localStorage.removeItem(key);
   },
@@ -81,6 +81,51 @@ export const cacheTable = {
   }
 };
 
+export const cookie = {
+  get(name) {
+    const pattern = `(?:;\\s)?${encodeURIComponent(name)}=([^;]*);?`,
+      rCookie = new RegExp(pattern);
+
+    return rCookie.test(document.cookie) ?
+      decodeURIComponent(RegExp['$1']) :
+      null;
+  },
+
+  set(name, value, { expires, path, domain, secure } = {}) {
+    let cookieText = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+    if (expires instanceof Date) {
+      cookieText += '; expires=' + expires.toGMTString();
+    }
+
+    if (path) {
+      cookieText += '; path=' + path;
+    }
+
+    if (domain) {
+      cookieText += '; domain=' + domain;
+    }
+
+    if (secure) {
+      cookieText += '; secure';
+    }
+
+    document.cookie = cookieText;
+  },
+
+  remove(name, { path, domain, secure } = {}) {
+    const options = {
+
+      // 设置失效时间为1970年1月1日（初始化为0ms的Date对象的值）
+      expires: new Date(0),
+
+      path, domain, secure
+    };
+
+    this.set(name, '', options);
+  }
+};
+
 /**
  * 监听页面可见性变化并绑定处理函数
  * HTML 5 Page Visibility API: https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
@@ -102,7 +147,7 @@ export const cacheTable = {
  */
 export function listenPageVisibility(handler) {
   let hidden, eventType;
-  
+
   if (typeof document.hidden !== 'undefined') {
     hidden = 'hidden';
     eventType = 'visibilitychange';
@@ -110,10 +155,46 @@ export function listenPageVisibility(handler) {
     hidden = 'webkitHidden';
     eventType = 'webkitvisibilitychange';
   }
-  
+
   document.addEventListener(eventType, () => {
     if (typeof handler === 'function') {
       handler(!document[hidden]);
     }
   }, false);
+}
+
+export function loadFile(type, url, callback, context) {
+  let el;
+
+  if (type === 'js') {
+    el = document.createElement('script');
+    el.type = 'text/javascript';
+  } else if (type === 'css') {
+    el = document.createElement('link');
+    el.rel = 'stylesheet';
+    el.type = 'text/css';
+  }
+
+  if (callback) {
+
+    // IE
+    if (el.readyState) {
+      el.onreadystatechange = function () {
+        if (el.readyState == 'loaded' || el.readyState == 'complete') {
+
+          // 防止其他 ready 状态更改时再次触发
+          el.onreadystatechange = null;
+
+          callback.bind(context)();
+        }
+      };
+    } else {
+      el.onload = function () {
+        callback.bind(context)();
+      };
+    }
+  }
+
+  el[type === 'js' ? 'src' : 'href'] = url;
+  document.getElementsByTagName('head')[0].appendChild(el);
 }

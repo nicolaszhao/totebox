@@ -42,3 +42,10 @@ export function deepAssign(target, ...sources) {
 
   return deepAssign(target, ...sources);  
 }
+
+// 返回介于 a 到 b 之间的一个随机数
+export function random(a, b) {
+  const val = b - a + 1;
+
+  return Math.floor(Math.random() * val + a);
+}
