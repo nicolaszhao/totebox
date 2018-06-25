@@ -1,6 +1,5 @@
-# Tote Box
+# Tote Box &middot; ![license](https://img.shields.io/github/license/nicolaszhao/tote-box.svg?style=flat-square) ![npm (scoped)](https://img.shields.io/npm/v/tote-box.svg?style=flat-square) 
 NZ 的个人工具库
-
 
 
 ## ability
