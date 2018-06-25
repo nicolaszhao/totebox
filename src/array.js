@@ -54,7 +54,7 @@ export function chunk(data, process, context, duration = 100) {
 }
 
 // 在一定时间（毫秒）内批量处理数据量比较大的数组，以减轻运行大数据数组对客户端的程序阻塞
-export function batch(data, process, context, cb, { runDuration = 25, chunkDuration = 50 } = {}) {
+export function batch(data, process, context, cb = noop, { runDuration = 25, chunkDuration = 50 } = {}) {
   const tasks = data.concat();
 
   const run = () => {
@@ -75,3 +75,5 @@ export function batch(data, process, context, cb, { runDuration = 25, chunkDurat
 
   run();
 }
+
+function noop() {}
