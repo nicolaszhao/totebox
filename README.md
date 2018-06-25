@@ -2,9 +2,33 @@
 NZ 的个人工具库
 
 
+
+## 如何使用？
+
+### 引用所有功能
+
+```javascript
+import ToteBox from 'tote-box';
+
+ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' });
+```
+
+### 单独引用模块功能
+
+```js
+import { parseTextPlaceholder } from 'tote-box/lib/string';
+
+ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' });
+```
+
+
+
+
 ## ability
 
 ### listenPageVisibility( handler )
+
+
 
 ### cache
 
@@ -16,6 +40,8 @@ NZ 的个人工具库
 
 #### cache.clear()
 
+
+
 ### cacheTable
 
 #### cacheTable.get( primaryKey, secondaryKey )
@@ -25,6 +51,34 @@ NZ 的个人工具库
 #### cacheTable.remote( primaryKey, secondaryKey )
 
 #### cacheTable.clear( primaryKey )
+
+
+
+### cookie
+
+#### cookie.get( name )
+#### cookie.set( name,  value [, options ] )
+
+options: { expires, path, domain, secure }
+
+#### cookie.remove( name [, options ] )
+
+options: { path, domain, secure }
+
+
+
+## array
+
+### arrayToTree( data [, options ] )
+
+options: { id = 'id', parentId = 'parentId', rootParentId = 0, children = 'children' }
+
+### chunk( data, process [, context, duration = 100 ] )
+
+### batch( data, process [, context, cb, options ] )
+
+options: { runDuration = 25, chunkDuration = 50 }
+
 
 
 
@@ -79,6 +133,8 @@ NZ 的个人工具库
 ### type( obj )
 
 ### deepAssign( target, source1 [ , source2... ] )
+
+### random(a, b)
 
 
 
