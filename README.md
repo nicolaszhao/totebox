@@ -28,6 +28,10 @@ ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' });
 
 ### listenPageVisibility( handler )
 
+### isElementInViewport( element )
+
+### lazyLoadImage( [ dataSrcAttr = 'data-src', container = document ] )
+
 
 
 ### cache
@@ -118,13 +122,41 @@ options: { runDuration = 25, chunkDuration = 50 }
 
 ### parseTextPlaceholder( text, data [ , dataReplaceable ] )
 
+### parseNumberPlaceholder( text, …params )
+
+### trim( text )
+
+### formatSize( bytes )
+
+### html
+
+#### html.entityify( text )
+
+#### html.deentityify( text )
+
+#### html.strip( text )
+
+#### html.escape( text )
+
+#### html.filter( text, maxlength )
+
+
+
+## date
+
+### isLeapYear( year )
+
+### parseDate( format, value )
+
+### formatDate( format, date )
+
 
 
 ## time
 
 ### timeParser( time [ , units = [ '年', '月', '周', '天', '小时', '分钟', '秒' ] ] )
 
-### timer( second [ , { onStart, onProgress, onEnd }, context ] )
+### countdown( value [ , { onStart, onProgress, onEnd }, context ] )
 
 
 
