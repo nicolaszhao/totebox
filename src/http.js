@@ -5,7 +5,7 @@ import { parseTextPlaceholder } from './string';
 let message = '请求接口"{url}"时出错，错误信息：{message}';
 
 let http = function (url, options) {
-  return fetch(url, options)
+  const requestPromise = fetch(url, options)
     .then((res) => {
       return res.json()
         .then((json) => {
@@ -20,26 +20,34 @@ let http = function (url, options) {
     }, err => {
       throw new Error(parseTextPlaceholder(message, { url, message: err.message }));
     });
-};
 
-let request = function (url, options) {
-  let timeout;
+  let abort;
 
-  if (options.timeout) {
-    timeout = options.timeout;
+  const abortPromise = new Promise((resolve, reject) => {
+    abort = () => {
+      reject(new Error(parseTextPlaceholder(message, { url, message: 'abort' })));
+    };
+  });
+
+  const tasks = [requestPromise, abortPromise],
+    { timeout } = options;
+
+  let timeoutPromise;
+
+  if (timeout) {
     delete options.timeout;
+    timeoutPromise = new Promise((resolve, reject) => {
+      setTimeout(() => reject(new Error(parseTextPlaceholder(message, { url, message: '请求超时' }))), timeout);
+    });
 
-    return Promise.race([
-      http(url, options),
-
-      // 根据options.timeout的值来判断超时处理，超时后直接reject
-      new Promise((resolve, reject) => {
-        setTimeout(() => reject(new Error(parseTextPlaceholder(message, { url, message: '请求超时' }))), timeout);
-      })
-    ]);
+    tasks.push(timeoutPromise);
   }
 
-  return http(url, options);
+  const p = Promise.race(tasks);
+
+  p.abort = abort;
+
+  return p;
 };
 
 let types = 'get post put patch delete'.split(' ');
@@ -77,7 +85,7 @@ types.forEach((type) => {
       });
     }
 
-    return request(url, options);
+    return http(url, options);
   };
 });
 
