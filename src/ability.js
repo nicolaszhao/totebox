@@ -163,6 +163,43 @@ export function listenPageVisibility(handler) {
   }, false);
 }
 
+// source: http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport/7557433#7557433
+export function isElementInViewport(el) {
+  const rect = el.getBoundingClientRect();
+
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+
+// TODO: 还未经过测试
+export function lazyLoadImage(dataSrcAttr = 'data-src', container = document) {
+  const eventTypes = 'DOMContentLoaded load resize scroll'.split(' '),
+    images = container.querySelectorAll(`img[${dataSrcAttr}]`);
+
+  if (!images.length) {
+    return;
+  }
+
+  const loadImage = () => {
+    for (let image of images) {
+      let src;
+
+      if (isElementInViewport(image) && (src = image.getAttribute(dataSrcAttr))) {
+        image.setAttribute('src', src);
+        image.removeAttribute(dataSrcAttr);
+      }
+    }
+  };
+  
+  eventTypes.forEach((type) => {
+    window.addEventListener(type, loadImage, false);
+  });
+}
+
 export function loadFile(type, url, callback, context) {
   let el;
 
