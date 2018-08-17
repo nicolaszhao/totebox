@@ -2,7 +2,8 @@
   "name": "tote-box",
   "version": "0.7.0",
   "description": "NZ's utils",
-  "main": "./lib/tote-box.js",
+  "main": "lib/tote-box.js",
+  "module": "src/index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "test": "cross-env NODE_ENV=test mocha --require babel-core/register"
