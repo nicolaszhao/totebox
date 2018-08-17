@@ -23,7 +23,7 @@ const genEntry = () => {
   }, {});
 };
 
-const baseConfig = {
+const config = {
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'lib'),
@@ -35,6 +35,7 @@ const baseConfig = {
 
     libraryTarget: 'umd'
   },
+
   externals: Object.keys(dependencies || {}).reduce((externals, module) => {
     const rootNameMaps = {
       urijs: 'URI'
@@ -48,10 +49,8 @@ const baseConfig = {
     };
 
     return externals;
-  }, {})
-};
+  }, {}),
 
-const es5Config = merge(baseConfig, {
   module: {
     rules: [
       {
@@ -64,29 +63,12 @@ const es5Config = merge(baseConfig, {
       }
     ]
   }
-});
-
-const esmConfig = merge(baseConfig, {
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-          babelrc: false,
-          presets: ['env', 'stage-0']
-        },
-        include: path.join(__dirname, 'src')
-      }
-    ]
-  }
-});
+};
 
 module.exports = [
 
   // 分割子模块，更少的外部加载
-  merge(es5Config, {
+  merge(config, {
     entry: genEntry(),
     output: {
       filename: `[name].js`,
@@ -101,7 +83,7 @@ module.exports = [
   }),
 
   // 未压缩的版本
-  merge(es5Config, {
+  merge(config, {
     output: {
       filename: `${name}.js`
     },
@@ -110,15 +92,5 @@ module.exports = [
     }
   }),
 
-  merge(esmConfig, {
-    output: {
-      filename: `${name}.esm.js`,
-      libraryTarget: 'commonjs'
-    },
-    optimization: {
-      minimize: false
-    }
-  }),
-
-  es5Config
+  config
 ];
