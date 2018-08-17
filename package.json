@@ -1,6 +1,6 @@
 {
   "name": "tote-box",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "NZ's utils",
   "main": "lib/tote-box.js",
   "module": "src/index.js",
