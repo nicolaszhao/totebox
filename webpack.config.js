@@ -23,28 +23,18 @@ const genEntry = () => {
   }, {});
 };
 
-const config = {
+const baseConfig = {
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'lib'),
     
     // when the entry is './src' (default)
     filename: `${name}.min.js`,
+
     library: upperCamelCase(name),
 
     libraryTarget: 'umd'
   },
-
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        use: 'babel-loader',
-        include: path.join(__dirname, 'src')
-      }
-    ]
-  },
-
   externals: Object.keys(dependencies || {}).reduce((externals, module) => {
     const rootNameMaps = {
       urijs: 'URI'
@@ -61,32 +51,74 @@ const config = {
   }, {})
 };
 
+const es5Config = merge(baseConfig, {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true
+        },
+        include: path.join(__dirname, 'src')
+      }
+    ]
+  }
+});
+
+const esmConfig = merge(baseConfig, {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          babelrc: false,
+          presets: ['env', 'stage-0']
+        },
+        include: path.join(__dirname, 'src')
+      }
+    ]
+  }
+});
+
 module.exports = [
 
   // 分割子模块，更少的外部加载
-  merge(config, {
-    optimization: {
-      minimize: false
-    },
+  merge(es5Config, {
     entry: genEntry(),
     output: {
       filename: `[name].js`,
       library: [upperCamelCase(name), '[name]']
     },
+    optimization: {
+      minimize: false
+    },
     plugins: [
-      new CleanWebpackPlugin(['lib'], { root: __dirname }),
+      new CleanWebpackPlugin(['lib']),
     ]
   }),
 
   // 未压缩的版本
-  merge(config, {
-    optimization: {
-      minimize: false
-    },
+  merge(es5Config, {
     output: {
       filename: `${name}.js`
+    },
+    optimization: {
+      minimize: false
     }
   }),
 
-  config
+  merge(esmConfig, {
+    output: {
+      filename: `${name}.esm.js`,
+      libraryTarget: 'commonjs'
+    },
+    optimization: {
+      minimize: false
+    }
+  }),
+
+  es5Config
 ];
