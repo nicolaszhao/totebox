@@ -19,5 +19,14 @@ describe('#util.js', () => {
         { a: 2, b: { b1: 1, b2: 2 }, c: [5, 4, 3], d: 3 }
       );
     });
+
+    it(`deepAssign({ a: 1, b: { b1: 1 }}, null, undefined)
+          should return { a: 1, b: { b1: 1 }`, () => {
+
+      assert.deepStrictEqual(
+        deepAssign({ a: 1, b: { b1: 1 }}, null, undefined),
+        { a: 1, b: { b1: 1 } }
+      );
+    });
   });
 });

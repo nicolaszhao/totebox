@@ -23,20 +23,22 @@ export function deepAssign(target, ...sources) {
 
   const source = sources.shift();
 
-  const props = Object.keys(source);
+  if ((type(target) === 'object' || type(target) === 'array') && 
+    (type(source) === 'object' || type(source) === 'array')
+  ) {
+    for (let key of Object.keys(source)) {
+      if (type(source[key]) === 'object' || type(source[key]) === 'array') {
+        if (!target[key]) {
+          Object.assign(target, { [key]: type(source[key]) === 'object' ? {} : [] });
+        }
 
-  for (let prop of props) {
-    if (type(source[prop]) === 'object' || type(source[prop]) === 'array') {
-      if (!target[prop]) {
-        Object.assign(target, { [prop]: type(source[prop]) === 'object' ? {} : [] });
+        deepAssign(target[key], source[key]);
+      } else {
+
+        // 如果 target 是数组，会被 Object.assign 视为属性名为 0、1、2... 的对象
+        // { [prop]: source[prop] } -> { 0: 'a' } 会覆盖 target 的 index 为 0 的值
+        Object.assign(target, { [key]: source[key] });
       }
-
-      deepAssign(target[prop], source[prop]);
-    } else {
-
-      // 如果 target 是数组，会被 Object.assign 视为属性名为 0、1、2... 的对象
-      // { [prop]: source[prop] } -> { 0: 'a' } 会覆盖 target 的 index 为 0 的值
-      Object.assign(target, { [prop]: source[prop] });
     }
   }
 
