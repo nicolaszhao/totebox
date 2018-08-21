@@ -1,3 +1,35 @@
+const merge = (left, right) => {
+  const ret = [];
+  let l = 0,
+    r = 0;
+
+  while (l < left.length && r < right.length) {
+    if (left[l] < right[r]) {
+      ret.push(left[l++]);
+    } else {
+      ret.push(right[r++]);
+    }
+  }
+
+  return [...ret, ...left.slice(l), ...right.slice(r)];
+};
+
+// 排序算法 - 并归排序
+// 觉得挺有意思的，就拿来实现下
+export function mergeSort(data) {
+  const len = data.length;
+
+  if (len === 1) {
+    return data;
+  }
+
+  const mid = Math.floor(len / 2),
+    left = data.slice(0, mid),
+    right = data.slice(mid);
+
+  return merge(mergeSort(left), mergeSort(right));
+}
+
 export function arrayToTree(data, {
   id = 'id',
   parentId = 'parentId',
