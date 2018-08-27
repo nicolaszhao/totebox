@@ -1,6 +1,6 @@
 {
   "name": "tote-box",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "description": "NZ's utils",
   "module": "dist/tote-box.esm.js",
   "main": "dist/tote-box.cjs.js",
