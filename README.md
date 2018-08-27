@@ -1,28 +1,30 @@
 # Tote Box &middot; ![license](https://img.shields.io/github/license/nicolaszhao/tote-box.svg?style=flat-square) ![npm (scoped)](https://img.shields.io/npm/v/tote-box.svg?style=flat-square) 
 NZ 的个人工具库
 
-
-
 ## 如何使用？
 
-### 引用所有功能
+### ESModules(in webpack builder or Rollup)
 
 ```javascript
-import ToteBox from 'tote-box';
-
-ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' });
+import { parseTextPlaceholder } from 'tote-box';
+parseTextPlaceholder('Hello, {name}!', { name: 'NZ' });
 ```
 
-### 单独引用模块功能
+### NodeJS
 
 ```js
-import { parseTextPlaceholder } from 'tote-box/lib/string';
-
-ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' });
+const { parseTextPlaceholder } = require('tote-box')
+parseTextPlaceholder('Hello, {name}!', { name: 'NZ' });
 ```
 
+### In Browser
 
-
+```html
+<script src="tote-box.js"></script>
+<script>
+  ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'NZ' });
+</script>
+```
 
 ## ability
 
@@ -31,8 +33,6 @@ ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' });
 ### isElementInViewport( element )
 
 ### lazyLoadImage( [ dataSrcAttr = 'data-src', container = document ] )
-
-
 
 ### cache
 
@@ -44,8 +44,6 @@ ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' });
 
 #### cache.clear()
 
-
-
 ### cacheTable
 
 #### cacheTable.get( primaryKey, secondaryKey )
@@ -55,8 +53,6 @@ ToteBox.parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' });
 #### cacheTable.remote( primaryKey, secondaryKey )
 
 #### cacheTable.clear( primaryKey )
-
-
 
 ### cookie
 
@@ -69,8 +65,6 @@ options: { expires, path, domain, secure }
 
 options: { path, domain, secure }
 
-
-
 ## array
 
 ### arrayToTree( data [, options ] )
@@ -82,8 +76,6 @@ options: { id = 'id', parentId = 'parentId', rootParentId = 0, children = 'child
 ### batch( data, process [, context, cb, options ] )
 
 options: { runDuration = 25, chunkDuration = 50 }
-
-
 
 
 ## history
@@ -100,8 +92,6 @@ options: { runDuration = 25, chunkDuration = 50 }
 
 ### historyInst.direct( url )
 
-
-
 ## http
 
 ### http.get( url [ , data, options ] )
@@ -115,8 +105,6 @@ options: { runDuration = 25, chunkDuration = 50 }
 ### http.delete( url [ , data, options ] )
 
 ### http.defaults
-
-
 
 ## string
 
@@ -140,8 +128,6 @@ options: { runDuration = 25, chunkDuration = 50 }
 
 #### html.filter( text, maxlength )
 
-
-
 ## date
 
 ### isLeapYear( year )
@@ -150,15 +136,11 @@ options: { runDuration = 25, chunkDuration = 50 }
 
 ### formatDate( format, date )
 
-
-
 ## time
 
 ### timeParser( time [ , units = [ '年', '月', '周', '天', '小时', '分钟', '秒' ] ] )
 
 ### countdown( value [ , { onStart, onProgress, onEnd }, context ] )
-
-
 
 ## util
 
@@ -168,8 +150,6 @@ options: { runDuration = 25, chunkDuration = 50 }
 
 ### random(a, b)
 
-
-
 ## query
 
 ### getQuerys( [ url ] )
@@ -177,8 +157,6 @@ options: { runDuration = 25, chunkDuration = 50 }
 ### addQuerys( [ url, querys ] )
 
 ### querys( [ url, querys ] )
-
-
 
 ## License
 
