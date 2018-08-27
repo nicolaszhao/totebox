@@ -2,7 +2,6 @@
   "name": "tote-box",
   "version": "0.7.4",
   "description": "NZ's utils",
-  "browser": "dist/tote-box.js",
   "module": "dist/tote-box.esm.js",
   "main": "dist/tote-box.cjs.js",
   "scripts": {
@@ -49,6 +48,5 @@
   "dependencies": {
     "lodash": "^4.17.5",
     "urijs": "^1.19.1"
-  },
-  "sideEffects": false
+  }
 }

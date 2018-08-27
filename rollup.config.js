@@ -35,7 +35,7 @@ export default [
     output: {
       banner,
       name: upperCamelCase(pkg.name),
-      file: pkg.browser,
+      file: `dist/${pkg.name}.js`,
       format: 'umd'
     },
     plugins: [
