@@ -2,7 +2,7 @@
 /**
 * NZ's utils
 *
-* Version: 0.7.4
+* Version: 0.8.0
 *
 * Author: NZ
 * Web: https://github.com/nicolaszhao/tote-box
@@ -12,7 +12,9 @@
 *
 */
 
-import { isPlainObject, isEmpty, isUndefined } from 'lodash';
+import _isUndefined from 'lodash/isUndefined';
+import _isEmpty from 'lodash/isEmpty';
+import _isPlainObject from 'lodash/isPlainObject';
 import URI from 'urijs';
 
 /**
@@ -28,11 +30,11 @@ function parseTextPlaceholder(text, data) {
 
   var rPlaceholder = /\{([^}]+)\}/g;
 
-  if (rPlaceholder.test(text) && isPlainObject(data) && !isEmpty(data)) {
+  if (rPlaceholder.test(text) && _isPlainObject(data) && !_isEmpty(data)) {
     return text.replace(rPlaceholder, function (match, placeholder) {
       var val = data[placeholder];
 
-      if (!isUndefined(val)) {
+      if (!_isUndefined(val)) {
         if (dataReplaceable) {
           delete data[placeholder];
         }
@@ -761,7 +763,7 @@ var cacheTable = {
     var table = cache.get(primaryKey) || {},
         row = table[secondaryKey];
 
-    if (row && type(row) === type(value) && isPlainObject(value)) {
+    if (row && type(row) === type(value) && _isPlainObject(value)) {
       table[secondaryKey] = Object.assign({}, row, value);
     } else {
       table[secondaryKey] = value;
@@ -1187,13 +1189,13 @@ types.forEach(function (type) {
     }, http.defaults, options);
 
     if (type === 'get' || type === 'delete') {
-      if (isPlainObject(data) && !isEmpty(data)) {
+      if (_isPlainObject(data) && !_isEmpty(data)) {
         url = new URI(url);
         url = url.query(data).href();
       }
     } else {
       options = Object.assign(options, {
-        body: isPlainObject(data) && !isEmpty(data) ? JSON.stringify(data) : ''
+        body: _isPlainObject(data) && !_isEmpty(data) ? JSON.stringify(data) : ''
       });
     }
 
