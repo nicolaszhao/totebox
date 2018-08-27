@@ -1,123 +1,19 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("lodash"), require("urijs"));
-	else if(typeof define === 'function' && define.amd)
-		define(["lodash", "urijs"], factory);
-	else if(typeof exports === 'object')
-		exports["ToteBox"] = factory(require("lodash"), require("urijs"));
-	else
-		root["ToteBox"] = factory(root["Lodash"], root["URI"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__) {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
+/**
+* NZ's utils
+*
+* Version: 0.7.4
+*
+* Author: NZ
+* Web: https://github.com/nicolaszhao/tote-box
+*
+* Licensed under
+*   MIT License http://www.opensource.org/licenses/mit-license
+*
+*/
 
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: external {"root":"Lodash","amd":"lodash","commonjs":"lodash","commonjs2":"lodash"}
-var external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_ = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./src/string.js
-
+import { isPlainObject, isEmpty, isUndefined } from 'lodash';
+import URI from 'urijs';
 
 /**
  * 转换 text 中在 data 中出现的占位为最终字符串
@@ -132,11 +28,11 @@ function parseTextPlaceholder(text, data) {
 
   var rPlaceholder = /\{([^}]+)\}/g;
 
-  if (rPlaceholder.test(text) && Object(external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_["isPlainObject"])(data) && !Object(external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_["isEmpty"])(data)) {
+  if (rPlaceholder.test(text) && isPlainObject(data) && !isEmpty(data)) {
     return text.replace(rPlaceholder, function (match, placeholder) {
       var val = data[placeholder];
 
-      if (!Object(external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_["isUndefined"])(val)) {
+      if (!isUndefined(val)) {
         if (dataReplaceable) {
           delete data[placeholder];
         }
@@ -253,10 +149,133 @@ var html = {
     return text;
   }
 };
-// CONCATENATED MODULE: ./src/array.js
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+var defineProperty = function (obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+var objectWithoutProperties = function (obj, keys) {
+  var target = {};
+
+  for (var i in obj) {
+    if (keys.indexOf(i) >= 0) continue;
+    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+    target[i] = obj[i];
+  }
+
+  return target;
+};
+
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
+var toConsumableArray = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
+var merge = function merge(left, right) {
+  var ret = [];
+  var l = 0,
+      r = 0;
+
+  while (l < left.length && r < right.length) {
+    if (left[l] < right[r]) {
+      ret.push(left[l++]);
+    } else {
+      ret.push(right[r++]);
+    }
+  }
+
+  return [].concat(ret, toConsumableArray(left.slice(l)), toConsumableArray(right.slice(r)));
+};
+
+// 排序算法 - 并归排序
+// 觉得挺有意思的，就拿来实现下
+function mergeSort(data) {
+  var len = data.length;
+
+  if (len === 1) {
+    return data;
+  }
+
+  var mid = Math.floor(len / 2),
+      left = data.slice(0, mid),
+      right = data.slice(mid);
+
+  return merge(mergeSort(left), mergeSort(right));
+}
 
 function arrayToTree(data) {
   var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
@@ -275,7 +294,7 @@ function arrayToTree(data) {
 
   for (var i = 0; i < data.length; i++) {
     map[data[i][id]] = i;
-    list.push(_extends({}, data[i], _defineProperty({}, children, [])));
+    list.push(_extends({}, data[i], defineProperty({}, children, [])));
   }
 
   for (var _i = 0; _i < list.length; _i++) {
@@ -348,12 +367,8 @@ function batch(data, process, context) {
 }
 
 function noop() {}
-// CONCATENATED MODULE: ./src/util.js
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-function util_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function util_type(obj) {
+function type(obj) {
   if (obj == null) {
     return obj + '';
   }
@@ -382,40 +397,40 @@ function deepAssign(target) {
 
   var source = sources.shift();
 
-  var props = Object.keys(source);
+  if ((type(target) === 'object' || type(target) === 'array') && (type(source) === 'object' || type(source) === 'array')) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
 
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = props[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var prop = _step.value;
-
-      if (util_type(source[prop]) === 'object' || util_type(source[prop]) === 'array') {
-        if (!target[prop]) {
-          Object.assign(target, util_defineProperty({}, prop, util_type(source[prop]) === 'object' ? {} : []));
-        }
-
-        deepAssign(target[prop], source[prop]);
-      } else {
-
-        // 如果 target 是数组，会被 Object.assign 视为属性名为 0、1、2... 的对象
-        // { [prop]: source[prop] } -> { 0: 'a' } 会覆盖 target 的 index 为 0 的值
-        Object.assign(target, util_defineProperty({}, prop, source[prop]));
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
     try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
+      for (var _iterator = Object.keys(source)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var key = _step.value;
+
+        if (type(source[key]) === 'object' || type(source[key]) === 'array') {
+          if (!target[key]) {
+            Object.assign(target, defineProperty({}, key, type(source[key]) === 'object' ? {} : []));
+          }
+
+          deepAssign(target[key], source[key]);
+        } else {
+
+          // 如果 target 是数组，会被 Object.assign 视为属性名为 0、1、2... 的对象
+          // { [prop]: source[prop] } -> { 0: 'a' } 会覆盖 target 的 index 为 0 的值
+          Object.assign(target, defineProperty({}, key, source[key]));
+        }
       }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
     } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
       }
     }
   }
@@ -429,7 +444,7 @@ function random(a, b) {
 
   return Math.floor(Math.random() * val + a);
 }
-// CONCATENATED MODULE: ./src/date.js
+
 /**
  * 
  * TODO: 该模块下方法还未做过任何测试
@@ -567,10 +582,6 @@ function formatDate(format, date) {
 
   return output;
 }
-// CONCATENATED MODULE: ./src/time.js
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-
 
 /**
  * 时间解析器方法
@@ -620,19 +631,19 @@ function timeParser(time) {
 function countdown(value) {
   var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
       _ref$onStart = _ref.onStart,
-      onStart = _ref$onStart === undefined ? time_noop : _ref$onStart,
+      onStart = _ref$onStart === undefined ? noop$1 : _ref$onStart,
       _ref$onProgress = _ref.onProgress,
-      onProgress = _ref$onProgress === undefined ? time_noop : _ref$onProgress,
+      onProgress = _ref$onProgress === undefined ? noop$1 : _ref$onProgress,
       _ref$onEnd = _ref.onEnd,
-      onEnd = _ref$onEnd === undefined ? time_noop : _ref$onEnd;
+      onEnd = _ref$onEnd === undefined ? noop$1 : _ref$onEnd;
 
   var context = arguments[2];
 
-  if (util_type(value) !== 'date' && util_type(value) !== 'number') {
+  if (type(value) !== 'date' && type(value) !== 'number') {
     throw new Error('The value of params must be a Date or Number.');
   }
 
-  var cdType = util_type(value) === 'date' ? 'date' : 'second';
+  var cdType = type(value) === 'date' ? 'date' : 'second';
   var last = value;
   var timerId = void 0;
 
@@ -658,7 +669,7 @@ function countdown(value) {
       if (cdType === 'date') {
         var _getDateValues = getDateValues(last),
             dif = _getDateValues.dif,
-            values = _objectWithoutProperties(_getDateValues, ['dif']);
+            values = objectWithoutProperties(_getDateValues, ['dif']);
 
         // 缓存 value 变量，方便在执行停止时可以传入 stop
 
@@ -686,8 +697,7 @@ function countdown(value) {
     start: function start() {
       if (cdType === 'date') {
         var _getDateValues2 = getDateValues(last),
-            dif = _getDateValues2.dif,
-            values = _objectWithoutProperties(_getDateValues2, ['dif']);
+            values = objectWithoutProperties(_getDateValues2, ['dif']);
 
         value = values;
       }
@@ -702,10 +712,7 @@ function countdown(value) {
   };
 }
 
-function time_noop() {}
-// CONCATENATED MODULE: ./src/ability.js
-
-
+function noop$1() {}
 
 /**
  * 对 localStorage 的高级封装
@@ -740,7 +747,7 @@ var cacheTable = {
   get: function get(primaryKey, secondaryKey) {
     var table = cache.get(primaryKey);
 
-    if (util_type(table) !== 'object' || util_type(table[secondaryKey]) === 'undefined') {
+    if (type(table) !== 'object' || type(table[secondaryKey]) === 'undefined') {
       return null;
     }
 
@@ -754,7 +761,7 @@ var cacheTable = {
     var table = cache.get(primaryKey) || {},
         row = table[secondaryKey];
 
-    if (row && util_type(row) === util_type(value) && Object(external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_["isPlainObject"])(value)) {
+    if (row && type(row) === type(value) && isPlainObject(value)) {
       table[secondaryKey] = Object.assign({}, row, value);
     } else {
       table[secondaryKey] = value;
@@ -765,7 +772,7 @@ var cacheTable = {
   remove: function remove(primaryKey, secondaryKey) {
     var table = cache.get(primaryKey);
 
-    if (util_type(table) !== 'object') {
+    if (type(table) !== 'object') {
       return;
     }
 
@@ -775,7 +782,7 @@ var cacheTable = {
   clear: function clear(primaryKey) {
     var table = cache.get(primaryKey);
 
-    if (util_type(table) !== 'object') {
+    if (type(table) !== 'object') {
       return;
     }
 
@@ -924,18 +931,18 @@ function lazyLoadImage() {
     }
   };
 
-  eventTypes.forEach(function (type) {
-    window.addEventListener(type, loadImage, false);
+  eventTypes.forEach(function (type$$1) {
+    window.addEventListener(type$$1, loadImage, false);
   });
 }
 
-function loadFile(type, url, callback, context) {
+function loadFile(type$$1, url, callback, context) {
   var el = void 0;
 
-  if (type === 'js') {
+  if (type$$1 === 'js') {
     el = document.createElement('script');
     el.type = 'text/javascript';
-  } else if (type === 'css') {
+  } else if (type$$1 === 'css') {
     el = document.createElement('link');
     el.rel = 'stylesheet';
     el.type = 'text/css';
@@ -961,13 +968,9 @@ function loadFile(type, url, callback, context) {
     }
   }
 
-  el[type === 'js' ? 'src' : 'href'] = url;
+  el[type$$1 === 'js' ? 'src' : 'href'] = url;
   document.getElementsByTagName('head')[0].appendChild(el);
 }
-// CONCATENATED MODULE: ./src/query.js
-var query_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var rUrl = /^([^?#]+)(\?[^#]+)?(#.+)?/;
 
@@ -977,7 +980,7 @@ function getQuerys() {
   var rQueryValue = /^([^=]+)(?:=(.*))?$/;
 
   var _ref = rUrl.exec(url) || [],
-      _ref2 = _slicedToArray(_ref, 3),
+      _ref2 = slicedToArray(_ref, 3),
       search = _ref2[2];
 
   if (!search) {
@@ -992,7 +995,7 @@ function getQuerys() {
     var queryMatch = rQueryValue.exec(args[i]);
 
     if (queryMatch) {
-      var _queryMatch = _slicedToArray(queryMatch, 3),
+      var _queryMatch = slicedToArray(queryMatch, 3),
           name = _queryMatch[1],
           value = _queryMatch[2];
 
@@ -1068,7 +1071,7 @@ function addQuerys() {
   }
 
   var _rUrl$exec = rUrl.exec(url),
-      _rUrl$exec2 = _slicedToArray(_rUrl$exec, 4),
+      _rUrl$exec2 = slicedToArray(_rUrl$exec, 4),
       baseUrl = _rUrl$exec2[1],
       _rUrl$exec2$ = _rUrl$exec2[3],
       hash = _rUrl$exec2$ === undefined ? '' : _rUrl$exec2$;
@@ -1097,7 +1100,7 @@ function querys() {
 
   if (!url) {
     url = window.location.href;
-  } else if ((typeof url === 'undefined' ? 'undefined' : query_typeof(url)) === 'object') {
+  } else if ((typeof url === 'undefined' ? 'undefined' : _typeof(url)) === 'object') {
     var _ref3 = [window.location.href, url];
     url = _ref3[0];
     params = _ref3[1];
@@ -1109,18 +1112,10 @@ function querys() {
 
   return addQuerys(url, params);
 }
-// EXTERNAL MODULE: external {"root":"URI","amd":"urijs","commonjs":"urijs","commonjs2":"urijs"}
-var external_root_URI_amd_urijs_commonjs_urijs_commonjs2_urijs_ = __webpack_require__(1);
-var external_root_URI_amd_urijs_commonjs_urijs_commonjs2_urijs_default = /*#__PURE__*/__webpack_require__.n(external_root_URI_amd_urijs_commonjs_urijs_commonjs2_urijs_);
-
-// CONCATENATED MODULE: ./src/http.js
-
-
-
 
 var message = '请求接口"{url}"时出错，错误信息：{message}';
 
-var http_http = function http(url, options) {
+var http = function http(url, options) {
   var requestPromise = fetch(url, options).then(function (res) {
     return res.json().then(function (json) {
       if (json.status === 0) {
@@ -1184,33 +1179,31 @@ types.forEach(function (type) {
    *
    * @param options (Object) fetch API 的设置选项，另外增加了额外的timeout(Number)参数
    */
-  http_http[type] = function (url, data, options) {
+  http[type] = function (url, data, options) {
     url = parseTextPlaceholder(url, data, true);
 
     options = Object.assign({
       method: type.toUpperCase()
-    }, http_http.defaults, options);
+    }, http.defaults, options);
 
     if (type === 'get' || type === 'delete') {
-      if (Object(external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_["isPlainObject"])(data) && !Object(external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_["isEmpty"])(data)) {
-        url = new external_root_URI_amd_urijs_commonjs_urijs_commonjs2_urijs_default.a(url);
+      if (isPlainObject(data) && !isEmpty(data)) {
+        url = new URI(url);
         url = url.query(data).href();
       }
     } else {
       options = Object.assign(options, {
-        body: Object(external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_["isPlainObject"])(data) && !Object(external_root_Lodash_amd_lodash_commonjs_lodash_commonjs2_lodash_["isEmpty"])(data) ? JSON.stringify(data) : ''
+        body: isPlainObject(data) && !isEmpty(data) ? JSON.stringify(data) : ''
       });
     }
 
-    return http_http(url, options);
+    return http(url, options);
   };
 });
 
 // 可以设置通用的默认配置项来统一处理请求设置项
-http_http.defaults = {};
+http.defaults = {};
 
-/* harmony default export */ var src_http = (http_http);
-// CONCATENATED MODULE: ./src/jsonp.js
 /*
  * url: string
  * settings: object
@@ -1284,7 +1277,7 @@ function jsonp(url, settings) {
   script.src = url;
   (document.head || document.getElementsByTagName('head')[0]).appendChild(script);
 }
-// CONCATENATED MODULE: ./src/history.js
+
 var History = function History() {
   this.stack = [];
   this.activeIndex = 0;
@@ -1353,49 +1346,4 @@ History.prototype = {
   }
 };
 
-/* harmony default export */ var src_history = (History);
-// CONCATENATED MODULE: ./src/index.js
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "parseTextPlaceholder", function() { return parseTextPlaceholder; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "parseNumberPlaceholder", function() { return parseNumberPlaceholder; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "formatSize", function() { return formatSize; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "trim", function() { return trim; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "html", function() { return html; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "arrayToTree", function() { return arrayToTree; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "chunk", function() { return chunk; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "batch", function() { return batch; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "type", function() { return util_type; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "deepAssign", function() { return deepAssign; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "random", function() { return random; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "isLeapYear", function() { return isLeapYear; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "parseDate", function() { return parseDate; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "formatDate", function() { return formatDate; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "timeParser", function() { return timeParser; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "countdown", function() { return countdown; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "noop", function() { return time_noop; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "cache", function() { return cache; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "cacheTable", function() { return cacheTable; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "cookie", function() { return cookie; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "listenPageVisibility", function() { return listenPageVisibility; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "isElementInViewport", function() { return isElementInViewport; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "lazyLoadImage", function() { return lazyLoadImage; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "loadFile", function() { return loadFile; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "getQuerys", function() { return getQuerys; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "addQuerys", function() { return addQuerys; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "querys", function() { return querys; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "http", function() { return src_http; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "jsonp", function() { return jsonp; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "History", function() { return src_history; });
-
-
-
-
-
-
-
-
-
-
-
-/***/ })
-/******/ ]);
-});
+export { http, jsonp, History, parseTextPlaceholder, parseNumberPlaceholder, formatSize, trim, html, mergeSort, arrayToTree, chunk, batch, type, deepAssign, random, isLeapYear, parseDate, formatDate, timeParser, countdown, noop$1 as noop, cache, cacheTable, cookie, listenPageVisibility, isElementInViewport, lazyLoadImage, loadFile, getQuerys, addQuerys, querys };
