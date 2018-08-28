@@ -2,14 +2,10 @@
 /**
 * NZ's utils
 *
-* Version: 0.8.1
-*
-* Author: NZ
 * Web: https://github.com/nicolaszhao/tote-box
 *
 * Licensed under
 *   MIT License http://www.opensource.org/licenses/mit-license
-*
 */
 
 import _isUndefined from 'lodash/isUndefined';

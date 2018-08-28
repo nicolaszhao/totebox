@@ -8,14 +8,10 @@ const banner = `
 /**
 * NZ's utils
 *
-* Version: ${pkg.version}
-*
-* Author: NZ
 * Web: https://github.com/nicolaszhao/tote-box
 *
 * Licensed under
 *   MIT License http://www.opensource.org/licenses/mit-license
-*
 */
 `;
 
