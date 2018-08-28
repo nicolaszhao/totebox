@@ -61,12 +61,11 @@ typings/
 .vscode/
 .idea/
 
-# test
-test/
-
-# build
+# for development
 .babelrc
 .browserslistrc
+.editorconfig
 .eslintrc.json
-webpack.config.js
-yarn.lock
+rollup.config.js
+test/
+src/
