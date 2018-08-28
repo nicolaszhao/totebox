@@ -2,7 +2,7 @@
 /**
 * NZ's utils
 *
-* Version: 0.8.0
+* Version: 0.8.1
 *
 * Author: NZ
 * Web: https://github.com/nicolaszhao/tote-box
