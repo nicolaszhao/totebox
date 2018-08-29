@@ -5,6 +5,7 @@ export * from './date';
 export * from './time';
 export * from './ability';
 export * from './query';
-export { default as http } from './http';
+export { default as fetchRequest } from './fetch-request';
+export { default as axiosRequest } from './axios-request';
 export { default as jsonp } from './jsonp';
 export { default as History } from './history';
