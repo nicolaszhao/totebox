@@ -4,7 +4,7 @@ import { parseTextPlaceholder } from './string';
 
 let message = '请求接口"{url}"时出错，错误信息：{message}';
 
-let http = function (url, options) {
+let request = function (url, options) {
   const requestPromise = fetch(url, options)
     .then((res) => {
       return res.json()
@@ -67,12 +67,12 @@ types.forEach((type) => {
    *
    * @param options (Object) fetch API 的设置选项，另外增加了额外的timeout(Number)参数
    */
-  http[type] = (url, data, options) => {
+  request[type] = (url, data, options) => {
     url = parseTextPlaceholder(url, data, true);
 
     options = Object.assign({
       method: type.toUpperCase()
-    }, http.defaults, options);
+    }, request.defaults, options);
 
     if (type === 'get' || type === 'delete') {
       if (isPlainObject(data) && !isEmpty(data)) {
@@ -85,11 +85,11 @@ types.forEach((type) => {
       });
     }
 
-    return http(url, options);
+    return request(url, options);
   };
 });
 
 // 可以设置通用的默认配置项来统一处理请求设置项
-http.defaults = {};
+request.defaults = {};
 
-export default http;
+export default request;
