@@ -12,6 +12,7 @@ import _isUndefined from 'lodash/isUndefined';
 import _isEmpty from 'lodash/isEmpty';
 import _isPlainObject from 'lodash/isPlainObject';
 import URI from 'urijs';
+import axios from 'axios';
 
 /**
  * 转换 text 中在 data 中出现的占位为最终字符串
@@ -1113,7 +1114,7 @@ function querys() {
 
 var message = '请求接口"{url}"时出错，错误信息：{message}';
 
-var http = function http(url, options) {
+var request = function request(url, options) {
   var requestPromise = fetch(url, options).then(function (res) {
     return res.json().then(function (json) {
       if (json.status === 0) {
@@ -1177,12 +1178,12 @@ types.forEach(function (type) {
    *
    * @param options (Object) fetch API 的设置选项，另外增加了额外的timeout(Number)参数
    */
-  http[type] = function (url, data, options) {
+  request[type] = function (url, data, options) {
     url = parseTextPlaceholder(url, data, true);
 
     options = Object.assign({
       method: type.toUpperCase()
-    }, http.defaults, options);
+    }, request.defaults, options);
 
     if (type === 'get' || type === 'delete') {
       if (_isPlainObject(data) && !_isEmpty(data)) {
@@ -1195,12 +1196,55 @@ types.forEach(function (type) {
       });
     }
 
-    return http(url, options);
+    return request(url, options);
   };
 });
 
 // 可以设置通用的默认配置项来统一处理请求设置项
-http.defaults = {};
+request.defaults = {};
+
+function request$1() {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      filterResponse = _ref.filterResponse,
+      beautifyError = _ref.beautifyError;
+
+  var inst = axios.create(config);
+
+  return 'get delete head options post put patch'.split(' ').reduce(function (req, method) {
+    req[method] = function (url, data, config) {
+      var methodsWithBody = ['post put patch'];
+      var xhr = null;
+
+      if (methodsWithBody.includes(method)) {
+        xhr = inst[method](url, data, config);
+      } else {
+        xhr = inst[method](url, _extends({
+          params: data
+        }, config));
+      }
+
+      return xhr.then(function (_ref2) {
+        var data = _ref2.data;
+
+        if (typeof filterResponse === 'function') {
+          return filterResponse(data);
+        }
+
+        return data;
+      }).catch(function (err) {
+        if (typeof beautifyError === 'function') {
+          Promise.reject(beautifyError(url, err));
+        }
+
+        Promise.reject(err);
+      });
+    };
+
+    return req;
+  }, {});
+}
 
 /*
  * url: string
@@ -1344,4 +1388,4 @@ History.prototype = {
   }
 };
 
-export { http, jsonp, History, parseTextPlaceholder, parseNumberPlaceholder, formatSize, trim, html, mergeSort, arrayToTree, chunk, batch, type, deepAssign, random, isLeapYear, parseDate, formatDate, timeParser, countdown, noop$1 as noop, cache, cacheTable, cookie, listenPageVisibility, isElementInViewport, lazyLoadImage, loadFile, getQuerys, addQuerys, querys };
+export { request as fetchRequest, request$1 as axiosRequest, jsonp, History, parseTextPlaceholder, parseNumberPlaceholder, formatSize, trim, html, mergeSort, arrayToTree, chunk, batch, type, deepAssign, random, isLeapYear, parseDate, formatDate, timeParser, countdown, noop$1 as noop, cache, cacheTable, cookie, listenPageVisibility, isElementInViewport, lazyLoadImage, loadFile, getQuerys, addQuerys, querys };
