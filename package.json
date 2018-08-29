@@ -47,6 +47,7 @@
   },
   "homepage": "https://github.com/nicolaszhao/tote-box#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "lodash": "^4.17.5",
     "urijs": "^1.19.1"
   }

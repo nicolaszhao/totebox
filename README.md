@@ -92,19 +92,53 @@ options: { runDuration = 25, chunkDuration = 50 }
 
 ### historyInst.direct( url )
 
-## http
+## fetch-request
 
-### http.get( url [ , data, options ] )
+### request.get( url [ , data, options ] )
 
-### http.post( url [ , data, options ] )
+### request.post( url [ , data, options ] )
 
-### http.put( url [ , data, options ] )
+### request.put( url [ , data, options ] )
 
-### http.patch( url [ , data, options ] )
+### request.patch( url [ , data, options ] )
 
-### http.delete( url [ , data, options ] )
+### request.delete( url [ , data, options ] )
 
-### http.defaults
+### request.defaults
+
+## axios-request
+
+### request( [ config, handlers ] )
+
+#### config
+
+Type: `Object`
+
+same as axios.create() config
+
+#### handlers
+
+Type: `Object`
+
+##### handlers.filterResponse( response.data )
+
+##### handlers.beautifyError( url, error )
+
+#### req = request()
+
+##### req.get( url [ , data, config ] )
+
+##### req.delete( url [ , data, config ] )
+
+##### req.head( url [ , data, config ] )
+
+##### req.options( url [ , data, config ] )
+
+##### req.post( url [ , data, config ] )
+
+##### req.put( url [ , data, config ] )
+
+##### req.patch( url [ , data, config ] )
 
 ## string
 
