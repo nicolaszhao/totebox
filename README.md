@@ -1,9 +1,17 @@
 # Tote Box &middot; ![license](https://img.shields.io/github/license/nicolaszhao/tote-box.svg?style=flat-square) ![npm (scoped)](https://img.shields.io/npm/v/tote-box.svg?style=flat-square) 
 NZ 的个人工具库
 
+## Installation
+Tote-box requires `axios`, `lodash`, `urijs`
+
+```
+$ npm i axios lodash urijs
+$ npm i tote-box
+```
+
 ## 如何使用？
 
-### ESModules(in webpack builder or Rollup)
+### ESModules(in webpack builder or Rollup) for Tree-Shaking
 
 ```javascript
 import { parseTextPlaceholder } from 'tote-box';
