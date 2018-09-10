@@ -29,10 +29,10 @@ export default function request(config = {}, { filterResponse, beautifyError } =
           })
           .catch(err => {
             if (typeof beautifyError === 'function') {
-              Promise.reject(beautifyError(url, err));
+              return Promise.reject(beautifyError(url, err));
             }
 
-            Promise.reject(err);
+            return Promise.reject(err);
           });
       };
 
