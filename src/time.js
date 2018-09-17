@@ -4,7 +4,7 @@ import { type } from './util';
  * 时间解析器方法
  * @param time {Number(millisecond)}
  * @param units {Array(['年', '月', '周', '天', '小时', '分钟', '秒'])}
- * @returns {Array} 比如：[ '1周', '14小时', '29秒' ]
+ * @returns {Array} 比如：[ { value: 1, unit: '周' }, ... ]
  */
 export function timeParser(time, units = '年 月 周 天 小时 分钟 秒'.split(' ')) {
   const timeKeys = 'year month week day hours minutes second'.split(' '),
@@ -30,7 +30,10 @@ export function timeParser(time, units = '年 月 周 天 小时 分钟 秒'.spl
 
   timeKeys.forEach((key, i) => {
     if (values[key]) {
-      ret.push(`${values[key]}${units[i]}`);
+      ret.push({
+        value: values[key],
+        unit: units[i]
+      });
     }
   });
 
