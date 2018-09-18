@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { parseTextPlaceholder } from './string';
 
 export default function request(config = {}, { filterResponse, beautifyError } = {}) {
   const inst = axios.create(config);
@@ -9,6 +10,8 @@ export default function request(config = {}, { filterResponse, beautifyError } =
       req[method] = (url, data, config) => {
         const methodsWithBody = ['post put patch'];
         let xhr = null;
+
+        url = parseTextPlaceholder(url, data, true);
 
         if (methodsWithBody.includes(method)) {
           xhr = inst[method](url, data, config);
