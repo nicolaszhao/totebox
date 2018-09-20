@@ -51,3 +51,18 @@ export function random(a, b) {
 
   return Math.floor(Math.random() * val + a);
 }
+
+export function delayTask(task, delay = 600) {
+  let running = false;
+  let taskTimer = setTimeout(() => {
+    running = true;
+    task();
+  }, delay);
+
+  // return clear state, true: cleared, false: not cleared
+  return () => {
+    clearTimeout(taskTimer);
+
+    return !running;
+  };
+}

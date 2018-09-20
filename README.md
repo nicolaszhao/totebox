@@ -194,6 +194,8 @@ Type: `Object`
 
 ### random(a, b)
 
+### delayTask( task, delay = 600 )
+
 ## query
 
 ### getQuerys( [ url ] )
