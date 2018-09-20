@@ -78,3 +78,17 @@ export function querys(...args) {
 
   return addQuerys(url, params);
 }
+
+export function checkQuery(requiredParams = []) {
+  const query = querys() || {};
+
+  const ret = requiredParams.every((param) => {
+    return query[param] || query[param.toLowerCase()];
+  });
+
+  if (!ret) {
+    return Promise.reject(new Error(`Missing url params: ${requiredParams.join(', ')}`));
+  }
+
+  return Promise.resolve(query);
+}
