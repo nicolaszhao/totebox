@@ -182,6 +182,8 @@ Type: `Object`
 
 ### timeParser( time [ , units = [ '年', '月', '周', '天', '小时', '分钟', '秒' ] ] )
 
+### formatTime( duration )
+
 ### countdown( value [ , { onStart, onProgress, onEnd }, context ] )
 
 ## util
@@ -199,6 +201,8 @@ Type: `Object`
 ### addQuerys( [ url, querys ] )
 
 ### querys( [ url, querys ] )
+
+### checkQuery( requiredParams )
 
 ## License
 
