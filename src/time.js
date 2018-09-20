@@ -40,6 +40,20 @@ export function timeParser(time, units = '年 月 周 天 小时 分钟 秒'.spl
   return ret;
 }
 
+// TODO: 需要实现超过 24 小时后的时间计算：都加到 hours 中，或者增加 format 字符串来格式化
+export function formatTime(duration) {
+  const placeholder = { value: 0 };
+  let times = timeParser(duration);
+
+  if (times.length <= 1) {
+    times.unshift(Object.create(placeholder), Object.create(placeholder));
+    times = times.slice(-2);
+  }
+
+  return times.map(time => `${time.value}`.padStart(2, '0'))
+    .join(':');
+}
+
 /**
  * 秒钟倒计时工具，返回 stop 方法，执行可用来停止 tick 执行
  * @param {Number} second 
