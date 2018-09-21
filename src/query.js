@@ -41,7 +41,10 @@ export function addQuerys(url = '', querys = {}) {
   const queryString = [];
 
   for (let name of Object.keys(oriQuerys)) {
-    queryString.push(`${encodeURIComponent(name)}=${encodeURIComponent(oriQuerys[name])}`);
+    const key = encodeURIComponent(name),
+      value = oriQuerys[name] ? encodeURIComponent(oriQuerys[name]) : '';
+
+    queryString.push(`${key}=${value}`);
   }
 
   if (!queryString.length) {
