@@ -11,30 +11,47 @@ const upperCamelCase = (name) => {
     .join('');
 };
 
-export default {
-  input: 'src/index.js',
-  output: [
-    {
-      name: upperCamelCase(pkg.name),
-      file: `dist/${pkg.name}.js`,
-      format: 'umd'
-    },
-    {
-      file: pkg.main,
-      format: 'cjs'
-    },
-    {
-      file: pkg.module,
-      format: 'esm'
-    }
-  ],
-  plugins: [
-    external(),
+const input = 'src/index.js',
+  plugins = [
     babel({
       runtimeHelpers: true,
       exclude: 'node_modules/**'
     }),
     resolve(),
     commonjs()
-  ]
-};
+  ];
+
+export default [
+  {
+    input,
+    output: [
+      {
+        name: upperCamelCase(pkg.name),
+        file: `dist/${pkg.name}.js`,
+        format: 'umd',
+        globals: {
+          axios: 'axios'
+        }
+      },
+      {
+        file: pkg.main,
+        format: 'cjs'
+      }
+    ],
+    external: [
+      'axios'
+    ],
+    plugins
+  },
+  {
+    input,
+    output: {
+      file: pkg.module,
+      format: 'esm'
+    },
+    plugins: [
+      external(),
+      ...plugins
+    ]
+  }
+];
