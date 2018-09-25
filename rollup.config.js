@@ -32,10 +32,6 @@ export default [
         globals: {
           axios: 'axios'
         }
-      },
-      {
-        file: pkg.main,
-        format: 'cjs'
       }
     ],
     external: [
@@ -45,10 +41,16 @@ export default [
   },
   {
     input,
-    output: {
-      file: pkg.module,
-      format: 'esm'
-    },
+    output: [
+      {
+        file: pkg.main,
+        format: 'cjs'
+      },
+      {
+        file: pkg.module,
+        format: 'esm'
+      }
+    ],
     plugins: [
       external(),
       ...plugins
