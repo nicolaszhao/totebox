@@ -6,7 +6,7 @@
  *   done: function
  *   fail: function
  */
-export default function jsonp(url, settings) {
+function jsonp(url, settings) {
   const script = document.createElement('script');
   let obj, 
     props, 
@@ -71,3 +71,5 @@ export default function jsonp(url, settings) {
   script.src = url;
   (document.head || document.getElementsByTagName('head')[0]).appendChild(script);
 }
+
+export default jsonp;

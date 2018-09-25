@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { parseTextPlaceholder } from './string';
 
-export default function request(config = {}, { filterResponse, beautifyError } = {}) {
+function request(config = {}, { filterResponse, beautifyError } = {}) {
   const inst = axios.create(config);
 
   return 'get delete head options post put patch'
@@ -42,3 +42,5 @@ export default function request(config = {}, { filterResponse, beautifyError } =
       return req;
     }, {});
 }
+
+export default request;
