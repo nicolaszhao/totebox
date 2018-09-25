@@ -2,14 +2,14 @@
 NZ 的个人工具库
 
 ## Installation
-Tote-box requires `axios`, `lodash`
+To commonjs & browsers, requires `axios`, if your project use webpack or rollup for Tree-Shaking, 
+`axios`, `lodash`, `@babel/runtime` are required.
 
 ```
-$ npm i axios lodash
 $ npm i tote-box
 ```
 
-## 如何使用？
+## Usage？
 
 ### ESModules(in webpack builder or Rollup) for Tree-Shaking
 
