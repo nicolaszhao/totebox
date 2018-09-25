@@ -1,6 +1,6 @@
-import URI from 'urijs';
 import { isPlainObject, isEmpty } from 'lodash';
 import { parseTextPlaceholder } from './string';
+import { querys } from './query';
 
 let message = '请求接口"{url}"时出错，错误信息：{message}';
 
@@ -76,8 +76,7 @@ types.forEach((type) => {
 
     if (type === 'get' || type === 'delete') {
       if (isPlainObject(data) && !isEmpty(data)) {
-        url = new URI(url);
-        url = url.query(data).href();
+        url = querys(url, data);
       }
     } else {
       options = Object.assign(options, {
