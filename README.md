@@ -2,10 +2,10 @@
 NZ 的个人工具库
 
 ## Installation
-Tote-box requires `axios`, `lodash`, `urijs`
+Tote-box requires `axios`, `lodash`
 
 ```
-$ npm i axios lodash urijs
+$ npm i axios lodash
 $ npm i tote-box
 ```
 

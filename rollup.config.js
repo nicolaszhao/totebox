@@ -31,6 +31,7 @@ export default {
   plugins: [
     external(),
     babel({
+      runtimeHelpers: true,
       exclude: 'node_modules/**'
     }),
     resolve(),

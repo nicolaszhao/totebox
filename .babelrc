@@ -3,29 +3,32 @@
     "production": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "modules": false
           }
-        ],
-        "stage-0"
+        ]
       ],
       "plugins": [
-        "external-helpers",
+        ["@babel/plugin-transform-runtime", {
+          "useESModules": true
+        }],
+        ["@babel/plugin-proposal-class-properties", { 
+          "loose": false 
+        }],
         "lodash"
       ]
     },
     "test": {
       "presets": [
-        [
-          "env",
-          {
-            "targets": {
-              "node": "current"
-            }
-          }
-        ],
-        "stage-0"
+        "@babel/preset-env"
+      ],
+      "plugins": [
+        "@babel/plugin-transform-runtime",
+        ["@babel/plugin-proposal-class-properties", { 
+          "loose": false 
+        }],
+        "lodash"
       ]
     }
   }
