@@ -6,36 +6,25 @@ import { type } from './util';
  * @param units {Array(['年', '月', '周', '天', '小时', '分钟', '秒'])}
  * @returns {Array} 比如：[ { value: 1, unit: '周' }, ... ]
  */
-export function timeParser(time, units = '年 月 周 天 小时 分钟 秒'.split(' ')) {
-  const timeKeys = 'year month week day hours minutes second'.split(' '),
-    timeValues = [1, 12, 4, 7, 24, 60, 60],
-    yearMilliseconds = 1000 * 60 * 60 * 24 * 365;
+export function timeParser(time, units = '天 小时 分钟 秒'.split(' ')) {
+  const timeValues = [24, 60, 60, 1000];
 
-  let values = {},
-    ret = [];
+  let ret = [];
 
-  timeKeys.reduce((prev, cur, i) => {
-    let next;
+  timeValues.reduce((prev, timeValue, i) => {
+    const ms = timeValues.slice(i)
+      .reduce((a, b) => a * b);
 
-    if (i === 0) {
-      next = time / yearMilliseconds;
-    } else {
-      next = (prev - Math.floor(prev)) * timeValues[i];
-    }
+    const value = Math.floor(time / ms) - prev;
 
-    values[cur] = Math.floor(next);
+    ret.push({ value, unit: units[i] });
+    
+    prev = ret.map((n, retIndex) => {
+      return n.value * timeValues.slice(retIndex, i + 1).reduce((a, b) => a * b);
+    }).reduce((a, b) => a + b);
 
-    return next;
-  }, time);
-
-  timeKeys.forEach((key, i) => {
-    if (values[key]) {
-      ret.push({
-        value: values[key],
-        unit: units[i]
-      });
-    }
-  });
+    return prev;
+  }, 0);
 
   return ret;
 }
