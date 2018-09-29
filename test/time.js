@@ -63,5 +63,22 @@ describe('#time.js', () => {
         ]
       );
     });
+
+    let time3 = 120 * 1000;
+
+    it(`timeParser(${time3}, { startUnit: 'minutes' })
+        .map(val => ('' + val.value).padStart(2, 0))
+        .join(':') 
+          
+        should return '02:00'`, () => {
+
+      assert.deepEqual(
+        timeParser(time3, { startUnit: 'minutes' })
+          .map(val => ('' + val.value).padStart(2, 0))
+          .join(':'), 
+        
+        '02:00'
+      );
+    });
   });
 });
