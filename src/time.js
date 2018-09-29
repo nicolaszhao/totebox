@@ -1,46 +1,75 @@
 import { type } from './util';
 
 /**
- * 时间解析器方法
- * @param time {Number(millisecond)}
- * @param units {Array(['年', '月', '周', '天', '小时', '分钟', '秒'])}
- * @returns {Array} 比如：[ { value: 1, unit: '周' }, ... ]
+ * 将提供的毫秒值解析成格式化的时间数值列表
+ * @param {Number} time 
+ * @param {Object} options { startUnit, labels }
+ *  startUnit: 'years | months | weeks | days | hours | minutes | seconds'
+ *  labels: { years: '年', months: '月', ... }
  */
-export function timeParser(time, units = '天 小时 分钟 秒'.split(' ')) {
-  const timeValues = [24, 60, 60, 1000];
+export function timeParser(time, options = {}) {
+  if (type(time) !== 'number') {
+    time = 0;
+  }
+
+  const { startUnit = 'years', labels = {} } = options;
+  let units = [
+    { label: 'Years', value: 12 },
+    { label: 'Months', value: 4 },
+    { label: 'Weeks', value: 7 },
+    { label: 'Days', value: 24 },
+    { label: 'Hours', value: 60 },
+    { label: 'Minutes', value: 60 },
+    { label: 'Seconds', value: 1000 }
+  ];
+
+  units = units.map(unit => {
+    const key = unit.label.toLowerCase();
+
+    return {
+      ...unit,
+      label: labels[key] || unit.label,
+      key,
+    };
+  });
+  
+  let startIndex = units.findIndex(unit => unit.key === startUnit);
+  
+  if (startIndex > 0) {
+    units = units.slice(startIndex);
+  }
+
+  const inAll = (arr, option) => {
+    return arr.reduce((prev, cur) => {
+      if (option === 'add') {
+        return prev + cur;
+      }
+
+      return prev * cur;
+    });
+  };
+
+  const getUnitsValues = (units) => {
+    return units.map(unit => unit.value);
+  };
 
   let ret = [];
 
-  timeValues.reduce((prev, timeValue, i) => {
-    const ms = timeValues.slice(i)
-      .reduce((a, b) => a * b);
-
+  units.reduce((prev, unit, i) => {
+    const ms = inAll(getUnitsValues(units.slice(i)));
     const value = Math.floor(time / ms) - prev;
 
-    ret.push({ value, unit: units[i] });
-    
-    prev = ret.map((n, retIndex) => {
-      return n.value * timeValues.slice(retIndex, i + 1).reduce((a, b) => a * b);
-    }).reduce((a, b) => a + b);
+    ret.push({ value, unit: unit.label });
+
+    prev = ret.map((n, j) => {
+      return n.value * inAll(getUnitsValues(units.slice(j, i + 1)));
+    });
+    prev = inAll(prev, 'add');
 
     return prev;
   }, 0);
 
   return ret;
-}
-
-// TODO: 需要实现超过 24 小时后的时间计算：都加到 hours 中，或者增加 format 字符串来格式化
-export function formatTime(duration) {
-  const placeholder = { value: 0 };
-  let times = timeParser(duration);
-
-  if (times.length <= 1) {
-    times.unshift(Object.create(placeholder), Object.create(placeholder));
-    times = times.slice(-2);
-  }
-
-  return times.map(time => `${time.value}`.padStart(2, '0'))
-    .join(':');
 }
 
 /**
@@ -58,28 +87,13 @@ export function countdown(value, { onStart = noop, onProgress = noop, onEnd = no
   const last = value;
   let timerId;
 
-  const getDateValues = (value) => {
-    const dif = value - Date.now();
-    let hours, minutes, second;
-
-    hours = minutes = second = 0;
-
-    if (dif > 0) {
-      hours = Math.floor(dif / (1000 * 60 * 60));
-      minutes = Math.floor(dif / (1000 * 60)) - hours * 60;
-      second = Math.floor(dif / 1000) - hours * 60 * 60 - minutes * 60;
-    }
-    
-    return { dif, hours, minutes, second };
-  };
-
   const tick = () => {
     timerId = setTimeout(() => {
       if (cdType === 'date') {
-        const { dif, ...values } = getDateValues(last);
+        const dif = last - Date.now();
 
         // 缓存 value 变量，方便在执行停止时可以传入 stop
-        value = values;
+        value = timeParser(dif < 0 ? 0 : dif, { startUnit: 'hours' });
 
         if (dif <= 0) {
           return onEnd.bind(context)(value);
@@ -101,9 +115,9 @@ export function countdown(value, { onStart = noop, onProgress = noop, onEnd = no
   return {
     start() {
       if (cdType === 'date') {
-        const { dif, ...values } = getDateValues(last);
-    
-        value = values;
+        const dif = last - Date.now();
+
+        value = timeParser(dif < 0 ? 0 : dif, { startUnit: 'hours' });
       }
 
       onStart.bind(context)(value);

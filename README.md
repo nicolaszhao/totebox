@@ -180,9 +180,31 @@ Type: `Object`
 
 ## time
 
-### timeParser( time [ , units = [ '年', '月', '周', '天', '小时', '分钟', '秒' ] ] )
+### timeParser( time, options )
 
-### formatTime( duration )
+#### time
+
+Type: `Number`
+
+#### options
+
+Type: `Object`
+
+##### options.startUnit
+
+Type: `String`
+
+Default: 'year'
+
+possible values: 'years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds'
+
+##### options.labels
+
+Type: `Object`
+
+Defult: `{ hours: 'Years', months: 'Months', weeks: 'Weeks', days: 'Days', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds' }`
+
+e.g. `{ hours: '小时', minutes: '分钟', ... }`
 
 ### countdown( value [ , { onStart, onProgress, onEnd }, context ] )
 
