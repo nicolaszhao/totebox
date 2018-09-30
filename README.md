@@ -180,11 +180,9 @@ Type: `Object`
 
 ## time
 
-### timeParser( time, options )
+### timeParser( options )
 
-#### time
-
-Type: `Number`
+return (time) => [{ unit, value }, ...]
 
 #### options
 
@@ -198,7 +196,7 @@ Default: 'year'
 
 possible values: 'years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds'
 
-##### options.labels
+##### options.units
 
 Type: `Object`
 
