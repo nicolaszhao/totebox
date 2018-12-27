@@ -22,9 +22,13 @@ export function getQuerys(url = '') {
       name = decodeURIComponent(name);
       value = typeof value !== 'undefined' ? decodeURIComponent(value) : '';
 
-      // TODO: 后期考虑是否需要转换 Boolean 数据类型
-      ret[name] = /^\d+$/.test(value) ? +value : value;
-      
+      if (/^(true|false)$/.test(value)) {
+        value = JSON.parse(RegExp.$1);
+      } else if (/^\d+$/.test(value)) {
+        value = +value;
+      }
+
+      ret[name] = value;
     }
   }
 

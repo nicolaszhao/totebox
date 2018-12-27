@@ -23,6 +23,10 @@ describe('#query.js', () => {
       assert.deepStrictEqual(getQuerys('http://localhost/?a=1'), { a: 1 });
     });
 
+    it(`getQuerys('http://localhost/?a=true') => { a: true }`, () => {
+      assert.deepStrictEqual(getQuerys('http://localhost/?a=true'), { a: true });
+    });
+
     it(`getQuerys('http://localhost/?a=1&b=&c=3&d#hash') => { a: 1, b: '', c: 3, d: '' }`, () => {
       assert.deepStrictEqual(getQuerys('http://localhost/?a=1&b=&c=3&d#hash'), { a: 1, b: '', c: 3, d: '' });
     });
