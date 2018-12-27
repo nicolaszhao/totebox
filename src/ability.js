@@ -11,7 +11,8 @@ export const cache = {
   },
 
   set(key, value) {
-    value = typeof value !== 'string' ? JSON.stringify(value) : value;
+
+    value = JSON.stringify(value);
 
     // 在有些移动端机型，同时执行 localStorage.setItem 多次会导致异常
     try {
