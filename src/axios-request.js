@@ -40,7 +40,7 @@ function request(config = {}, { filterResponse, beautifyError } = {}) {
       };
 
       return req;
-    }, {});
+    }, { inst });
 }
 
 export default request;
