@@ -8,7 +8,7 @@ function request(config = {}, { filterResponse, beautifyError } = {}) {
     .split(' ')
     .reduce((req, method) => {
       req[method] = (url, data, config) => {
-        const methodsWithBody = ['post put patch'];
+        const methodsWithBody = ['post', 'put', 'patch'];
         let xhr = null;
 
         url = parseTextPlaceholder(url, data, true);
