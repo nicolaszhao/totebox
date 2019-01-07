@@ -7,7 +7,7 @@ function request(config = {}, { filterResponse, beautifyError } = {}) {
   return 'get delete head options post put patch'
     .split(' ')
     .reduce((req, method) => {
-      req[method] = (url, data, config) => {
+      req[method] = (url, data, config = {}) => {
         const methodsWithBody = ['post', 'put', 'patch'];
         let xhr = null;
 
@@ -24,7 +24,7 @@ function request(config = {}, { filterResponse, beautifyError } = {}) {
 
         return xhr
           .then(({ data }) => {
-            if (typeof filterResponse === 'function') {
+            if (config.responseType === 'json' && typeof filterResponse === 'function') {
               return filterResponse(data);
             }
 
