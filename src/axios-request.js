@@ -24,11 +24,13 @@ function request(config = {}, { filterResponse, beautifyError } = {}) {
 
         return xhr
           .then(({ data }) => {
-            if (config.responseType === 'json' && typeof filterResponse === 'function') {
-              return filterResponse(data);
+            if ((config.responseType && config.responseType !== 'json') || 
+            typeof filterResponse !== 'function') {
+
+              return data;
             }
 
-            return data;
+            return filterResponse(data);
           })
           .catch(err => {
             if (typeof beautifyError === 'function') {
