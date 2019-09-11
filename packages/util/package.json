@@ -1,6 +1,6 @@
 {
   "name": "@totebox/util",
-  "version": "0.11.3",
+  "version": "0.12.0",
   "description": "Uncategorized utilities of Totebox",
   "main": "dist/util.cjs.js",
   "module": "dist/util.esm.js",
