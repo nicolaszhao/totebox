@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { deepAssign } from '../src/util';
+import { deepAssign } from '../src/index';
 
 describe('#util.js', () => {
   describe('#deepAssign()', () => {

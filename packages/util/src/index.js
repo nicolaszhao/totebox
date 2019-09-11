@@ -1,8 +1,17 @@
+class A {
+  fn() {
+
+  }
+}
+
+const a = new A();
+a.fn();
+
 export function type(obj) {
   if (obj == null) {
     return obj + '';
   }
-  
+
   const types = 'Number String Boolean Array Function Object Math Date RegExp Error'.split(' ');
   let class2Type = {};
 
@@ -23,7 +32,7 @@ export function deepAssign(target, ...sources) {
 
   const source = sources.shift();
 
-  if ((type(target) === 'object' || type(target) === 'array') && 
+  if ((type(target) === 'object' || type(target) === 'array') &&
     (type(source) === 'object' || type(source) === 'array')
   ) {
     for (let key of Object.keys(source)) {
@@ -42,7 +51,7 @@ export function deepAssign(target, ...sources) {
     }
   }
 
-  return deepAssign(target, ...sources);  
+  return deepAssign(target, ...sources);
 }
 
 // 返回介于 a 到 b 之间的一个随机数
