@@ -37,7 +37,7 @@ export function getQuerys(url = '') {
 
 export function addQuerys(url = '', querys = {}) {
   const oriQuerys = getQuerys(url) || {};
-  
+
   for (let name of Object.keys(querys)) {
     oriQuerys[name] = querys[name];
   }
@@ -66,7 +66,7 @@ export function addQuerys(url = '', querys = {}) {
  * querys(url); -> { ...querys }
  * querys(params); -> 'url?params#hash'
  * querys(url, params); -> 'url?params#hash'
- * 
+ *
  * @param {String} url
  * @param {Object} params: 需要添加到 URL search 部分的参数，如果传了该参数，会调用 addQuerys 方法
  */

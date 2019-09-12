@@ -1,7 +1,7 @@
 {
   "name": "totebox",
   "version": "0.1.0",
-  "description": "A personal utility library.",
+  "description": "Personal utility packages.",
   "private": true,
   "scripts": {},
   "author": "NZ",
