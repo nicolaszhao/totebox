@@ -13,21 +13,15 @@ export function type(obj) {
   return class2Type[Object.prototype.toString.call(obj)] || typeof obj;
 }
 
-/**
- * Deep merge objects.
- * @param {Object} target
- * @param {Object} sources
- */
 export function deepAssign(target, ...sources) {
   if (!sources.length) return target;
 
   const source = sources.shift();
+  const isObjectOrArray = (obj) => ['object', 'array'].includes(type(obj));
 
-  if ((type(target) === 'object' || type(target) === 'array') &&
-    (type(source) === 'object' || type(source) === 'array')
-  ) {
+  if (isObjectOrArray(target) && isObjectOrArray(source)) {
     for (let key of Object.keys(source)) {
-      if (type(source[key]) === 'object' || type(source[key]) === 'array') {
+      if (isObjectOrArray(source[key])) {
         if (!target[key]) {
           Object.assign(target, { [key]: type(source[key]) === 'object' ? {} : [] });
         }
@@ -52,6 +46,29 @@ export function random(a, b) {
   return Math.floor(Math.random() * val + a);
 }
 
+export function randomId(length, { uniqueId = true, prefix } = {}) {
+  const radix = uniqueId ? 36 : 10;
+  const gen = () => {
+    return Math.floor(Math.random() * 1999999).toString(radix);
+  };
+
+  if (!length) {
+    return gen();
+  }
+
+  let id = '';
+
+  if (prefix) {
+    id = `${prefix}-${id}`;
+  }
+
+  while (id.length < length) {
+    id += gen();
+  }
+
+  return id.substr(0, length);
+}
+
 export function delayTask(task, delay = 600) {
   let running = false;
   let taskTimer = setTimeout(() => {
@@ -59,14 +76,15 @@ export function delayTask(task, delay = 600) {
     task();
   }, delay);
 
-  // return clear state, true: cleared, false: not cleared
+  // return clear state,
+  // true: cleared, false: not cleared
   return () => {
     clearTimeout(taskTimer);
-
     return !running;
   };
 }
 
+// 并归排序算法工具函数
 const merge = (left, right) => {
   const ret = [];
   let l = 0,
@@ -83,8 +101,7 @@ const merge = (left, right) => {
   return [...ret, ...left.slice(l), ...right.slice(r)];
 };
 
-// 排序算法 - 并归排序
-// 觉得挺有意思的，就拿来实现下
+// 数组排序：并归算法
 export function mergeSort(data) {
   const len = data.length;
 
@@ -99,7 +116,9 @@ export function mergeSort(data) {
   return merge(mergeSort(left), mergeSort(right));
 }
 
-export function arrayToTree(data, {
+// 将 [{ id, parentId }, ...] 类的扁平数组转换为树形结构
+// O(n)级
+export function toTree(data, {
   id = 'id',
   parentId = 'parentId',
   rootParentId = 0,
@@ -137,8 +156,9 @@ export function arrayToTree(data, {
   return tree;
 }
 
-// 任务分割函数，当一个函数运行时间过长，可以使用该函数把它拆分为一系列能在较短时间内完成的子函数，使用定时器加入到队列。
-export function chunk(data, process, context, duration = 100) {
+// 耗时任务异步处理函数
+// 如果 process 数据处理函数运行时间较长，则不适合在循环中执行，用该函数可以处理为异步执行
+export function chunk(data, process, context, callback = noop, duration = 100) {
   const tasks = data.concat();
 
   const run = () => {
@@ -147,6 +167,8 @@ export function chunk(data, process, context, duration = 100) {
 
       if (tasks.length) {
         run();
+      } else {
+        callback();
       }
     }, duration);
   };
@@ -154,10 +176,16 @@ export function chunk(data, process, context, duration = 100) {
   run();
 }
 
-// 在一定时间（毫秒）内批量处理数据量比较大的数组，以减轻运行大数据数组对客户端的程序阻塞
-export function batch(data, process, context, cb = noop, { runDuration = 25, chunkDuration = 50 } = {}) {
+// 大数据任务批处理函数
+// 在一定时间内批量处理数据量比较大的数组，以减轻运行大数据数组对客户端的程序阻塞
+export function batch(
+  data,
+  process,
+  context,
+  callback = noop,
+  { runDuration = 25, chunkDuration = 50 } = {}
+) {
   const tasks = data.concat();
-
   const run = () => {
     setTimeout(function () {
       var start = Date.now();
@@ -169,12 +197,95 @@ export function batch(data, process, context, cb = noop, { runDuration = 25, chu
       if (tasks.length) {
         run();
       } else {
-        cb();
+        callback();
       }
     }, runDuration);
   };
 
   run();
+}
+
+// 在给定时间内将 start 值变化为 end，
+// 返回 stop 停止函数
+export function motion(start, end, duration, { step = noop, done = noop } = {}) {
+  const startTime = Date.now();
+  const tickDelay = Math.floor(1000 / 60);
+  let stopTimer = null;
+
+  const tick = () => {
+    stopTimer = setTimeout(() => {
+      const remaining = Math.max(0, startTime + duration - Date.now());
+      const percent = 1 - remaining / duration;
+      const val = (end - start) * percent + start;
+
+      if (percent < 1) {
+        step(val);
+        tick();
+      } else {
+        done(val);
+      }
+    }, tickDelay);
+  };
+
+  tick();
+
+  return () => {
+    clearTimeout(stopTimer);
+    stopTimer = null;
+  };
+}
+
+// 延时任务处理
+// 如果添加重复的任务，如果任务已完成则不再执行
+export class DelayTasks {
+  constructor() {
+    this.tasks = new Map();
+    this.finished = {};
+  }
+
+  // task: { do(id), delay }
+  add(id, task) {
+    if (!this.finished[id]) {
+      this.tasks.set(id, task);
+      this.start(id);
+    }
+  }
+
+  run(id) {
+    const task = this.tasks.get(id);
+
+    if (task) {
+      task.do(id);
+      this.finished[id] = true;
+      this.tasks.delete(id);
+    }
+  }
+
+  // options: { cb(id) }
+  start(id, options = {}) {
+    const task = this.tasks.get(id);
+
+    if (task) {
+      task.timer = setTimeout(() => {
+        this.run(id);
+        task.timer = null;
+        options.cb && options.cb(id);
+      }, task.delay);
+    }
+  }
+
+  // options: { cb(id), clear[Boolean] }
+  // options.clear 用来确定当重新执行 start 时，是否可以恢复之前的延时任务
+  stop(id, options = {}) {
+    const task = this.tasks.get(id);
+
+    if (task && task.timer) {
+      clearTimeout(task.timer);
+      task.timer = null;
+      options.clear && this.tasks.delete(id);
+      options.cb && options.cb(id);
+    }
+  }
 }
 
 export function noop() {}

@@ -2,14 +2,14 @@ import { type, noop } from './util';
 
 /**
  * 将提供的毫秒值解析成格式化的时间数值列表
- * @param {Object} options { startUnit, labels }
- *  startUnit: 'years | months | weeks | days | hours | minutes | seconds'
- *  labels: { years: '年', months: '月', ... }
+ * @param {Object} options { maxUnit, units }
+ *  maxUnit: 'years | months | weeks | days | hours | minutes | seconds'
+ *  units: { years: '年', months: '月', ... }
  *
  * @returns (time) => [{ unit: 'Years', value }, ...]
  */
 export function timeParser(options = {}) {
-  const { startUnit = 'years', units = {} } = options;
+  const { maxUnit = 'years', units = {} } = options;
   let unitsSource = [
     { unit: 'Years', value: 12 },
     { unit: 'Months', value: 4 },
@@ -34,8 +34,11 @@ export function timeParser(options = {}) {
     return units.map(unit => unit.value);
   };
 
+  // 对 unitsSource 数组项增加 unit 代表的毫秒的值
   unitsSource = unitsSource.map((source, i) => {
     const key = source.unit.toLowerCase(),
+
+      // 把当前 unit 及之后的 value 从前往后相乘，以获取最终代表的毫秒值
       ms = inAll(getSourceValues(unitsSource.slice(i)));
 
     return {
@@ -46,8 +49,8 @@ export function timeParser(options = {}) {
     };
   });
 
-  let startIndex = unitsSource.findIndex(source => source.key === startUnit);
-
+  // 从 unitsSource 中过滤掉不需要的数据项
+  let startIndex = unitsSource.findIndex(source => source.key === maxUnit);
   if (startIndex > 0) {
     unitsSource = unitsSource.slice(startIndex);
   }
@@ -66,9 +69,13 @@ export function timeParser(options = {}) {
 
       values.push({ value, unit: source.unit });
 
+      // 算出下一项的值之前的、并与之单位匹配的值的总和，然后在下一次任务中减去该值，比如：
+      // values 为：[{ value: 1, unit: '年' }], 那么 prev 应该为 12（个月）
+      // 在下一次计算 unit: '月' 时，减去这个 prev
       prev = values.map((n, j) => {
         let unitValues = cache[`${j}-${i + 1}`];
 
+        // 当 timeParser 初始化后多次调用 (time) => {} 时，可以避免不必要的重复计算
         if (!unitValues) {
           unitValues = inAll(getSourceValues(unitsSource.slice(j, i + 1)));
           cache[`${j}-${i + 1}`] = unitValues;
@@ -77,6 +84,8 @@ export function timeParser(options = {}) {
         return n.value * unitValues;
       });
 
+      // 这里，把 prev(array) 每个项上算好的（相对于下一项单位）的所有值相加，比如：
+      // prev: [ 12(个月), 8(个月) ] => 20 个月
       prev = inAll(prev, 'add');
 
       return prev;
@@ -100,20 +109,17 @@ export function countdown(value, { onStart = noop, onProgress = noop, onEnd = no
   const cdType = type(value) === 'date' ? 'date' : 'second';
   const last = value;
   const times = timeParser({ startUnit: 'hours' });
-  let timerId;
+  let timerId = null;
 
   const tick = () => {
     timerId = setTimeout(() => {
       if (cdType === 'date') {
         const dif = last - Date.now();
-
-        // 缓存 value 变量，方便在执行停止时可以传入 stop
         value = times(dif);
 
         if (dif <= 0) {
           return onEnd.bind(context)(value);
         }
-
         onProgress.bind(context)(value);
       } else {
         if (!value) {
@@ -139,20 +145,61 @@ export function countdown(value, { onStart = noop, onProgress = noop, onEnd = no
 
     stop(callback) {
       clearTimeout(timerId);
+      timerId = null;
+
+      // value 为 tick 中分步计算的值
       callback && callback.bind(context)(value);
     }
   };
 }
 
-/**
- *
- * TODO: 该模块下方法还未做过任何测试
- */
+// 转换一个毫秒值时间为：hh:mm:ss 格式的字符串，常用于视频、音频时间轴的显示
+export function time2str(time) {
+  let floor = Math.floor,
+    r = [],
+    hour, minute, pad, second;
+
+  time = Math.round(time / 1000);
+  hour = floor(time / 3600);
+  minute = floor((time - 3600 * hour) / 60);
+  second = time % 60;
+
+  pad = function (source, length) {
+    let nagative, pre, str;
+
+    pre = '';
+    nagative = '';
+
+    if (source < 0) {
+      nagative = '-';
+    }
+
+    str = String(Math.abs(source));
+
+    if (str.length < length) {
+      pre = new Array(length - str.length + 1).join('0');
+    }
+
+    return nagative + pre + str;
+  };
+
+  if (hour) {
+    r.push(hour);
+  }
+
+  r.push(pad(minute, 2));
+  r.push(pad(second, 2));
+
+  return r.join(':');
+}
 
 export function isLeapYear(year) {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 
+// format: 'yy-mm-dd'
+// value: '2019-09-25'
+// => (Date) Wed Sep 25 2019 00:00:00 GMT+0800 (中国标准时间)
 export function parseDate(format, value) {
   if (value === '') {
     return null;
