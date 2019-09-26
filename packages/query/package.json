@@ -1,0 +1,35 @@
+{
+  "name": "@totebox/query",
+  "version": "0.12.0",
+  "description": "URI search query parser.",
+  "main": "dist/query.cjs.js",
+  "module": "dist/query.esm.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
+    "test": "cross-env NODE_ENV=test mocha --require ../../register.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nicolaszhao/totebox.git"
+  },
+  "keywords": [
+    "query"
+  ],
+  "author": "NZ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nicolaszhao/totebox/issues"
+  },
+  "homepage": "https://github.com/nicolaszhao/totebox#readme",
+  "devDependencies": {
+    "cross-env": "^6.0.0",
+    "mocha": "^6.2.0",
+    "rollup": "^1.21.4"
+  },
+  "files": [
+    "dist"
+  ]
+}

@@ -1,101 +1,100 @@
-const rUrl = /^([^?#]+)(\?[^#]+)?(#.+)?/;
 
-export function getQuerys(url = '') {
-  const rQueryValue = /^([^=]+)(?:=(.*))?$/;
+const regUrl = /^([^?#]+)(\?[^#]+)?(#.+)?/;
+const regQuery = /^([^=]+)(?:=(.*))?$/;
+const cache = {};
 
-  let [, , search] = rUrl.exec(url) || [];
-
-  if (!search) {
-    return null;
+export default function Query(url) {
+  if (!url) {
+    url = typeof location !== 'undefined' ? location.href : '';
   }
 
-  const ret = {},
-    args = search.substring(1).split('&'),
-    len = args.length;
+  const [, baseUrl = '', search = '', hash = ''] = regUrl.exec(url) || [];
+  let qs = {};
 
-  for (let i = 0; i < len; i++) {
-    const queryMatch = rQueryValue.exec(args[i]);
+  if (url && cache[url]) {
 
-    if (queryMatch) {
-      let [, name, value] = queryMatch;
+    // 与 cache 的引用分离，防止 add, remove 操作时，影响之后 Query(url) 的缓存数据
+    qs = { ...cache[url] };
 
-      name = decodeURIComponent(name);
-      value = typeof value !== 'undefined' ? decodeURIComponent(value) : '';
+  } else if (search) {
+    const params = search.substring(1).split('&');
 
-      if (/^(true|false)$/.test(value)) {
-        value = JSON.parse(RegExp.$1);
-      } else if (/^\d+$/.test(value)) {
-        value = +value;
+    for (let i = 0; i < params.length; i++) {
+      const queryMatch = regQuery.exec(params[i]);
+
+      if (queryMatch) {
+        let [, name, value] = queryMatch;
+
+        try {
+          name = decodeURIComponent(name);
+
+          // maybe has: URI malformed error
+          value = value ? decodeURIComponent(value) : '';
+        } catch (err) {
+          console.log(`parse url querys error, ${name}=${value}`);
+          value = '';
+        }
+
+        if (/^(true|false)$/.test(value)) {
+          value = JSON.parse(RegExp.$1);
+        } else if (/^\d+$/.test(value)) {
+          value = +value;
+        }
+
+        qs[name] = value;
+      }
+    }
+
+    // 与 qs 的引用分离，原因同上
+    cache[url] = { ...qs };
+  }
+
+  return {
+    values() {
+      return qs;
+    },
+    add(values = {}) {
+      qs = { ...qs, ...values };
+      return this;
+    },
+    remove(querys = []) {
+      if (typeof querys === 'string') {
+        querys = [querys];
       }
 
-      ret[name] = value;
-    }
-  }
+      let i = querys.length;
 
-  return ret;
-}
+      while (i--) {
+        delete qs[querys[i]];
+      }
 
-export function addQuerys(url = '', querys = {}) {
-  const oriQuerys = getQuerys(url) || {};
+      return this;
+    },
 
-  for (let name of Object.keys(querys)) {
-    oriQuerys[name] = querys[name];
-  }
+    // 如果参数是数组，必须全部匹配
+    has(querys = []) {
+      if (typeof querys === 'string') {
+        querys = [querys];
+      }
+      if (!querys.length) {
+        return false;
+      }
+      return querys.every(name => qs[name]);
+    },
+    href() {
+      let queryString = Object.keys(qs)
+        .map((name) => {
+          const value = typeof qs[name] !== 'undefined' ? encodeURIComponent(qs[name]) : '';
+          name = encodeURIComponent(name);
+          return `${name}=${value}`;
+        })
+        .join('&');
 
-  const queryString = [];
+      if (queryString) {
+        queryString = `?${queryString}`;
+      }
 
-  for (let name of Object.keys(oriQuerys)) {
-    const key = encodeURIComponent(name),
-      value = typeof oriQuerys[name] !== 'undefined' ? encodeURIComponent(oriQuerys[name]) : '';
-
-    queryString.push(`${key}=${value}`);
-  }
-
-  if (!queryString.length) {
-    return url;
-  }
-
-  const [, baseUrl, , hash = ''] = rUrl.exec(url);
-
-  return `${baseUrl}?${queryString.join('&')}${hash}`;
-}
-
-/**
- * 参数可通过多种方式传入
- * querys(); -> { ...querys }
- * querys(url); -> { ...querys }
- * querys(params); -> 'url?params#hash'
- * querys(url, params); -> 'url?params#hash'
- *
- * @param {String} url
- * @param {Object} params: 需要添加到 URL search 部分的参数，如果传了该参数，会调用 addQuerys 方法
- */
-export function querys(...args) {
-  let [url, params] = args;
-
-  if (!url) {
-    url = window.location.href;
-  } else if (typeof url === 'object') {
-    [url, params] = [window.location.href, url];
-  }
-
-  if (!params) {
-    return getQuerys(url);
-  }
-
-  return addQuerys(url, params);
-}
-
-export function checkQuery(requiredParams = []) {
-  const query = querys() || {};
-
-  const ret = requiredParams.every((param) => {
-    return query[param] || query[param.toLowerCase()];
-  });
-
-  if (!ret) {
-    return Promise.reject(new Error(`Missing url params: ${requiredParams.join(', ')}`));
-  }
-
-  return Promise.resolve(query);
+      return `${baseUrl}${queryString}${hash}`;
+    },
+  };
 }
