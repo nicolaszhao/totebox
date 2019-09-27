@@ -69,6 +69,7 @@ export function randomId(length, { uniqueId = true, prefix } = {}) {
   return id.substr(0, length);
 }
 
+// returns clear function -> cleared: true | false,
 export function delayTask(task, delay = 600) {
   let running = false;
   let taskTimer = setTimeout(() => {
@@ -76,8 +77,6 @@ export function delayTask(task, delay = 600) {
     task();
   }, delay);
 
-  // return clear state,
-  // true: cleared, false: not cleared
   return () => {
     clearTimeout(taskTimer);
     return !running;
@@ -116,8 +115,15 @@ export function mergeSort(data) {
   return merge(mergeSort(left), mergeSort(right));
 }
 
-// 将 [{ id, parentId }, ...] 类的扁平数组转换为树形结构
-// O(n)级
+// O(n)级的，将类的扁平数组转换为树形结构
+// Example: [{ id: 1, parentId: 0 }, { id: 2, parentId: 1 }, { id: 3, parentId: 2 }]
+// returns [
+//  { id: 1, parentId: 0, children: [
+//    { id: 2, parentId: 1, children: [
+//      { id: 3, parentId: 2, children: [] }
+//    ]}
+//  ]}
+// ]
 export function toTree(data, {
   id = 'id',
   parentId = 'parentId',
@@ -205,7 +211,7 @@ export function batch(
   run();
 }
 
-// 在给定时间内将 start 值变化为 end，
+// 在给定时间内将 start 值变化为 end，类似于一个动画过程
 // 返回 stop 停止函数
 export function motion(start, end, duration, { step = noop, done = noop } = {}) {
   const startTime = Date.now();
