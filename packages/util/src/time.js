@@ -37,7 +37,7 @@ export function parseTime(time, maxUnit = 'day') {
 }
 
 // for video|audio duration: hh:mm:ss
-export function formatDuration(duration) {
+export function formatTime(duration) {
   const pad = (n, len) => {
     return `${n}`.padStart(len, '0');
   };
