@@ -1,108 +1,65 @@
 import assert from 'assert';
-import { timeParser } from '../src/index';
+import { parseTime, formatTime } from '../src/index';
 
-describe('#time.js', () => {
-  describe('#timeParser()', () => {
+describe('time', () => {
+  describe('#parseTime()', () => {
 
-    it(`timeParser()(0)
-          should return [
-            { value: 0, unit: 'Years' },
-            { value: 0, unit: 'Months' },
-            { value: 0, unit: 'Weeks' },
-            { value: 0, unit: 'Days' },
-            { value: 0, unit: 'Hours' },
-            { value: 0, unit: 'Minutes' },
-            { value: 0, unit: 'Seconds' }
-          ]`, () => {
-      assert.deepEqual(
-        timeParser()(0),
-        [
-          { value: 0, unit: 'Years' },
-          { value: 0, unit: 'Months' },
-          { value: 0, unit: 'Weeks' },
-          { value: 0, unit: 'Days' },
-          { value: 0, unit: 'Hours' },
-          { value: 0, unit: 'Minutes' },
-          { value: 0, unit: 'Seconds' }
-        ]
+    const doIt = (value, option, result) => {
+      it(
+        `parseTime(${value}, '${option}') should return ${JSON.stringify(result)}`,
+        () => {
+          assert.deepStrictEqual(parseTime(value, option), result);
+        }
       );
-    });
+    };
 
-    let time1 = 1000 * 60 * 60 * 24 * 7 * 4 * 12 * 2 + 1000 * 6;
+    doIt(0, 'h', { hour: 0, minute: 0, second: 0 });
+    doIt(1000, 'h', { hour: 0, minute: 0, second: 1 });
+    doIt(1000 * 60 + 1000, 'h', { hour: 0, minute: 1, second: 1 });
+    doIt(1000 * 60 + 1000 * 59, 'h', { hour: 0, minute: 1, second: 59 });
+    doIt(1000 * 121, 'h', { hour: 0, minute: 2, second: 1 });
+    doIt(
+      1000 * 59 + 1000 * 60 * 59 + 1000 * 60 * 60,
+      'h',
+      { hour: 1, minute: 59, second: 59 }
+    );
+    doIt(
+      1000 + 1000 * 60 + 1000 * 60 * 60 + 1000 * 60 * 60 * 24,
+      'day',
+      { day: 1, hour: 1, minute: 1, second: 1 }
+    );
 
-    it(`timeParser()(${time1})
-          should return [
-            { value: 2, unit: 'Years' },
-            { value: 0, unit: 'Months' },
-            { value: 0, unit: 'Weeks' },
-            { value: 0, unit: 'Days' },
-            { value: 0, unit: 'Hours' },
-            { value: 0, unit: 'Minutes' },
-            { value: 6, unit: 'Seconds' }
-          ]`, () => {
-      assert.deepEqual(
-        timeParser()(time1),
-        [
-          { value: 2, unit: 'Years' },
-          { value: 0, unit: 'Months' },
-          { value: 0, unit: 'Weeks' },
-          { value: 0, unit: 'Days' },
-          { value: 0, unit: 'Hours' },
-          { value: 0, unit: 'Minutes' },
-          { value: 6, unit: 'Seconds' }
-        ]
-      );
-    });
+  });
 
-    let time2 = 1000 * 60 * 60 * 3 + 1000 * 60 * 2 + 1000;
+  describe('#formatTime', () => {
+    const time1 = 1000 + 1000 * 60 + 1000 * 60 * 60 + 1000 * 60 * 60 * 24 * 5;
+    const result1 = '121:01:01';
 
-    it(`timeParser({ maxUnit: 'hours' })(${time2})
-          should return [
-            { value: 3, unit: 'Hours' },
-            { value: 2, unit: 'Minutes' },
-            { value: 1, unit: 'Seconds' }
-          ]`, () => {
-      assert.deepEqual(
-        timeParser({ maxUnit: 'hours' })(time2),
-        [
-          { value: 3, unit: 'Hours' },
-          { value: 2, unit: 'Minutes' },
-          { value: 1, unit: 'Seconds' }
-        ]
-      );
-    });
+    it(
+      `formatTime(${time1}) should return ${result1}}`,
+      () => {
+        assert.strictEqual(formatTime(time1), result1);
+      }
+    );
 
-    it(`timeParser({ maxUnit: 'hours', units: { hours: '小时', minutes: '分钟', seconds: '秒' } })(${time2})
-          should return [
-            { value: 3, unit: '小时' },
-            { value: 2, unit: '分钟' },
-            { value: 1, unit: '秒' }
-          ]`, () => {
-      assert.deepEqual(
-        timeParser({ maxUnit: 'hours', units: { hours: '小时', minutes: '分钟', seconds: '秒' } })(time2),
-        [
-          { value: 3, unit: '小时' },
-          { value: 2, unit: '分钟' },
-          { value: 1, unit: '秒' }
-        ]
-      );
-    });
+    const time2 = 1000 * 60 * 2 + 1000 * 59;
+    const result2 = '02:59';
 
-    let time3 = 120 * 1000;
+    it(
+      `formatTime(${time2}) should return ${result2}}`,
+      () => {
+        assert.strictEqual(formatTime(time2), result2);
+      }
+    );
 
-    it(`timeParser({ maxUnit: 'minutes' })(${time3})
-        .map(val => ('' + val.value).padStart(2, 0))
-        .join(':')
+    const time3 = 1000 * 60 * 2 + 1000 * 59 + 2000;
+    const result3 = '03:01';
 
-        should return '02:00'`, () => {
-
-      assert.deepEqual(
-        timeParser({ maxUnit: 'minutes' })(time3)
-          .map(val => ('' + val.value).padStart(2, 0))
-          .join(':'),
-
-        '02:00'
-      );
-    });
+    it(
+      `formatTime(${time3}) should return ${result3}}`,
+      () => {
+        assert.strictEqual(formatTime(time3), result3);
+      }
+    );
   });
 });
