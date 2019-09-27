@@ -12,10 +12,7 @@ export default function Query(url) {
   let qs = {};
 
   if (url && cache[url]) {
-
-    // 与 cache 的引用分离，防止 add, remove 操作时，影响之后 Query(url) 的缓存数据
     qs = { ...cache[url] };
-
   } else if (search) {
     const params = search.substring(1).split('&');
 
@@ -45,7 +42,6 @@ export default function Query(url) {
       }
     }
 
-    // 与 qs 的引用分离，原因同上
     cache[url] = { ...qs };
   }
 
@@ -57,6 +53,8 @@ export default function Query(url) {
       qs = { ...qs, ...values };
       return this;
     },
+
+    // querys: String | Array
     remove(querys = []) {
       if (typeof querys === 'string') {
         querys = [querys];
@@ -71,7 +69,8 @@ export default function Query(url) {
       return this;
     },
 
-    // 如果参数是数组，必须全部匹配
+    // querys: String | Array
+    // 如果 querys 为数组，必须全部匹配，否则返回 false
     has(querys = []) {
       if (typeof querys === 'string') {
         querys = [querys];
