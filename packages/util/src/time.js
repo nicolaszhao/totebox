@@ -1,8 +1,9 @@
 import { type, noop } from './util';
 
-// 解析给到的毫秒值时间为 { day, hour, minute, second } 的对象
-// options.maxUnit: 最大解析到的时间单位，比如：maxUnit = 'hour'，则不输出 day 的值
-export function parseTime(time, { maxUnit = 'day' } = {}) {
+// 解析给到的毫秒值时间为 { day, hour, minute, second } 对象
+// Example: parseTime(61000) returns { day: 0, hour: 0, minute: 1, second: 1 }
+// maxUnit: 最大解析到的时间单位，比如：maxUnit = 'hour'，则不输出 day 的值
+export function parseTime(time, maxUnit = 'day') {
   const values = {};
   let source = [
     { unit: 'day', value: 24 },
@@ -35,8 +36,25 @@ export function parseTime(time, { maxUnit = 'day' } = {}) {
   return values;
 }
 
+// for video|audio duration: hh:mm:ss
+export function formatDuration(duration) {
+  const pad = (n, len) => {
+    return `${n}`.padStart(len, '0');
+  };
+  const times = parseTime(duration, 'h');
+  let ret = [];
+
+  if (times.hour) {
+    ret.push(times.hour);
+  }
+  ret.push(times.minute);
+  ret.push(times.second);
+
+  return ret.map(r => pad(r, 2)).join(':');
+}
+
 /**
- * 秒钟倒计时工具，返回 stop 方法，执行可用来停止 tick 执行
+ * 秒钟倒计时工具，返回 stop 方法，用来停止 tick 的执行
  * @param {Number} second
  * @param {Object} events: { onStart, onProgress, onEnd }
  * @param {Object} context
@@ -96,8 +114,8 @@ export function isLeapYear(year) {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 
-// example: parseDate('2019-09-25', 'yy-mm-dd');
-// return: (Date) Wed Sep 25 2019 00:00:00 GMT+0800 (中国标准时间)
+// Example: parseDate('2019-09-25', 'yy-mm-dd')
+// returns (Date Object) Wed Sep 25 2019 00:00:00 GMT+0800 (中国标准时间)
 export function parseDate(value, format) {
   if (value === '') {
     return null;
