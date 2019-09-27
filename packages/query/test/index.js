@@ -152,11 +152,17 @@ describe('Query()', () => {
 
     it(
       `Query('${url}').remove(${JSON.stringify(removedQuerys)})
-      the values should return ${JSON.stringify(remaining)}`,
+      the values should return ${JSON.stringify(remaining)},
+      and pass same url to Query('${url}'), the values still returns ${JSON.stringify(result)}`,
       () => {
         assert.deepStrictEqual(
           Query(url).remove(removedQuerys).values(),
           remaining,
+        );
+
+        assert.deepStrictEqual(
+          Query(url).values(),
+          result,
         );
       }
     );
