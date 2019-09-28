@@ -1,73 +1,60 @@
 /*
  * url: string
- * settings: object
+ * options: object
  *   jsonpCallback: string
  *   timeout: number
- *   done: function
- *   fail: function
+ * cb: callback function
  */
-function jsonp(url, settings) {
-  const script = document.createElement('script');
-  let obj, 
-    props, 
-    jsonpCallback, 
-    response, 
-    i, 
-    timer;
 
+let count = 0;
+
+function noop() {}
+
+function jsonp(url, options, cb) {
+  if (typeof options === 'function') {
+    cb = options;
+    options = {};
+  } else if (!options) {
+    options = {};
+  }
+
+  const regCallback = /callback=([^&#]*)/;
+  const [, callback] = regCallback.exec(url) || [];
+  let { jsonpCallback } = options;
+  let timer;
+
+  // 优先使用 url 中定义的 callback name
+  if (callback) {
+    jsonpCallback = callback === '?' ? `_${Date.now()}` : `${callback}${++count}`;
+  } else {
+    jsonpCallback = !jsonpCallback ? `_${Date.now()}` : `${jsonpCallback}${++count}`;
+  }
+
+  const script = document.createElement('script');
   script.type = 'text/javascript';
 
-  jsonpCallback = settings.jsonpCallback;
-
-  if (jsonpCallback.indexOf('.') !== -1) {
-    props = jsonpCallback.split('.');
-    window[props[0]] = obj = {};
-
-    for (i = 1; i < props.length; i++) {
-      if (i < props.length - 1) {
-        obj = obj[props[i]] = {};
-      } else {
-        obj[props[i]] = function () {
-          response = arguments[0];
-        };
-      }
-    }
-  } else {
-    window[jsonpCallback] = function () {
-      response = arguments[0];
-    };
-  }
-
-  if (settings.timeout) {
-    timer = setTimeout(function () {
-      delete settings.done;
-      if (typeof settings.fail === 'function') {
-        settings.fail();
-      }
-    }, settings.timeout);
-  }
-
-  if (script.readyState) {
-    script.onreadystatechange = function () {
-      if (script.readyState === 'loaded' || script.readyState === 'complete') {
-        script.onreadystatechange = null;
-        clearTimeout(timer);
-
-        if (typeof settings.done === 'function') {
-          settings.done(response);
-        }
-      }
-    };
-  } else {
-    script.onload = function () {
+  const clearup = () => {
+    script.parentNode.removeChild(script);
+    window[jsonpCallback] = noop;
+    if (timer) {
       clearTimeout(timer);
+    }
+  };
 
-      if (typeof settings.done === 'function') {
-        settings.done(response);
-      }
-    };
+  if (options.timeout) {
+    timer = setTimeout(function () {
+      clearup();
+      cb && cb(new Error('timeout'))
+    }, options.timeout || 10000);
   }
 
+  window[jsonpCallback] = function(data) {
+    clearup();
+    cb && cb(null, data);
+  };
+
+  url = url.replace(regCallback, '').replace('?&', '?');
+  url += (~url.indexOf('?') ? '&' : '?') + 'callback' + '=' + encodeURIComponent(jsonpCallback);
   script.src = url;
   (document.head || document.getElementsByTagName('head')[0]).appendChild(script);
 }

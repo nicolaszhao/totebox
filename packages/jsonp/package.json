@@ -1,0 +1,38 @@
+{
+  "name": "@totebox/jsonp",
+  "version": "0.12.0",
+  "description": "JSONP",
+  "main": "dist/jsonp.cjs.js",
+  "module": "dist/jsonp.esm.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production INCLUDE_UMD=true rollup -c ../../rollup.config.js",
+    "test": "npm run build && mocha-chrome ./test/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nicolaszhao/totebox.git"
+  },
+  "keywords": [
+    "ajax",
+    "jsonp"
+  ],
+  "author": "NZ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nicolaszhao/totebox/issues"
+  },
+  "homepage": "https://github.com/nicolaszhao/totebox#readme",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "cross-env": "^6.0.0",
+    "mocha": "^6.2.0",
+    "mocha-chrome": "^2.1.0",
+    "rollup": "^1.21.4"
+  },
+  "dependencies": {}
+}
