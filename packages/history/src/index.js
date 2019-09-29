@@ -1,28 +1,24 @@
-var History = function() {
-  this.stack = [];
-  this.activeIndex = 0;
-};
+class History {
+  stack = [];
+  activeIndex = 0;
 
-History.prototype = {
-  constructor: History,
-
-  getActive: function() {
+  getActive() {
     return this.stack[this.activeIndex];
-  },
+  }
 
-  getPrev: function() {
+  getPrev() {
     return this.stack[this.activeIndex - 1];
-  },
+  }
 
-  getNext: function() {
+  getNext() {
     return this.stack[this.activeIndex + 1];
-  },
+  }
 
-  size: function() {
+  size() {
     return this.stack.length;
-  },
+  }
 
-  add: function(url) {
+  add(url) {
     if (this.getNext()) {
       this.stack = this.stack.slice(0, this.activeIndex + 1);
     }
@@ -31,28 +27,21 @@ History.prototype = {
     this.activeIndex = this.stack.length - 1;
 
     return this.stack.length;
-  },
+  }
 
-  find: function(url) {
-    var length = this.stack.length, index, i;
+  find(url) {
+    return this.stack.findIndex((stack) => stack === url);
+  }
 
-    for (i = 0; i < length; i++) {
-      if (url === this.stack[i]) {
-        index = i;
-        break;
-      }
+  direct(url) {
+    const newActiveIndex = this.find(url);
+    const a = this.activeIndex;
+
+    if (newActiveIndex === -1) {
+      return this.add(url);
     }
 
-    return index;
-  },
-
-  direct: function(url) {
-    var newActiveIndex = this.find(url),
-      a = this.activeIndex;
-
-    if (typeof newActiveIndex !== 'undefined') {
-      this.activeIndex = newActiveIndex;
-    }
+    this.activeIndex = newActiveIndex;
 
     if (newActiveIndex < a) {
       return -1;
@@ -62,6 +51,6 @@ History.prototype = {
       return this.add(url);
     }
   }
-};
+}
 
 export default History;
