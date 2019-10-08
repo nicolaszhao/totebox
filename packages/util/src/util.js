@@ -46,6 +46,21 @@ export function random(a, b) {
   return Math.floor(Math.random() * val + a);
 }
 
+// value: 0.01 -> 1%, 0.1 -> 10%, 1 -> 100%
+export function inRandomRate(value) {
+  value = +value;
+  const pointsMatch = /\.(\d+)$/.exec(value);
+  let points = 1;
+
+  if (pointsMatch) {
+    points = pointsMatch[1].length;
+  }
+
+  const coefficient = Math.pow(10, points) * 10;
+
+  return Math.ceil(Math.random() * coefficient) <= value * coefficient;
+}
+
 export function randomId(length, { uniqueId = true, prefix } = {}) {
   const radix = uniqueId ? 36 : 10;
   const gen = () => {
@@ -243,7 +258,7 @@ export function motion(start, end, duration, { step = noop, done = noop } = {}) 
 
 // 延时任务处理
 // 如果添加重复的任务，如果任务已完成则不再执行
-export class DelayTasks {
+export class LazyTasks {
   constructor() {
     this.tasks = new Map();
     this.finished = {};
