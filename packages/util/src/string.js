@@ -1,4 +1,3 @@
-import isPlainObject from 'lodash/isPlainObject';
 import { type } from './util';
 
 /**
@@ -10,10 +9,10 @@ import { type } from './util';
  * @param {Boolean} dataReplaceable
  */
 export function parseTextPlaceholder(text, data, dataReplaceable = false) {
-  let rPlaceholder = /\{([^}]+)\}/g;
+  let regPlaceholder = /\{([^}]+)\}/g;
 
-  if (rPlaceholder.test(text) && isPlainObject(data) && Object.keys(data).length) {
-    return text.replace(rPlaceholder, function (match, placeholder) {
+  if (regPlaceholder.test(text) && type(data) === 'object' && Object.keys(data).length) {
+    return text.replace(regPlaceholder, function (match, placeholder) {
       let val = data[placeholder];
 
       if (type(val) !== 'undefined') {

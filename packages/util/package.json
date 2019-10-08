@@ -24,12 +24,8 @@
     "url": "https://github.com/nicolaszhao/totebox/issues"
   },
   "homepage": "https://github.com/nicolaszhao/totebox",
-  "peerDependencies": {
-    "lodash": "4.x"
-  },
   "devDependencies": {
     "cross-env": "^5.2.0",
-    "lodash": "^4.17.15",
     "mocha": "^5.0.5",
     "rollup": "^1.21.2"
   },
