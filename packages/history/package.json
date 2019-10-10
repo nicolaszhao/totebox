@@ -1,15 +1,16 @@
 {
   "name": "@totebox/history",
   "version": "0.12.1",
-  "description": "A simple browser history stack utility.",
+  "description": "A simple stack search tool similar to browser history",
   "main": "dist/history.cjs.js",
   "module": "dist/history.esm.js",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
-    "test": "cross-env NODE_ENV=test mocha --require ../../register.js"
+    "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production",
+    "test": "cross-env NODE_ENV=test mocha --require ../../register.js",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

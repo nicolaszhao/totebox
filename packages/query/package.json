@@ -8,8 +8,9 @@
     "access": "public"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
-    "test": "cross-env NODE_ENV=test mocha --require ../../register.js"
+    "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production",
+    "test": "cross-env NODE_ENV=test mocha --require ../../register.js",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
