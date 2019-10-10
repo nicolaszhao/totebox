@@ -10,7 +10,7 @@ let count = 0;
 
 function noop() {}
 
-function jsonp(url, options, cb) {
+export default function jsonp(url, options, cb) {
   if (typeof options === 'function') {
     cb = options;
     options = {};
@@ -58,5 +58,3 @@ function jsonp(url, options, cb) {
   script.src = url;
   (document.head || document.getElementsByTagName('head')[0]).appendChild(script);
 }
-
-export default jsonp;
