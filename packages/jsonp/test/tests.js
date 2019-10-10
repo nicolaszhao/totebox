@@ -1,6 +1,6 @@
 describe('jsonp', () => {
   it('callback=jsonp should be ok', (done) => {
-    totebox.jsonp(
+    $totebox.jsonp(
       'http://www.mocky.io/v2/5d8de643310000b75f2b5195?callback=jsonp',
       (err, data) => {
         if (!err) {
@@ -10,7 +10,7 @@ describe('jsonp', () => {
   });
 
   it('callback=? should be ok', (done) => {
-    totebox.jsonp(
+    $totebox.jsonp(
       'http://www.mocky.io/v2/5d8de643310000b75f2b5195?callback=?',
       (err, data) => {
         if (!err) {
@@ -20,7 +20,7 @@ describe('jsonp', () => {
   });
 
   it('jsonpCallback=jsonp should be ok', (done) => {
-    totebox.jsonp(
+    $totebox.jsonp(
       'http://www.mocky.io/v2/5d8de643310000b75f2b5195',
       {
         jsonpCallback: 'jsonp'
@@ -33,7 +33,7 @@ describe('jsonp', () => {
   });
 
   it('timeout=100 should be fail', (done) => {
-    totebox.jsonp(
+    $totebox.jsonp(
       'http://www.mocky.io/v2/5d8de643310000b75f2b5195?callback=?',
       {
         timeout: 100
