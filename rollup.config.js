@@ -7,10 +7,6 @@ import external from 'rollup-plugin-peer-deps-external';
 const subPackagePath = process.cwd();
 const pkg = require(path.join(subPackagePath, 'package.json'));
 const [, pkgName] = /^@[^/]+\/(.+)$/.exec(pkg.name);
-const globals = {
-  axios: 'axios',
-  lodash: '_',
-};
 const toCamelCaseName = (name) => {
   return name.split('-')
     .map((text, i) => {
@@ -21,7 +17,7 @@ const toCamelCaseName = (name) => {
     })
     .join('');
 };
-const umdName = (name) => `totebox.${toCamelCaseName(name)}`;
+const umdName = (name) => `$totebox.${toCamelCaseName(name)}`;
 
 export default [{
   input: 'src/index.js',
@@ -30,7 +26,7 @@ export default [{
       name: umdName(pkgName),
       file: `dist/${pkgName}.js`,
       format: 'umd',
-      globals,
+      banner: `/* ${umdName(pkgName)} v${pkg.version} by ${pkg.author} */`,
     },
     {
       file: pkg.main,
