@@ -1,6 +1,6 @@
 {
   "name": "@totebox/browser",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "Browser-side utilities.",
   "main": "dist/browser.cjs.js",
   "module": "dist/browser.esm.js",
@@ -36,6 +36,6 @@
     "rollup": "^1.23.1"
   },
   "dependencies": {
-    "@totebox/util": "^0.12.2"
+    "@totebox/util": "^0.12.3"
   }
 }
