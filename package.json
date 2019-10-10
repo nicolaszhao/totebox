@@ -3,7 +3,12 @@
   "version": "0.1.0",
   "description": "Personal utility packages.",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "postinstall": "npm run bootstrap"
+  },
   "author": "NZ",
   "license": "MIT",
   "devDependencies": {
