@@ -1,0 +1,45 @@
+{
+  "name": "@totebox/ajax",
+  "version": "0.12.0",
+  "description": "An ajax request util based on axios.",
+  "main": "dist/ajax.cjs.js",
+  "module": "dist/ajax.esm.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production,INCLUDE_UMD -g axios:axios",
+    "test": "npm run build && mocha-chrome ./test/index.html",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nicolaszhao/totebox.git"
+  },
+  "keywords": [
+    "ajax",
+    "axios"
+  ],
+  "author": "NZ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nicolaszhao/totebox/issues"
+  },
+  "homepage": "https://github.com/nicolaszhao/totebox#readme",
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "axios": "0.19.x"
+  },
+  "devDependencies": {
+    "@totebox/util": "^0.12.3",
+    "cross-env": "^6.0.3",
+    "mocha": "^6.2.1",
+    "mocha-chrome": "^2.1.0",
+    "rollup": "^1.23.1"
+  },
+  "dependencies": {
+    "axios": "^0.19.0"
+  }
+}
