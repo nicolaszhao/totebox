@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production,INCLUDE_UMD -g axios:axios",
-    "test": "npm run build && mocha-chrome ./test/index.html",
+    "test": "npm run build && hs -c -1 -o",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -35,8 +35,8 @@
   "devDependencies": {
     "@totebox/util": "^0.12.3",
     "cross-env": "^6.0.3",
+    "http-server": "^0.11.1",
     "mocha": "^6.2.1",
-    "mocha-chrome": "^2.1.0",
     "rollup": "^1.23.1"
   },
   "dependencies": {

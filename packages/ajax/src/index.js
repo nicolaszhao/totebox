@@ -1,19 +1,20 @@
 import axios from 'axios';
 import { parseTextPlaceholder } from '@totebox/util';
 
+// TODO: 增加 cancel 处理
 export default function ajax(settings = {}) {
-  const { interceptors = {}, ...configs } = settings;
-  const inst = axios.create(configs);
+  const { interceptors = {}, ...config } = settings;
+  const inst = axios.create(config);
 
   inst.interceptors.response.use(
     function(res) {
       return Promise.resolve(
-        interceptors.response ? interceptors.response(res) : res.data
+        interceptors.response ? interceptors.response(res.data, res.config) : res.data
       );
     },
     function(err) {
       return Promise.reject(
-        interceptors.error ? interceptors.error(err) : err
+        interceptors.error ? interceptors.error(err) : new Error(err.message)
       );
     }
   );
@@ -36,23 +37,7 @@ export default function ajax(settings = {}) {
           });
         }
 
-        return xhr
-          // .then(({ data }) => {
-          //   if ((config.responseType && config.responseType !== 'json') ||
-          //   typeof filterResponse !== 'function') {
-
-          //     return data;
-          //   }
-
-          //   return filterResponse(data);
-          // })
-          // .catch(err => {
-          //   if (typeof beautifyError === 'function') {
-          //     return Promise.reject(beautifyError(url, err));
-          //   }
-
-          //   return Promise.reject(err);
-          // });
+        return xhr;
       };
 
       return req;
