@@ -1,6 +1,6 @@
 {
   "name": "@totebox/browser",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "Browser-side utilities.",
   "main": "dist/browser.cjs.js",
   "module": "dist/browser.esm.js",

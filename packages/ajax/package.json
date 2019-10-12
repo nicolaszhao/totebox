@@ -1,6 +1,6 @@
 {
   "name": "@totebox/ajax",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "An ajax request util based on axios.",
   "main": "dist/ajax.cjs.js",
   "module": "dist/ajax.esm.js",
