@@ -1,7 +1,25 @@
 import axios from 'axios';
 import { parseTextPlaceholder } from '@totebox/util';
 
-// TODO: 增加 cancel 处理
+const Cancel = axios.CancelToken;
+
+// # ajax setting
+// const ajax = Ajax({
+//   ...axios.configs,
+//   interceptors: { response(data, config) {}, error(err) {}, }
+// });
+// 
+// ## request method
+// ajax.get(url, data[, config])
+// ajax.delete(url, data[, config])
+// ajax.head(url, data[, config])
+// ajax.options(url, data[, config])
+// ajax.post(url, data[, config])
+// ajax.put(url, data[, config])
+// ajax.patch(url, data[, config])
+//
+// ## request cancel
+// ajax.abort()
 export default function ajax(settings = {}) {
   const { interceptors = {}, ...config } = settings;
   const inst = axios.create(config);
@@ -13,6 +31,10 @@ export default function ajax(settings = {}) {
       );
     },
     function(err) {
+      if (axios.isCancel(err)) {
+        err.message = 'request canceled';
+      }
+
       return Promise.reject(
         interceptors.error ? interceptors.error(err) : new Error(err.message)
       );
@@ -25,8 +47,12 @@ export default function ajax(settings = {}) {
       req[method] = (url, data, config = {}) => {
         const methodsWithBody = ['post', 'put', 'patch'];
         let xhr = null;
+        let cancel;
 
         url = parseTextPlaceholder(url, data, true);
+        config.cancelToken = new Cancel((c) => {
+          cancel = c;
+        });
 
         if (methodsWithBody.includes(method)) {
           xhr = inst[method](url, data, config);
@@ -36,6 +62,8 @@ export default function ajax(settings = {}) {
             ...config
           });
         }
+
+        xhr.abort = cancel;
 
         return xhr;
       };
