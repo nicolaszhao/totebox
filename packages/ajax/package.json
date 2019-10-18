@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production,INCLUDE_UMD -g axios:axios",
-    "test": "npm run build && hs -c -1 -o",
+    "test": "npm run build && hs -c -1",
     "prepublishOnly": "npm run build"
   },
   "repository": {
