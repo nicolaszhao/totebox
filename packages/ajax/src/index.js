@@ -8,7 +8,7 @@ const Cancel = axios.CancelToken;
 //   ...axios.configs,
 //   interceptors: { response(data, config) {}, error(err) {}, }
 // });
-// 
+//
 // ## request method
 // ajax.get(url, data[, config])
 // ajax.delete(url, data[, config])
@@ -20,6 +20,9 @@ const Cancel = axios.CancelToken;
 //
 // ## request cancel
 // ajax.abort()
+//
+// url 支持 rest api 的 "{}" 占位替换, 比如:
+// ajax.get('/user/{id}', { id: '123' }) => url: '/user/123'
 export default function ajax(settings = {}) {
   const { interceptors = {}, ...config } = settings;
   const inst = axios.create(config);
