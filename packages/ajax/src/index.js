@@ -1,60 +1,70 @@
 import axios from 'axios';
-import { parseTextPlaceholder } from '@totebox/util';
+import { type, parseTextPlaceholder } from '@totebox/util';
 
 const Cancel = axios.CancelToken;
 
-// # ajax setting
-// const ajax = Ajax({
+function createInterceptors(inst, interceptors = {}) {
+  inst.interceptors.response.use(
+    function(res) {
+      if (type(interceptors.response) === 'function') {
+        // return: Object|Promise(reject),
+        return interceptors.response(res.data, res.config);
+      }
+      return res.data;
+    },
+    function(err) {
+      if (axios.isCancel(err)) {
+        err.response = err.response || {};
+        err.response.statusText = 'abort';
+        err.message = 'Request abort';
+      }
+
+      // 可处理统一日志输出等等, 应该返回 err 本身
+      return Promise.reject(
+        type(interceptors.error) === 'function' ? interceptors.error(err) : err
+      );
+    }
+  );
+}
+
+// Example:
+// const xhr = ajax({
 //   ...axios.configs,
 //   interceptors: { response(data, config) {}, error(err) {}, }
 // });
 //
-// ## request method
-// ajax.get(url, data[, config])
-// ajax.delete(url, data[, config])
-// ajax.head(url, data[, config])
-// ajax.options(url, data[, config])
-// ajax.post(url, data[, config])
-// ajax.put(url, data[, config])
-// ajax.patch(url, data[, config])
+// 返回 xhr.[get|delete|head|options|post|put|patch](url, data[, config])
 //
-// ## request cancel
-// ajax.abort()
-//
-// url 支持 rest api 的 "{}" 占位替换, 比如:
-// ajax.get('/user/{id}', { id: '123' }) => url: '/user/123'
+// 取消请求:
+// const req = xhr.get(...);
+// req.abort();
 export default function ajax(settings = {}) {
-  const { interceptors = {}, ...config } = settings;
+
+  // GET request
+  if (type(settings) === 'string') {
+    const url = settings;
+    return axios(url);
+  }
+
+  const { interceptors, ...config } = settings;
   const inst = axios.create(config);
 
-  inst.interceptors.response.use(
-    function(res) {
-      return Promise.resolve(
-        interceptors.response ? interceptors.response(res.data, res.config) : res.data
-      );
-    },
-    function(err) {
-      if (axios.isCancel(err)) {
-        err.message = 'request canceled';
-      }
-
-      return Promise.reject(
-        interceptors.error ? interceptors.error(err) : new Error(err.message)
-      );
-    }
-  );
+  createInterceptors(inst, interceptors);
 
   return 'get delete head options post put patch'
     .split(' ')
     .reduce((req, method) => {
+
+      // url 支持 RUSTful API 的 "{}" 占位替换
+      // 比如: ajax.get('/user/{id}', { id: '123' }) => url: '/user/123'
       req[method] = (url, data, config = {}) => {
         const methodsWithBody = ['post', 'put', 'patch'];
         let xhr = null;
-        let cancel;
+        let abort;
 
         url = parseTextPlaceholder(url, data, true);
-        config.cancelToken = new Cancel((c) => {
-          cancel = c;
+        config.cancelToken = new Cancel((cancel) => {
+          abort = cancel;
         });
 
         if (methodsWithBody.includes(method)) {
@@ -66,7 +76,7 @@ export default function ajax(settings = {}) {
           });
         }
 
-        xhr.abort = cancel;
+        xhr.abort = abort;
 
         return xhr;
       };

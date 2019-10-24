@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production,INCLUDE_UMD -g axios:axios",
-    "test": "npm run build && hs -c -1",
+    "test:browser": "npm run build && hs -c -1",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -29,9 +29,6 @@
   "files": [
     "dist"
   ],
-  "peerDependencies": {
-    "axios": "0.19.x"
-  },
   "devDependencies": {
     "@totebox/util": "^0.12.3",
     "cross-env": "^6.0.3",

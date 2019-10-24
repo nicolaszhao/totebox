@@ -15,9 +15,16 @@ describe('ajax', () => {
         return data.data;
       },
       error(err) {
-        return new Error(err.message + ' # interceptors.error');
+        err.message = `${err.message} # interceptors.error`
+        return err;
       },
     }
+  });
+
+  it(`reqId: 0, $totebox.ajax(url) 应该成功`, (done) => {
+    $totebox.ajax('http://www.mocky.io/v2/5da0576b3000002900f89db4')
+      .then(() => done())
+      .catch((err) => done(err));
   });
 
   it(`reqId: 1, 响应数据: { status: 0, data: { id: 1 }, message: ""} 应该成功`, (done) => {
