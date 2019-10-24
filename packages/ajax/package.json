@@ -1,6 +1,6 @@
 {
   "name": "@totebox/ajax",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "An ajax request util based on axios.",
   "main": "dist/ajax.cjs.js",
   "module": "dist/ajax.esm.js",
@@ -30,7 +30,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@totebox/util": "^0.12.3",
+    "@totebox/util": "^0.12.4",
     "cross-env": "^6.0.3",
     "http-server": "^0.11.1",
     "mocha": "^6.2.1",
