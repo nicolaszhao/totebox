@@ -1,0 +1,43 @@
+{
+  "name": "@totebox/http",
+  "version": "0.12.0",
+  "description": "An ajax request util based on fetch api.",
+  "main": "dist/http.cjs.js",
+  "module": "dist/http.esm.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production,INCLUDE_UMD",
+    "test:browser": "npm run build && hs -c -1",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nicolaszhao/totebox.git"
+  },
+  "keywords": [
+    "ajax",
+    "fetch"
+  ],
+  "author": "NZ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nicolaszhao/totebox/issues"
+  },
+  "homepage": "https://github.com/nicolaszhao/totebox#readme",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@totebox/query": "^0.12.2",
+    "@totebox/util": "^0.12.3",
+    "cross-env": "^6.0.3",
+    "http-server": "^0.11.1",
+    "mocha": "^6.2.2",
+    "rollup": "^1.25.1"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^3.0.0"
+  }
+}
