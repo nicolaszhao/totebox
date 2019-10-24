@@ -1,3 +1,4 @@
+import { type } from '@totebox/util';
 import { noop } from './util';
 
 export const view = {
@@ -20,7 +21,7 @@ export const view = {
     );
   },
   scrollTop(top) {
-    if (typeof top === 'number') {
+    if (type(top) === 'number') {
       document.documentElement.scrollTop = top;
       document.body.scrollTop = top;
       return;
@@ -29,7 +30,7 @@ export const view = {
     return document.documentElement.scrollTop || document.body.scrollTop;
   },
   scrollLeft(left) {
-    if (typeof left === 'number') {
+    if (type(left) === 'number') {
       document.documentElement.scrollLeft = left;
       document.body.scrollLeft = left;
       return;
@@ -60,10 +61,10 @@ export function listenPageVisibility(handler = noop) {
   let hiddenProp;
   let eventType;
 
-  if (typeof document.hidden !== 'undefined') {
+  if (type(document.hidden) !== 'undefined') {
     hiddenProp = 'hidden';
     eventType = 'visibilitychange';
-  } else if (typeof document.webkitHidden !== 'undefined') {
+  } else if (type(document.webkitHidden) !== 'undefined') {
     hiddenProp = 'webkitHidden';
     eventType = 'webkitvisibilitychange';
   }
@@ -77,7 +78,7 @@ export function listenPageVisibility(handler = noop) {
 export function listenScrollToBottom(options, callback) {
   const defaultOptions = { distance: 0 };
 
-  if (typeof options === 'function') {
+  if (type(options) === 'function') {
     callback = options;
     options = defaultOptions;
   } else if (!options) {

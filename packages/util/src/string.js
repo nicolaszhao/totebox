@@ -76,7 +76,7 @@ export function deentityify(text) {
   return text.replace(/&([^&;]+);/g, function (match, key) {
     const ret = entity[key];
 
-    return typeof ret === 'string' ? ret : match;
+    return type(ret) === 'string' ? ret : match;
   });
 }
 
@@ -85,7 +85,7 @@ export function strip(text) {
 }
 
 export function escape(text) {
-  if (typeof text !== 'string') {
+  if (type(text) !== 'string') {
     return '';
   }
 
@@ -125,7 +125,7 @@ export function filter(text, maxlength) {
   text = trim(text);
   text = strip(text);
 
-  if (typeof maxlength === 'number') {
+  if (type(maxlength) === 'number') {
     text = text.substring(0, maxlength);
   }
 

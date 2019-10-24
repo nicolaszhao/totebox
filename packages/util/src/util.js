@@ -164,7 +164,7 @@ export function toTree(data, {
     if (node[parentId] !== rootParentId) {
       const foundIndex = map[node[parentId]];
 
-      if (typeof foundIndex === 'number') {
+      if (type(foundIndex) === 'number') {
         const found = list[foundIndex];
 
         found.children.push(node);
