@@ -1,6 +1,6 @@
 {
   "name": "@totebox/jsonp",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "description": "A JSONP request tool.",
   "main": "dist/jsonp.cjs.js",
   "module": "dist/jsonp.esm.js",
