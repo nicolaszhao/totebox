@@ -1,4 +1,4 @@
-module.exports = function(api) {
+module.exports = (api) => {
   api.cache(true);
 
   return {
@@ -7,7 +7,7 @@ module.exports = function(api) {
       'packages/*',
     ],
     presets: [
-      ['@nicolaz/babel-preset-hamal', { react: false }]
-    ]
+      ['@nicolaz/babel-preset-hamal', { react: false }],
+    ],
   };
 };
