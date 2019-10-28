@@ -42,19 +42,19 @@ export default function jsonp(url, options, cb) {
   };
 
   if (options.timeout) {
-    timer = setTimeout(function () {
+    timer = setTimeout(() => {
       clearup();
-      cb && cb(new Error('timeout'))
+      cb && cb(new Error('timeout'));
     }, options.timeout || 10000);
   }
 
-  window[jsonpCallback] = function(data) {
+  window[jsonpCallback] = function jsonpCallbackWrapper(data) {
     clearup();
     cb && cb(null, data);
   };
 
   url = url.replace(regCallback, '').replace('?&', '?');
-  url += (~url.indexOf('?') ? '&' : '?') + 'callback' + '=' + encodeURIComponent(jsonpCallback);
+  url += `${(url.indexOf('?') !== -1 ? '&' : '?')}callback=${encodeURIComponent(jsonpCallback)}`;
   script.src = url;
   (document.head || document.getElementsByTagName('head')[0]).appendChild(script);
 }

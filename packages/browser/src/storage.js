@@ -24,7 +24,7 @@ export const storage = {
 
   clear() {
     localStorage.clear();
-  }
+  },
 };
 
 // storage table =>
@@ -65,6 +65,6 @@ export function storageTable(primaryKey) {
 
     clear() {
       storage.remove(primaryKey);
-    }
+    },
   };
-};
+}

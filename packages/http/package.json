@@ -30,14 +30,14 @@
     "dist"
   ],
   "devDependencies": {
-    "@totebox/query": "^0.12.2",
-    "@totebox/util": "^0.12.4",
     "cross-env": "^6.0.3",
     "http-server": "^0.11.1",
     "mocha": "^6.2.2",
     "rollup": "^1.25.1"
   },
   "dependencies": {
+    "@totebox/query": "^0.12.2",
+    "@totebox/util": "^0.12.4",
     "whatwg-fetch": "^3.0.0"
   }
 }

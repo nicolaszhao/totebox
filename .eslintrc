@@ -1,0 +1,4 @@
+{
+  "extends": "nicolaz-base",
+  "parser": "babel-eslint"
+}

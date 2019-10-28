@@ -5,14 +5,14 @@ const Cancel = axios.CancelToken;
 
 function createInterceptors(inst, interceptors = {}) {
   inst.interceptors.response.use(
-    function(res) {
+    (res) => {
       if (type(interceptors.response) === 'function') {
         // return: Object|Promise(reject),
         return interceptors.response(res.data, res.config);
       }
       return res.data;
     },
-    function(err) {
+    (err) => {
       if (axios.isCancel(err)) {
         err.response = err.response || {};
         err.response.statusText = 'abort';
@@ -21,9 +21,9 @@ function createInterceptors(inst, interceptors = {}) {
 
       // 可处理统一日志输出等等, 应该返回 err 本身
       return Promise.reject(
-        type(interceptors.error) === 'function' ? interceptors.error(err) : err
+        type(interceptors.error) === 'function' ? interceptors.error(err) : err,
       );
-    }
+    },
   );
 }
 
@@ -39,7 +39,6 @@ function createInterceptors(inst, interceptors = {}) {
 // const req = xhr.get(...);
 // req.abort();
 export default function ajax(settings = {}) {
-
   // GET request
   if (type(settings) === 'string') {
     const url = settings;
@@ -54,25 +53,24 @@ export default function ajax(settings = {}) {
   return 'get delete head options post put patch'
     .split(' ')
     .reduce((req, method) => {
-
       // url 支持 RUSTful API 的 "{}" 占位替换
       // 比如: ajax.get('/user/{id}', { id: '123' }) => url: '/user/123'
-      req[method] = (url, data, config = {}) => {
+      req[method] = (url, data, options = {}) => {
         const methodsWithBody = ['post', 'put', 'patch'];
         let xhr = null;
         let abort;
 
         url = parseTextPlaceholder(url, data, true);
-        config.cancelToken = new Cancel((cancel) => {
+        options.cancelToken = new Cancel((cancel) => {
           abort = cancel;
         });
 
         if (methodsWithBody.includes(method)) {
-          xhr = inst[method](url, data, config);
+          xhr = inst[method](url, data, options);
         } else {
           xhr = inst[method](url, {
             params: data,
-            ...config
+            ...options,
           });
         }
 

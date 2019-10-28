@@ -11,9 +11,7 @@ export function parseTime(time, maxUnit = 'day') {
     { unit: 'minute', value: 60 },
     { unit: 'second', value: 1 },
   ];
-  let index = source.findIndex(s => {
-    return s.unit === maxUnit || s.unit.charAt(0) === maxUnit;
-  });
+  const index = source.findIndex((s) => s.unit === maxUnit || s.unit.charAt(0) === maxUnit);
 
   if (index > 0) {
     source = source.slice(index);
@@ -24,12 +22,12 @@ export function parseTime(time, maxUnit = 'day') {
   source.forEach((s, i) => {
     const seconds = source
       .slice(i)
-      .map(s => s.value)
+      .map((next) => next.value)
       .reduce((a, b) => a * b);
 
     const val = Math.floor(time / seconds);
 
-    time = time - seconds * val;
+    time -= seconds * val;
     values[s.unit] = val;
   });
 
@@ -38,11 +36,9 @@ export function parseTime(time, maxUnit = 'day') {
 
 // for video|audio duration: hh:mm:ss
 export function formatTime(duration) {
-  const pad = (n, len) => {
-    return `${n}`.padStart(len, '0');
-  };
+  const pad = (n, len) => `${n}`.padStart(len, '0');
   const times = parseTime(duration, 'h');
-  let ret = [];
+  const ret = [];
 
   if (times.hour) {
     ret.push(times.hour);
@@ -50,7 +46,7 @@ export function formatTime(duration) {
   ret.push(times.minute);
   ret.push(times.second);
 
-  return ret.map(r => pad(r, 2)).join(':');
+  return ret.map((r) => pad(r, 2)).join(':');
 }
 
 /**
@@ -59,7 +55,11 @@ export function formatTime(duration) {
  * @param {Object} events: { onStart, onProgress, onEnd }
  * @param {Object} context
  */
-export function countdown(value, { onStart = noop, onProgress = noop, onEnd = noop } = {}, context) {
+export function countdown(
+  value,
+  { onStart = noop, onProgress = noop, onEnd = noop } = {},
+  context,
+) {
   if (type(value) !== 'date' && type(value) !== 'number') {
     throw new Error('The value of params must be a Date or Number.');
   }
@@ -106,7 +106,7 @@ export function countdown(value, { onStart = noop, onProgress = noop, onEnd = no
 
       // value 为 tick 中分步计算的值
       callback && callback.bind(context)(value);
-    }
+    },
   };
 }
 
@@ -121,45 +121,46 @@ export function parseDate(value, format) {
     return null;
   }
 
-  let year = -1,
-    month = -1,
-    day = -1,
-    iValue = 0,
-    date = new Date(),
-    iFormat, extra;
+  let year = -1;
+  let month = -1;
+  let day = -1;
+  let iValue = 0;
+  let date = new Date();
+  let iFormat;
+  let extra;
 
-  const lookAhead = function (match) {
-      const matches = (iFormat + 1 < format.length && format.charAt(iFormat + 1) === match);
+  function lookAhead(match) {
+    const matches = (iFormat + 1 < format.length && format.charAt(iFormat + 1) === match);
 
-      if (matches) {
-        iFormat++;
-      }
+    if (matches) {
+      iFormat++;
+    }
 
-      return matches;
-    },
+    return matches;
+  }
 
-    getNumber = function (match) {
-      const isDoubled = lookAhead(match),
-        size = (match === 'y' && isDoubled ? 4 : 2),
-        digits = new RegExp('^\\d{1,' + size + '}'),
-        num = value.substring(iValue).match(digits);
+  function getNumber(match) {
+    const isDoubled = lookAhead(match);
+    const size = (match === 'y' && isDoubled ? 4 : 2);
+    const digits = new RegExp(`^\\d{1,${size}}`);
+    const num = value.substring(iValue).match(digits);
 
-      if (!num) {
-        throw 'Missing number at position ' + iValue;
-      }
+    if (!num) {
+      throw new Error(`Missing number at position ${iValue}`);
+    }
 
-      iValue += num[0].length;
+    iValue += num[0].length;
 
-      return parseInt(num[0], 10);
-    },
+    return parseInt(num[0], 10);
+  }
 
-    checkLiteral = function () {
-      if (value.charAt(iValue) !== format.charAt(iFormat)) {
-        throw 'Unexpected literal at position ' + iValue;
-      }
+  function checkLiteral() {
+    if (value.charAt(iValue) !== format.charAt(iFormat)) {
+      throw new Error(`Unexpected literal at position ${iValue}`);
+    }
 
-      iValue++;
-    };
+    iValue++;
+  }
 
   for (iFormat = 0; iFormat < format.length; iFormat++) {
     switch (format.charAt(iFormat)) {
@@ -181,19 +182,19 @@ export function parseDate(value, format) {
     extra = value.substr(iValue);
 
     if (!/^\s+/.test(extra)) {
-      throw 'Extra/unparsed characters found in date: ' + extra;
+      throw new Error(`Extra/unparsed characters found in date: ${extra}`);
     }
   }
 
   if (year === -1) {
     year = date.getFullYear();
   } else if (year < 100) {
-    year += date.getFullYear() - date.getFullYear() % 100;
+    year += date.getFullYear() - (date.getFullYear() % 100);
   }
 
   date = new Date(year, month - 1, day);
   if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
-    throw 'Invalid date';
+    throw new Error('Invalid date');
   }
 
   return date;
@@ -204,30 +205,30 @@ export function formatDate(date, format) {
     return '';
   }
 
-  let output = '',
-    iFormat,
+  let output = '';
+  let iFormat;
 
-    lookAhead = function (match) {
-      const matches = (iFormat + 1 < format.length && format.charAt(iFormat + 1) === match);
+  function lookAhead(match) {
+    const matches = (iFormat + 1 < format.length && format.charAt(iFormat + 1) === match);
 
-      if (matches) {
-        iFormat++;
+    if (matches) {
+      iFormat++;
+    }
+
+    return matches;
+  }
+
+  function formatNumber(match, value, len) {
+    let num = `${value}`;
+
+    if (lookAhead(match)) {
+      while (num.length < len) {
+        num = `0${num}`;
       }
+    }
 
-      return matches;
-    },
-
-    formatNumber = function (match, value, len) {
-      var num = '' + value;
-
-      if (lookAhead(match)) {
-        while (num.length < len) {
-          num = '0' + num;
-        }
-      }
-
-      return num;
-    };
+    return num;
+  }
 
   for (iFormat = 0; iFormat < format.length; iFormat++) {
     switch (format.charAt(iFormat)) {
@@ -238,8 +239,9 @@ export function formatDate(date, format) {
         output += formatNumber('m', date.getMonth() + 1, 2);
         break;
       case 'y':
-        output += (lookAhead('y') ? date.getFullYear() :
-          (date.getYear() % 100 < 10 ? '0' : '') + date.getYear() % 100);
+        output += (lookAhead('y')
+          ? date.getFullYear()
+          : (date.getYear() % 100 < 10 ? '0' : '') + (date.getYear() % 100));
         break;
       default:
         output += format.charAt(iFormat);

@@ -1,13 +1,15 @@
+export function noop() {}
+
 export function type(obj) {
   if (obj == null) {
-    return obj + '';
+    return `${obj}`;
   }
 
   const types = 'Number String Boolean Array Function Object Math Date RegExp Error'.split(' ');
-  let class2Type = {};
+  const class2Type = {};
 
-  types.forEach(type => {
-    class2Type[`[object ${type}]`] = type.toLowerCase();
+  types.forEach((t) => {
+    class2Type[`[object ${t}]`] = t.toLowerCase();
   });
 
   return class2Type[Object.prototype.toString.call(obj)] || typeof obj;
@@ -20,7 +22,7 @@ export function deepAssign(target, ...sources) {
   const isObjectOrArray = (obj) => ['object', 'array'].includes(type(obj));
 
   if (isObjectOrArray(target) && isObjectOrArray(source)) {
-    for (let key of Object.keys(source)) {
+    Object.keys(source).forEach((key) => {
       if (isObjectOrArray(source[key])) {
         if (!target[key]) {
           Object.assign(target, { [key]: type(source[key]) === 'object' ? {} : [] });
@@ -28,12 +30,11 @@ export function deepAssign(target, ...sources) {
 
         deepAssign(target[key], source[key]);
       } else {
-
         // 如果 target 是数组，会被 Object.assign 视为属性名为 0、1、2... 的对象
         // { [prop]: source[prop] } -> { 0: 'a' } 会覆盖 target 的 index 为 0 的值
         Object.assign(target, { [key]: source[key] });
       }
-    }
+    });
   }
 
   return deepAssign(target, ...sources);
@@ -56,16 +57,14 @@ export function inRandomRate(value) {
     points = pointsMatch[1].length;
   }
 
-  const coefficient = Math.pow(10, points) * 10;
+  const coefficient = (10 ** points) * 10;
 
   return Math.ceil(Math.random() * coefficient) <= value * coefficient;
 }
 
 export function randomId(length, { uniqueId = true, prefix } = {}) {
   const radix = uniqueId ? 36 : 10;
-  const gen = () => {
-    return Math.floor(Math.random() * 1999999).toString(radix);
-  };
+  const gen = () => Math.floor(Math.random() * 1999999).toString(radix);
 
   if (!length) {
     return gen();
@@ -87,7 +86,7 @@ export function randomId(length, { uniqueId = true, prefix } = {}) {
 // returns clear function -> cleared: true | false,
 export function delayTask(task, delay = 600) {
   let running = false;
-  let taskTimer = setTimeout(() => {
+  const taskTimer = setTimeout(() => {
     running = true;
     task();
   }, delay);
@@ -101,8 +100,8 @@ export function delayTask(task, delay = 600) {
 // 并归排序算法工具函数
 const merge = (left, right) => {
   const ret = [];
-  let l = 0,
-    r = 0;
+  let l = 0;
+  let r = 0;
 
   while (l < left.length && r < right.length) {
     if (left[l] < right[r]) {
@@ -123,9 +122,9 @@ export function mergeSort(data) {
     return data;
   }
 
-  const mid = Math.floor(len / 2),
-    left = data.slice(0, mid),
-    right = data.slice(mid);
+  const mid = Math.floor(len / 2);
+  const left = data.slice(0, mid);
+  const right = data.slice(mid);
 
   return merge(mergeSort(left), mergeSort(right));
 }
@@ -143,18 +142,17 @@ export function toTree(data, {
   id = 'id',
   parentId = 'parentId',
   rootParentId = 0,
-  children = 'children'
+  children = 'children',
 } = {}) {
-
-  const list = [],
-    map = {},
-    tree = [];
+  const list = [];
+  const map = {};
+  const tree = [];
 
   for (let i = 0; i < data.length; i++) {
     map[data[i][id]] = i;
     list.push({
       ...data[i],
-      [children]: []
+      [children]: [],
     });
   }
 
@@ -183,7 +181,7 @@ export function chunk(data, process, context, callback = noop, duration = 100) {
   const tasks = data.concat();
 
   const run = () => {
-    setTimeout(function () {
+    setTimeout(() => {
       process.call(context, tasks.shift());
 
       if (tasks.length) {
@@ -204,12 +202,12 @@ export function batch(
   process,
   context,
   callback = noop,
-  { runDuration = 25, chunkDuration = 50 } = {}
+  { runDuration = 25, chunkDuration = 50 } = {},
 ) {
   const tasks = data.concat();
   const run = () => {
-    setTimeout(function () {
-      var start = Date.now();
+    setTimeout(() => {
+      const start = Date.now();
 
       do {
         process.call(context, tasks.shift());
@@ -308,5 +306,3 @@ export class LazyTasks {
     }
   }
 }
-
-export function noop() {}

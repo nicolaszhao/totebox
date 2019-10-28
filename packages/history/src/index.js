@@ -1,5 +1,6 @@
 class History {
   stack = [];
+
   activeIndex = 0;
 
   getActive() {
@@ -45,11 +46,13 @@ class History {
 
     if (newActiveIndex < a) {
       return -1;
-    } else if (newActiveIndex > a) {
-      return 1;
-    } else {
-      return this.add(url);
     }
+
+    if (newActiveIndex > a) {
+      return 1;
+    }
+
+    return this.add(url);
   }
 }
 

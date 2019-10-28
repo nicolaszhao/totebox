@@ -11,13 +11,13 @@ export const view = {
   documentHeight() {
     return Math.max(
       document.documentElement.scrollHeight,
-      document.documentElement.clientHeight
+      document.documentElement.clientHeight,
     );
   },
   documentWidth() {
     return Math.max(
       document.documentElement.scrollWidth,
-      document.documentElement.clientWidth
+      document.documentElement.clientWidth,
     );
   },
   scrollTop(top) {
@@ -104,39 +104,45 @@ export function listenScrollToBottom(options, callback) {
 
 // source: http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport/7557433#7557433
 export function isElementInViewport(el) {
-  const { top, left, bottom, right } = el.getBoundingClientRect();
+  const {
+    top, left, bottom, right,
+  } = el.getBoundingClientRect();
 
   return top >= 0 && bottom <= view.viewHeight()
     && left >= 0 && right <= view.viewWidth();
 }
 
 export function isElementAppearInViewport(el) {
-  const { top, left, bottom, right } = el.getBoundingClientRect();
+  const {
+    top, left, bottom, right,
+  } = el.getBoundingClientRect();
 
   return bottom > 0 && top < view.viewHeight()
     && right > 0 && left < view.viewWidth();
 }
 
 export function lazyLoadImage(dataSrcAttr = 'data-src', container = document) {
-  const eventTypes = 'DOMContentLoaded load resize scroll'.split(' '),
-    images = container.querySelectorAll(`img[${dataSrcAttr}]`);
+  const eventTypes = 'DOMContentLoaded load resize scroll'.split(' ');
+  const images = container.querySelectorAll(`img[${dataSrcAttr}]`);
 
   if (!images.length) {
     return;
   }
 
   const loadImage = () => {
-    for (let image of images) {
-      let src;
+    images.forEach((image) => {
+      if (isElementAppearInViewport(image)) {
+        const src = image.getAttribute(dataSrcAttr);
 
-      if (isElementAppearInViewport(image) && (src = image.getAttribute(dataSrcAttr))) {
-        image.setAttribute('src', src);
-        image.removeAttribute(dataSrcAttr);
+        if (src) {
+          image.setAttribute('src', src);
+          image.removeAttribute(dataSrcAttr);
+        }
       }
-    }
+    });
   };
 
-  eventTypes.forEach((type) => {
-    window.addEventListener(type, loadImage, false);
+  eventTypes.forEach((eventType) => {
+    window.addEventListener(eventType, loadImage, false);
   });
 }

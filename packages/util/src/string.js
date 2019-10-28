@@ -9,11 +9,11 @@ import { type } from './util';
  * @param {Boolean} dataReplaceable
  */
 export function parseTextPlaceholder(text, data, dataReplaceable = false) {
-  let regPlaceholder = /\{([^}]+)\}/g;
+  const regPlaceholder = /\{([^}]+)\}/g;
 
   if (regPlaceholder.test(text) && type(data) === 'object' && Object.keys(data).length) {
-    return text.replace(regPlaceholder, function (match, placeholder) {
-      let val = data[placeholder];
+    return text.replace(regPlaceholder, (match, placeholder) => {
+      const val = data[placeholder];
 
       if (type(val) !== 'undefined') {
         if (dataReplaceable) {
@@ -33,16 +33,14 @@ export function parseTextPlaceholder(text, data, dataReplaceable = false) {
 // Example: format('Do {0} love {1}? Yes, {2} love {0}!', 'you', 'me', 'I')
 // returns 'Do you love me? Yes, I love You!'
 export function parseNumberPlaceholder(text, ...params) {
-  return text.replace(/\{(\d+)\}/g, function (m, i) {
-    return params[i];
-  });
+  return text.replace(/\{(\d+)\}/g, (m, i) => params[i]);
 }
 
 export function formatSize(bytes) {
   let i = -1;
 
   do {
-    bytes = bytes / 1024;
+    bytes /= 1024;
     i++;
   } while (bytes >= 1024);
 
@@ -58,22 +56,20 @@ export function entityify(text) {
     '<': '&lt;',
     '>': '&gt;',
     '&': '&amp;',
-    '"': '&quot;'
+    '"': '&quot;',
   };
 
-  return text.replace(/[<>"&]/g, function (match) {
-    return character[match];
-  });
+  return text.replace(/[<>"&]/g, (match) => character[match]);
 }
 
 export function deentityify(text) {
   const entity = {
     quot: '"',
     lt: '<',
-    gt: '>'
+    gt: '>',
   };
 
-  return text.replace(/&([^&;]+);/g, function (match, key) {
+  return text.replace(/&([^&;]+);/g, (match, key) => {
     const ret = entity[key];
 
     return type(ret) === 'string' ? ret : match;
@@ -89,11 +85,11 @@ export function escape(text) {
     return '';
   }
 
-  const rscript = /<script[^>]*>(?:(?:(?!<\/script>).)*<\/script>)?/gi,
-    rstyle = /<style[^>]*>(?:(?!@import|<\/style>).)*@import(?:(?!<\/style>).)+<\/style>/gi,
-    rlink = /<link(?:(?!\.css).)+\.css[^>]*>/gi,
-    rinnerevent = /on[a-zA-Z]+\s*=\s*(?:'[^']*'|"[^"]*"|[^\s\/>]+)/gi,
-    rinnerexpress = /javascript:/gi;
+  const rscript = /<script[^>]*>(?:(?:(?!<\/script>).)*<\/script>)?/gi;
+  const rstyle = /<style[^>]*>(?:(?!@import|<\/style>).)*@import(?:(?!<\/style>).)+<\/style>/gi;
+  const rlink = /<link(?:(?!\.css).)+\.css[^>]*>/gi;
+  const rinnerevent = /on[a-zA-Z]+\s*=\s*(?:'[^']*'|"[^"]*"|[^\s/>]+)/gi;
+  const rinnerexpress = /javascript:/gi;
 
   return text.replace(rscript, '')
     .replace(rstyle, '')
@@ -131,4 +127,3 @@ export function filter(text, maxlength) {
 
   return text;
 }
-

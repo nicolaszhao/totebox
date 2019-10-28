@@ -79,7 +79,8 @@ function http(url, options, interceptors = {}) {
 //     },
 //     error(err) {
 //       const { url, message, statusText } = err;
-//       return `Request url "${url}" failed, error: ${message}${statusText ? `, error status: ${statusText}` : ''}`;
+//       return `Request url "${url}" failed, error: ${message}${statusText ? `,
+//         error status: ${statusText}` : ''}`;
 //     },
 //   }
 // });
@@ -95,9 +96,9 @@ http.create = (settings) => {
   return 'get post put patch delete'
     .split(' ')
     .reduce((req, method) => {
-
       // url 支持 RUSTful API 的 "{}" 占位替换, 并会移除 data 中匹配的数据
-      // 比如: request.post('/user/{id}', { id: '123', avatar: 'xx.png' }) => url: '/user/123', data: { avatar: 'xx.png' }
+      // 比如: request.post('/user/{id}', { id: '123', avatar: 'xx.png' })
+      // => url: '/user/123', data: { avatar: 'xx.png' }
       req[method] = (url, data, options) => {
         url = parseTextPlaceholder(url, data, true);
 

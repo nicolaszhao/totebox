@@ -5,7 +5,9 @@ const cache = {};
 
 export default function Query(url) {
   if (!url) {
-    url = typeof location !== 'undefined' ? location.href : '';
+    url = typeof window !== 'undefined' && typeof window.location !== 'undefined'
+      ? window.location.href
+      : '';
   }
 
   const [, baseUrl = '', search = '', hash = ''] = regUrl.exec(url) || [];
@@ -78,7 +80,7 @@ export default function Query(url) {
       if (!querys.length) {
         return false;
       }
-      return querys.every(name => qs[name]);
+      return querys.every((name) => qs[name]);
     },
     href() {
       let queryString = Object.keys(qs)

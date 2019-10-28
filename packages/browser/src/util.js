@@ -1,6 +1,9 @@
 const listenFileLoad = (el, callbacks = {}) => {
   const { done, fail } = callbacks;
-  const unbind = () => el.onload = el.onerror = null;
+  const unbind = () => {
+    el.onload = null;
+    el.onerror = null;
+  };
 
   el.onload = () => {
     unbind();
@@ -14,7 +17,7 @@ const listenFileLoad = (el, callbacks = {}) => {
 };
 
 export function loadScript(url, callbacks) {
-  let el = document.createElement('script');
+  const el = document.createElement('script');
 
   listenFileLoad(el, callbacks);
 
@@ -24,7 +27,7 @@ export function loadScript(url, callbacks) {
 }
 
 export function loadStyle(url, callbacks) {
-  let el = document.createElement('link');
+  const el = document.createElement('link');
 
   listenFileLoad(el, callbacks);
 
