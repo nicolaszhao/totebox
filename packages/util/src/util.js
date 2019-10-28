@@ -1,4 +1,6 @@
-export function noop() {}
+export function noop() {
+  console.log('This is a noop function.');
+}
 
 export function type(obj) {
   if (obj == null) {
