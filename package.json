@@ -14,7 +14,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "@nicolaz/babel-preset-hamal": "^0.1.0",
+    "@hammal/babel-preset-app": "^0.11.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.0.0",
     "eslint-config-nicolaz-base": "^0.5.2",

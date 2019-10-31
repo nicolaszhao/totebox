@@ -7,7 +7,7 @@ module.exports = (api) => {
       'packages/*',
     ],
     presets: [
-      ['@nicolaz/babel-preset-hamal', { react: false }],
+      '@hammal/babel-preset-app',
     ],
   };
 };
