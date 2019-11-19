@@ -18,7 +18,7 @@ const toCamelCaseName = (name) => name.split('-')
 
 const umdName = (name) => `$totebox.${toCamelCaseName(name)}`;
 
-export default [{
+export default {
   input: 'src/index.js',
   output: [
     process.env.INCLUDE_UMD === 'true' && {
@@ -46,4 +46,4 @@ export default [{
     resolve(),
     commonjs(),
   ],
-}];
+};
