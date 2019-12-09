@@ -45,7 +45,7 @@ export default function jsonp(url, options, cb) {
     timer = setTimeout(() => {
       clearup();
       cb && cb(new Error('timeout'));
-    }, options.timeout || 10000);
+    }, options.timeout);
   }
 
   window[jsonpCallback] = function jsonpCallbackWrapper(data) {
