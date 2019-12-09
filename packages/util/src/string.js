@@ -98,7 +98,7 @@ export function escape(text) {
     .replace(rinnerexpress, '');
 }
 
-export function filter(text, maxlength) {
+export function filter(text, maxLength) {
   if (text === '') {
     return '';
   }
@@ -121,8 +121,8 @@ export function filter(text, maxlength) {
   text = trim(text);
   text = strip(text);
 
-  if (type(maxlength) === 'number') {
-    text = text.substring(0, maxlength);
+  if (type(maxLength) === 'number') {
+    text = text.substring(0, maxLength);
   }
 
   return text;
