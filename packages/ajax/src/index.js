@@ -28,7 +28,7 @@ function createInterceptors(inst, interceptors = {}) {
 }
 
 // Example:
-// const xhr = ajax({
+// const xhr = Ajax({
 //   ...axios.configs,
 //   interceptors: { response(data, config) {}, error(err) {}, }
 // });
@@ -38,7 +38,7 @@ function createInterceptors(inst, interceptors = {}) {
 // 取消请求:
 // const req = xhr.get(...);
 // req.abort();
-export default function ajax(settings = {}) {
+export default function Ajax(settings = {}) {
   // GET request
   if (type(settings) === 'string') {
     const url = settings;
