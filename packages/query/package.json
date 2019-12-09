@@ -1,6 +1,6 @@
 {
   "name": "@totebox/query",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "URI search query parser.",
   "main": "dist/query.cjs.js",
   "module": "dist/query.esm.js",

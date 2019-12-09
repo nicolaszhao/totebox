@@ -1,6 +1,6 @@
 {
   "name": "@totebox/http",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "An ajax request util based on fetch api.",
   "main": "dist/http.cjs.js",
   "module": "dist/http.esm.js",
@@ -36,8 +36,8 @@
     "rollup": "^1.25.1"
   },
   "dependencies": {
-    "@totebox/query": "^0.12.3",
-    "@totebox/util": "^0.12.6",
+    "@totebox/query": "^0.12.4",
+    "@totebox/util": "^0.12.7",
     "whatwg-fetch": "^3.0.0"
   }
 }
