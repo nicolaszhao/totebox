@@ -3,10 +3,11 @@
 
 ## 工具包
 
-* [util](./packages/util/README.md) - 基础工具库
-* [query](./packages/query/README.md) - url query 解析工具
-* [browser](./packages/browser/README.md) - 浏览器环境下的工具库
-* [history](./packages/history/README.md) - url 历史堆栈工具，常用于 SPA
-* [jsonp](./packages/jsonp/README.md) - JSONP 跨域请求工具
-* [ajax](./packages/ajax/README.md) - axios 的高级封装工具
-* [http](./packages/http/README.md) - fetch 的高级封装工具
+* [util](./packages/util) - 基础工具库
+* [query](./packages/query) - url query 解析工具
+* [browser](./packages/browser) - 浏览器环境下的工具库
+* [history](./packages/history) - url 历史堆栈工具，常用于 SPA
+* [jsonp](./packages/jsonp) - JSONP 跨域请求工具
+* [ajax](./packages/ajax) - axios 的高级封装工具
+* [http](./packages/http) - fetch 的高级封装工具
+
