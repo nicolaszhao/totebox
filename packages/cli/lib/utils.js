@@ -8,7 +8,7 @@ const writeWaiting = (text) => {
 const waitIndicator = (text = 'waiting', duration = 120) => {
   const waiting = ['\\', '|', '/', '-'];
   let timer = null,
-    i = 0;
+    i = 0;;
 
   return {
     start() {
