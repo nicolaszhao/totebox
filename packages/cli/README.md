@@ -51,3 +51,4 @@ from = dist
 to = /data/awesome_project/
 ```
 
+**注意：**此文件的内容为敏感信息，你应该始终把文件 `.ftpdeployconfig` 加入到 `.gitignore` 中忽略提交。
