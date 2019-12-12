@@ -41,7 +41,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.js": "eslint"
+    "*.js": "eslint"
   },
   "browserslist": [
     "last 2 versions"
