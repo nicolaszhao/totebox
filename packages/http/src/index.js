@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { type, parseTextPlaceholder } from '@totebox/util';
 import Query from '@totebox/query';
 

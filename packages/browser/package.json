@@ -30,12 +30,10 @@
     "dist"
   ],
   "devDependencies": {
+    "@totebox/util": "^0.12.7",
     "cross-env": "^6.0.3",
     "mocha": "^6.2.1",
     "mocha-chrome": "^2.1.0",
     "rollup": "^1.23.1"
-  },
-  "dependencies": {
-    "@totebox/util": "^0.12.7"
   }
 }

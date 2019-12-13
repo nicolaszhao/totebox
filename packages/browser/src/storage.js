@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { type } from '@totebox/util';
 
 // localStorage 的高阶封装

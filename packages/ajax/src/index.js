@@ -1,4 +1,5 @@
 import axios from 'axios';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { type, parseTextPlaceholder } from '@totebox/util';
 
 const Cancel = axios.CancelToken;
