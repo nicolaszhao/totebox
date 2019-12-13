@@ -17,3 +17,6 @@ history.direct('/b'); // return 2
 history.direct('/a'); // return -1
 ```
 
+## License
+
+[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)

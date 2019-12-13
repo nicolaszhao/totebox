@@ -48,3 +48,6 @@ jsonp(url, (err, data) => {
 
 设置请求超时。
 
+## License
+
+[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)

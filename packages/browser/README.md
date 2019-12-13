@@ -97,3 +97,6 @@ Default: `document`
 
 ### loadStyle(url, callback)
 
+## License
+
+[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)

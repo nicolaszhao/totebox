@@ -143,3 +143,7 @@ format('Do {0} love {1}? Yes, {2} love {0}!', 'you', 'me', 'I')
 ### escape(text)
 
 ### filter(text, maxlength)
+
+## License
+
+[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)

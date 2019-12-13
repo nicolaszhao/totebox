@@ -118,3 +118,6 @@ fetch 的 options，[参考文档](https://github.github.io/fetch/)。另外还�
 
 可选，同上面 `interceptors.response` 和 `interceptors.error`
 
+## License
+
+[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)

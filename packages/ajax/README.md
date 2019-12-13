@@ -131,3 +131,6 @@ const data = await xhr;
 const { data } = await Ajax( /* REQUEST_URL */ );
 ```
 
+## License
+
+[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)

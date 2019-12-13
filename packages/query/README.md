@@ -34,3 +34,7 @@ url 不传默认为 `location.href`。
 **querys:** String | Array，url 中要匹配的 query 的 key，如果是数组，必须全部匹配
 
 ### query.href() => url
+
+## License
+
+[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)
