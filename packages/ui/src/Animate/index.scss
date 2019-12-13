@@ -1,0 +1,332 @@
+/**
+ * Animate
+ * 参考来源：https://daneden.github.io/animate.css/
+ */
+
+.fade {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+
+    &-active {
+      opacity: 1;
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+
+    &-active {
+      opacity: 0;
+    }
+  }
+}
+
+.fadeDown {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+
+    &-active {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+
+    &-active {
+      opacity: 1;
+      transform: translate3d(0, -100%, 0);
+    }
+  }
+}
+
+.fadeLeft {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+
+    &-active {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+
+    &-active {
+      opacity: 1;
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+}
+
+.fadeRight {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+
+    &-active {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+
+    &-active {
+      opacity: 1;
+      transform: translate3d(100%, 0, 0);
+    }
+  }
+}
+
+.fadeUp {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+
+    &-active {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+
+    &-active {
+      opacity: 1;
+      transform: translate3d(0, 100%, 0);
+    }
+  }
+}
+
+.flipX {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: perspective(50vw) rotate3d(1, 0, 0, 90deg);
+
+    &-active {
+      opacity: 1;
+      transform: perspective(50vw) rotate3d(1, 0, 0, 0deg);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: perspective(50vw) rotate3d(1, 0, 0, 0deg);
+
+    &-active {
+      opacity: 0;
+      transform: perspective(50vw) rotate3d(1, 0, 0, 90deg);
+    }
+  }
+}
+
+.flip,
+.flipY {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: perspective(50vw) rotate3d(0, 1, 0, 90deg);
+
+    &-active {
+      opacity: 1;
+      transform: perspective(50vw) rotate3d(0, 1, 0, 0deg);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: perspective(50vw) rotate3d(0, 1, 0, 0deg);
+
+    &-active {
+      opacity: 0;
+      transform: perspective(50vw) rotate3d(0, 1, 0, 90deg);
+    }
+  }
+}
+
+.rotate {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: rotate3d(0, 0, 1, -200deg);
+
+    &-active {
+      opacity: 1;
+      transform: rotate3d(0, 0, 1, 0deg);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: rotate3d(0, 0, 1, 0deg);
+
+    &-active {
+      opacity: 0;
+      transform: rotate3d(0, 0, 1, -200deg);
+    }
+  }
+}
+
+.rotateDownLeft {
+  transition-property: all;
+  transform-origin: left bottom;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: rotate3d(0, 0, 1, -45deg);
+
+    &-active {
+      opacity: 1;
+      transform: rotate3d(0, 0, 1, 0deg);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: rotate3d(0, 0, 1, 0deg);
+
+    &-active {
+      opacity: 0;
+      transform: rotate3d(0, 0, 1, -45deg);
+    }
+  }
+}
+
+.rotateDownRight {
+  transition-property: all;
+  transform-origin: right bottom;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: rotate3d(0, 0, 1, 45deg);
+
+    &-active {
+      opacity: 1;
+      transform: rotate3d(0, 0, 1, 0deg);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: rotate3d(0, 0, 1, 0deg);
+
+    &-active {
+      opacity: 0;
+      transform: rotate3d(0, 0, 1, 45deg);
+    }
+  }
+}
+
+.rotateUpLeft {
+  transition-property: all;
+  transform-origin: left bottom;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: rotate3d(0, 0, 1, 45deg);
+
+    &-active {
+      opacity: 1;
+      transform: rotate3d(0, 0, 1, 0deg);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: rotate3d(0, 0, 1, 0deg);
+
+    &-active {
+      opacity: 0;
+      transform: rotate3d(0, 0, 1, 45deg);
+    }
+  }
+}
+
+.rotateUpRight {
+  transition-property: all;
+  transform-origin: right bottom;
+
+  &-enter,
+  &-appear {
+    opacity: 0;
+    transform: rotate3d(0, 0, 1, -90deg);
+
+    &-active {
+      opacity: 1;
+      transform: rotate3d(0, 0, 1, 0deg);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: rotate3d(0, 0, 1, 0deg);
+
+    &-active {
+      opacity: 0;
+      transform: rotate3d(0, 0, 1, -90deg);
+    }
+  }
+}
+
+.zoom {
+  transition-property: all;
+
+  &-enter,
+  &-appear {
+    opacity: 0.01;
+    transform: scale3d(0.5, 0.5, 0.5);
+
+    &-active {
+      opacity: 1;
+      transform: scale3d(1, 1, 1);
+      transition-timing-function: cubic-bezier(.33, 1.44, .75, 1.11);
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+
+    &-active {
+      opacity: 0.01;
+      transform: scale3d(0.5, 0.5, 0.5);
+      transition-timing-function: cubic-bezier(.46, -0.5, .81, .37);
+    }
+  }
+}

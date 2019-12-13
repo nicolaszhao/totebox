@@ -1,0 +1,53 @@
+@keyframes loading-points {
+  30% {
+    transform: scale(1);
+    animation-timing-function: cubic-bezier(.71,.16,.87,.37);
+  }
+
+  60% {
+    transform: scale(0);
+    animation-timing-function: cubic-bezier(.23,.91,.43,1.19);
+  }
+}
+
+.loading {
+  font-size: 4vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 199;
+  background: rgba(0, 0, 0, .4);
+
+  &:before,
+  &:after {
+    content: '';
+  }
+
+  &:before,
+  &:after,
+  &-text {
+    width: 0.75em;
+    height: 0.75em;
+    margin: 0 0.4em;
+    border-radius: 50%;
+    background: #fff;
+    transform: scale(0);
+    animation: loading-points 1.8s ease infinite;
+  }
+
+  &-text {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    animation-delay: 0.2s;
+  }
+
+  &:after {
+    animation-delay: 0.4s;
+  }
+}

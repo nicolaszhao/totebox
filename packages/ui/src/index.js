@@ -1,8 +1,3 @@
-import React from 'react';
-import './index.scss';
-
-export default function Dem() {
-  return (
-    <div className="ui">Fuck</div>
-  );
-}
+export { default as Animate } from './Animate';
+export { default as Loading } from './Loading';
+export { default as Modal } from './Modal';
