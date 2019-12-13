@@ -48,6 +48,9 @@ export default {
     }),
     process.env.EXTRACT_STYLE === 'true' && postcss({
       extract: pkg.style,
+      modules: {
+        generateScopedName: '[folder]-[local]__[hash:base64:5]',
+      },
       plugins: [
         postcssPresetEnv(),
         postcssUrl({
