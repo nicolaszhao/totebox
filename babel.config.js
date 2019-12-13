@@ -9,5 +9,13 @@ module.exports = (api) => {
     presets: [
       '@hammal/babel-preset-app',
     ],
+    overrides: [
+      {
+        test: './packages/ui',
+        presets: [
+          ['@hammal/babel-preset-app', { react: true }],
+        ],
+      },
+    ],
   };
 };

@@ -3,9 +3,12 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import external from 'rollup-plugin-peer-deps-external';
+import postcss from 'rollup-plugin-postcss';
+import postcssPresetEnv from 'postcss-preset-env';
+import postcssUrl from 'postcss-url';
 
-const subPackagePath = process.cwd();
-const pkg = require(path.join(subPackagePath, 'package.json'));
+const cwd = process.cwd();
+const pkg = require(path.join(cwd, 'package.json'));
 const [, pkgName] = /^@[^/]+\/(.+)$/.exec(pkg.name);
 const toCamelCaseName = (name) => name.split('-')
   .map((text, i) => {
@@ -43,7 +46,16 @@ export default {
       runtimeHelpers: true,
       exclude: /node_modules/,
     }),
+    process.env.EXTRACT_STYLE === 'true' && postcss({
+      extract: pkg.style,
+      plugins: [
+        postcssPresetEnv(),
+        postcssUrl({
+          url: 'inline',
+        }),
+      ],
+    }),
     resolve(),
     commonjs(),
-  ],
+  ].filter(Boolean),
 };
