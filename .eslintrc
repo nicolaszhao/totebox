@@ -1,4 +1,4 @@
 {
-  "extends": "nicolaz-base",
+  "extends": "nicolaz",
   "parser": "babel-eslint"
 }
