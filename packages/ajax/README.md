@@ -133,4 +133,4 @@ const { data } = await Ajax( /* REQUEST_URL */ );
 
 ## License
 
-[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)
+[MIT](https://github.com/nicolaszhao/totebox/blob/master/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)

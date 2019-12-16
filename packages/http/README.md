@@ -120,4 +120,4 @@ fetch 的 options，[参考文档](https://github.github.io/fetch/)。另外还�
 
 ## License
 
-[MIT](https://github.com/nicolaszhao/totebox/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)
+[MIT](https://github.com/nicolaszhao/totebox/blob/master/LICENSE) © [nicolaszhao](https://github.com/nicolaszhao)
