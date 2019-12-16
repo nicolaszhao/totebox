@@ -1,6 +1,6 @@
 {
   "name": "@totebox/browser",
-  "version": "0.12.7",
+  "version": "0.12.8",
   "description": "Browser-side utilities.",
   "main": "dist/browser.cjs.js",
   "module": "dist/browser.esm.js",
@@ -30,7 +30,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@totebox/util": "^0.12.8",
+    "@totebox/util": "^0.12.9",
     "cross-env": "^6.0.3",
     "mocha": "^6.2.1",
     "mocha-chrome": "^2.1.0",

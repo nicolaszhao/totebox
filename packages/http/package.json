@@ -1,6 +1,6 @@
 {
   "name": "@totebox/http",
-  "version": "0.13.4",
+  "version": "0.13.5",
   "description": "An ajax request util based on fetch api.",
   "main": "dist/http.cjs.js",
   "module": "dist/http.esm.js",
@@ -30,8 +30,8 @@
     "dist"
   ],
   "devDependencies": {
-    "@totebox/query": "^0.12.5",
-    "@totebox/util": "^0.12.8",
+    "@totebox/query": "^0.12.6",
+    "@totebox/util": "^0.12.9",
     "cross-env": "^6.0.3",
     "http-server": "^0.11.1",
     "mocha": "^6.2.2",
