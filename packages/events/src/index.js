@@ -12,7 +12,7 @@ class Events {
   // 3. 在 1 和 2 的基础上，用对象映射: { event1, event2, event3, ... }，或者: { 'event1 event2', 'event3', ... }
   on(event, callback, options) {
     if (type(event) !== 'string' && type(event) !== 'object') {
-      throw new Error('Event param must be a string or object.');
+      return;
     }
 
     if (type(event) === 'object') {
