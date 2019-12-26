@@ -25,7 +25,7 @@ class User extends Events {
     this.name = 'Nicolas';
     this.on('change:name', (name) => console.log(name));
   }
-  
+
   update(name) {
     this.name = name;
     this.trigger('change:name', name);
@@ -38,8 +38,7 @@ class User extends Events {
 ```html
 <script src="./node_modules/@totebox/events/dist/events.js"></script>
 <script>
-  var Events = $totebox.events();
-  var events = new Events();	
+  var events = new $totebox.Events();
   ...
 </script>
 ```

@@ -1,7 +1,7 @@
 const expect = chai.expect;
 
 describe('ajax', () => {
-  const ajax = $totebox.ajax({
+  const ajax = $totebox.Ajax({
     interceptors: {
       response(data, config) {
         if (config.responseType && config.responseType !== 'json') {
@@ -21,8 +21,8 @@ describe('ajax', () => {
     }
   });
 
-  it(`reqId: 0, $totebox.ajax(url) 应该成功`, (done) => {
-    $totebox.ajax('http://www.mocky.io/v2/5da0576b3000002900f89db4')
+  it(`reqId: 0, $totebox.Ajax(url) 应该成功`, (done) => {
+    $totebox.Ajax('http://www.mocky.io/v2/5da0576b3000002900f89db4')
       .then(() => done())
       .catch((err) => done(err));
   });

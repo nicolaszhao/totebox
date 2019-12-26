@@ -10,9 +10,11 @@ import postcssUrl from 'postcss-url';
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
 const [, pkgName] = /^@[^/]+\/(.+)$/.exec(pkg.name);
+const upperCaseGlobals = ['ajax', 'events'];
+
 const toCamelCaseName = (name) => name.split('-')
   .map((text, i) => {
-    if (i > 0) {
+    if (i > 0 || upperCaseGlobals.includes(text)) {
       return text.charAt(0).toUpperCase() + text.slice(1);
     }
     return text;
