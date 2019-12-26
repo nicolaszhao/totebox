@@ -1,6 +1,6 @@
 {
   "name": "@totebox/events",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A custom event trigger library.",
   "main": "dist/events.cjs.js",
   "module": "dist/events.esm.js",
