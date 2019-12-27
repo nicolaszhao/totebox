@@ -25,7 +25,7 @@ ajax.get(/* REQUEST_URL */);
 ```html
 <script src="./node_modules/@totebox/ajax/dist/ajax.js"></script>
 <script>
-  $totebox.ajax(/* REQUEST_URL */);
+  $totebox.Ajax(/* REQUEST_URL */);
 </script>
 ```
 
