@@ -30,6 +30,7 @@ async function run(config) {
     to = argv.to;
   }
 
+  const oriFrom = from;
   from = path.resolve(from);
 
   if (!to.startsWith('/')) {
@@ -42,7 +43,7 @@ async function run(config) {
   const { checked } = await inquirer.prompt([{
     type: 'confirm',
     name: 'checked',
-    message: `Do you want to deploy to ${chalk.yellow(`"${to}"`)}?`,
+    message: `Are you sure you want to deploy ${chalk.yellow(`"${oriFrom}"`)} to ${chalk.yellow(`"${to}"`)}?`,
     default: true,
   }]);
 
