@@ -1,6 +1,6 @@
 {
   "name": "@totebox/cli",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A cli utilities based on NodeJS",
   "bin": {
     "ftp-deploy": "./bin/ftp-deploy.js"
