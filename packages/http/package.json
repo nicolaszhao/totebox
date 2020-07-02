@@ -1,6 +1,6 @@
 {
   "name": "@totebox/http",
-  "version": "0.13.5",
+  "version": "0.14.0",
   "description": "An ajax request util based on fetch api.",
   "main": "dist/http.cjs.js",
   "module": "dist/http.esm.js",
