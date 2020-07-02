@@ -11,14 +11,15 @@ describe('http', () => {
     interceptors: {
       response(data) {
         if (data.status !== 0) {
-          return Promise.reject(new Error(`${data.message}, # interceptors.response`));
+          return Promise.reject(new Error(`# interceptors.response: ${data.message}`));
         }
 
         return data.data;
       },
-      error(err) {
-        err.message = `${err.url} -> error: ${err.message}, error status: ${err.statusText}, # interceptors.error`;
-        return err;
+      error(err, statusText, url) {
+        return new Error(`# interceptors.error: url: "${url}", message: "${err.message}"${statusText
+          ? `, status: "${statusText}"` : ''}`
+        );
       }
     },
   });
