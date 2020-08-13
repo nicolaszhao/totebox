@@ -23,12 +23,16 @@ const toCamelCaseName = (name) => name.split('-')
 
 const umdName = (name) => `$totebox.${toCamelCaseName(name)}`;
 
+const extensions = [
+  '.js', '.jsx', '.ts', '.tsx',
+];
+
 export default {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: [
     process.env.INCLUDE_UMD === 'true' && {
       name: umdName(pkgName),
-      file: `dist/${pkgName}.js`,
+      file: 'dist/index.js',
       format: 'umd',
       banner: `/* ${umdName(pkgName)} v${pkg.version} by ${pkg.author} */`,
     },
@@ -44,6 +48,7 @@ export default {
   plugins: [
     external(),
     babel({
+      extensions,
       rootMode: 'upward',
       runtimeHelpers: true,
       exclude: /node_modules/,
@@ -60,7 +65,7 @@ export default {
         }),
       ],
     }),
-    resolve(),
+    resolve({ extensions }),
     commonjs(),
   ].filter(Boolean),
 };

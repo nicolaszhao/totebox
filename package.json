@@ -4,7 +4,7 @@
   "description": "Personal utility packages.",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --hoist",
     "build": "lerna run build",
     "test": "lerna run test",
     "postinstall": "npm run bootstrap"
@@ -13,6 +13,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/preset-typescript": "^7.10.4",
     "@babel/register": "^7.0.0",
     "@hammal/babel-preset-app": "^0.11.2",
     "babel-eslint": "^10.0.3",
@@ -23,7 +24,7 @@
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^3.0.9",
-    "lerna": "^3.16.4",
+    "lerna": "^3.22.1",
     "lint-staged": "^9.4.2",
     "node-sass": "^4.13.0",
     "postcss-preset-env": "^6.7.0",

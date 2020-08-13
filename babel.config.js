@@ -8,6 +8,7 @@ module.exports = (api) => {
     ],
     presets: [
       '@hammal/babel-preset-app',
+      '@babel/preset-typescript',
     ],
     overrides: [
       {

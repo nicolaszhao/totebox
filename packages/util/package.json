@@ -2,8 +2,9 @@
   "name": "@totebox/util",
   "version": "0.12.9",
   "description": "Uncategorized utilities.",
-  "main": "dist/util.cjs.js",
-  "module": "dist/util.esm.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -28,7 +29,8 @@
   "devDependencies": {
     "cross-env": "^5.2.0",
     "mocha": "^5.0.5",
-    "rollup": "^1.21.2"
+    "rollup": "^1.21.2",
+    "typescript": "^3.9.7"
   },
   "files": [
     "dist"
