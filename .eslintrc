@@ -1,4 +1,10 @@
 {
   "extends": "nicolaz",
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "extends": ["plugin:@typescript-eslint/recommended"]
+    }
+  ]
 }

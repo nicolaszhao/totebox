@@ -7,14 +7,13 @@ module.exports = (api) => {
       'packages/*',
     ],
     presets: [
-      '@hammal/babel-preset-app',
-      '@babel/preset-typescript',
+      ['@hammal/babel-preset-app', { typescript: true }],
     ],
     overrides: [
       {
         test: './packages/ui',
         presets: [
-          ['@hammal/babel-preset-app', { react: true }],
+          ['@hammal/babel-preset-app', { typescript: true, react: true }],
         ],
       },
     ],

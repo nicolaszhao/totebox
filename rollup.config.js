@@ -1,9 +1,10 @@
 import path from 'path';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import babel from 'rollup-plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import babel from '@rollup/plugin-babel';
 import external from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
+import clear from 'rollup-plugin-clear';
 import postcssPresetEnv from 'postcss-preset-env';
 import postcssUrl from 'postcss-url';
 
@@ -39,6 +40,7 @@ export default {
     {
       file: pkg.main,
       format: 'cjs',
+      exports: 'named',
     },
     {
       file: pkg.module,
@@ -46,11 +48,12 @@ export default {
     },
   ].filter(Boolean),
   plugins: [
+    clear({ targets: ['dist'] }),
     external(),
     babel({
       extensions,
       rootMode: 'upward',
-      runtimeHelpers: true,
+      babelHelpers: 'runtime',
       exclude: /node_modules/,
     }),
     process.env.EXTRACT_STYLE === 'true' && postcss({
