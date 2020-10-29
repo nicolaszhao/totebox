@@ -4,7 +4,22 @@
   "overrides": [
     {
       "files": ["**/*.ts?(x)"],
-      "extends": ["plugin:@typescript-eslint/recommended"]
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/typescript"
+      ],
+      "rules": {
+        "import/extensions": [
+          "error",
+          "ignorePackages",
+          {
+            "js": "never",
+            "jsx": "never",
+            "ts": "never",
+            "tsx": "never"
+          }
+        ]
+      }
     }
   ]
 }

@@ -9,7 +9,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production && tsc",
+    "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production --input src/index.ts && tsc",
     "test": "cross-env NODE_ENV=test mocha --require ../../register.js",
     "prepublishOnly": "npm run build"
   },

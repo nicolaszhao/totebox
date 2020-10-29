@@ -29,7 +29,7 @@ const extensions = [
 ];
 
 export default {
-  input: 'src/index.ts',
+  input: 'src/index.js',
   output: [
     process.env.INCLUDE_UMD === 'true' && {
       name: umdName(pkgName),
