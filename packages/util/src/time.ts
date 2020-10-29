@@ -1,10 +1,20 @@
 import { type, noop } from './util';
 
-// 解析给到的毫秒值时间为 { day, hour, minute, second } 对象
-// Example: parseTime(61000) returns { day: 0, hour: 0, minute: 1, second: 1 }
-// maxUnit: 最大解析到的时间单位，比如：maxUnit = 'hour'，则不输出 day 的值
-export function parseTime(time, maxUnit = 'day') {
-  const values = {};
+interface TimeValues {
+  day: number;
+  hour?: number;
+  minute?: number;
+  second?: number;
+  [key: string]: number | undefined;
+}
+
+/**
+ * 解析给到的毫秒值时间为 { day, hour, minute, second } 对象
+ * Example: parseTime(61000) returns { day: 0, hour: 0, minute: 1, second: 1 }
+ * maxUnit: 最大解析到的时间单位，比如：maxUnit = 'hour'，则不输出 day 的值
+*/
+export function parseTime(time: number, maxUnit = 'day'): TimeValues {
+  const values: TimeValues = { day: 0 };
   let source = [
     { unit: 'day', value: 24 },
     { unit: 'hour', value: 60 },
@@ -34,56 +44,60 @@ export function parseTime(time, maxUnit = 'day') {
   return values;
 }
 
-// for video|audio duration: hh:mm:ss
-export function formatTime(duration) {
-  const pad = (n, len) => `${n}`.padStart(len, '0');
+/**
+ * for video|audio duration: hh:mm:ss
+ */
+export function formatTime(duration: number): string {
+  const pad = (n: number, len: number) => `${n}`.padStart(len, '0');
   const times = parseTime(duration, 'h');
   const ret = [];
 
   if (times.hour) {
     ret.push(times.hour);
   }
-  ret.push(times.minute);
-  ret.push(times.second);
+  ret.push(times.minute as number);
+  ret.push(times.second as number);
 
   return ret.map((r) => pad(r, 2)).join(':');
 }
 
+interface Countdown {
+  start(): void;
+  stop(callback: (...args: any[]) => void): void;
+}
+
 /**
  * 秒钟倒计时工具，返回 stop 方法，用来停止 tick 的执行
- * @param {Number} second
- * @param {Object} events: { onStart, onProgress, onEnd }
- * @param {Object} context
  */
 export function countdown(
-  value,
+  value: number | Date,
   { onStart = noop, onProgress = noop, onEnd = noop } = {},
-  context,
-) {
+  context = null,
+): Countdown {
   if (type(value) !== 'date' && type(value) !== 'number') {
     throw new Error('The value of params must be a Date or Number.');
   }
 
   const cdType = type(value) === 'date' ? 'date' : 'second';
   const last = value;
-  let timerId = null;
+  let cur: number | Date | TimeValues = value;
+  let timerId: ReturnType<typeof setTimeout>;
 
   const tick = () => {
     timerId = setTimeout(() => {
       if (cdType === 'date') {
-        const dif = last - Date.now();
-        value = parseTime(dif);
+        const dif = +last - Date.now();
+        cur = parseTime(dif);
 
         if (dif <= 0) {
-          return onEnd.bind(context)(value);
+          return onEnd.bind(context)(cur);
         }
-        onProgress.bind(context)(value);
+        onProgress.bind(context)(cur);
       } else {
-        if (!value) {
-          return onEnd.bind(context)(value);
+        if (!cur) {
+          return onEnd.bind(context)(cur);
         }
-
-        onProgress.bind(context)(--value);
+        onProgress.bind(context)(--(cur as number));
       }
 
       tick();
@@ -93,30 +107,31 @@ export function countdown(
   return {
     start() {
       if (cdType === 'date') {
-        value = parseTime(last - Date.now());
+        cur = parseTime(+last - Date.now());
       }
 
-      onStart.bind(context)(value);
+      onStart.bind(context)(cur);
       tick();
     },
 
     stop(callback) {
       clearTimeout(timerId);
-      timerId = null;
 
-      // value 为 tick 中分步计算的值
-      callback && callback.bind(context)(value);
+      // cur 为 tick 中分步计算的值
+      callback && callback.bind(context)(cur);
     },
   };
 }
 
-export function isLeapYear(year) {
+export function isLeapYear(year: number): boolean {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 
-// Example: parseDate('2019-09-25', 'yy-mm-dd')
-// returns (Date Object) Wed Sep 25 2019 00:00:00 GMT+0800 (中国标准时间)
-export function parseDate(value, format) {
+/**
+ * Example: parseDate('2019-09-25', 'yy-mm-dd')
+ * returns (Date Object) Wed Sep 25 2019 00:00:00 GMT+0800 (中国标准时间)
+ */
+export function parseDate(value: string, format: string): Date | null {
   if (value === '') {
     return null;
   }
@@ -126,10 +141,10 @@ export function parseDate(value, format) {
   let day = -1;
   let iValue = 0;
   let date = new Date();
-  let iFormat;
+  let iFormat: number;
   let extra;
 
-  function lookAhead(match) {
+  function lookAhead(match: string) {
     const matches = (iFormat + 1 < format.length && format.charAt(iFormat + 1) === match);
 
     if (matches) {
@@ -139,7 +154,7 @@ export function parseDate(value, format) {
     return matches;
   }
 
-  function getNumber(match) {
+  function getNumber(match: string) {
     const isDoubled = lookAhead(match);
     const size = (match === 'y' && isDoubled ? 4 : 2);
     const digits = new RegExp(`^\\d{1,${size}}`);
@@ -200,15 +215,15 @@ export function parseDate(value, format) {
   return date;
 }
 
-export function formatDate(date, format) {
+export function formatDate(date: Date, format: string): string {
   if (!date) {
     return '';
   }
 
   let output = '';
-  let iFormat;
+  let iFormat: number;
 
-  function lookAhead(match) {
+  function lookAhead(match: string) {
     const matches = (iFormat + 1 < format.length && format.charAt(iFormat + 1) === match);
 
     if (matches) {
@@ -218,7 +233,7 @@ export function formatDate(date, format) {
     return matches;
   }
 
-  function formatNumber(match, value, len) {
+  function formatNumber(match: string, value: number, len: number) {
     let num = `${value}`;
 
     if (lookAhead(match)) {
@@ -241,7 +256,7 @@ export function formatDate(date, format) {
       case 'y':
         output += (lookAhead('y')
           ? date.getFullYear()
-          : (date.getYear() % 100 < 10 ? '0' : '') + (date.getYear() % 100));
+          : (date.getFullYear() % 100 < 10 ? '0' : '') + (date.getFullYear() % 100));
         break;
       default:
         output += format.charAt(iFormat);
