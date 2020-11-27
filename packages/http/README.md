@@ -8,15 +8,17 @@ npm i @totebox/http
 
 ## 使用
 
-如果要兼容旧的浏览器，类似于 IE，你需要在项目入口处导入 fetch 的 polyfill。`@totebox/http` 已经包含了 `whatwg-fetch` 的依赖，无需安装，直接导入即可。
+### Polyfill
 
-项目入口：
+如果要兼容旧版本的浏览器，比如 IE，你需要在项目入口处导入 fetch 的 polyfill：
 
 ```js
 import 'whatwg-fetch'
 ```
 
-api 层：
+安装 `@totebox/http` 时，已经包含了 `whatwg-fetch` 的依赖，您无需单独安装。
+
+### 在 ES 模块系统中
 
 ```js
 import http from '@totebox/http';
@@ -25,7 +27,7 @@ const request = http.create(/* settings */);
 request.get(/* REQUEST_URL */);
 ```
 
-### 直接用于 html 中
+### 在浏览器中
 
 ```html
 <script src="./node_modules/@totebox/http/dist/http.js"></script>
@@ -38,13 +40,13 @@ request.get(/* REQUEST_URL */);
 
 ### http.create( settings )
 
-统一处理请求配置，返回各请求方法的对象。
+通过该方法返回的请求对象，使用各请求方法时，可共享请求配置
 
 #### settings
 
-#####  fetch options
+#####  ...fetch options
 
-参考 [官方文档](https://github.github.io/fetch/)。
+可传入 [fetch api](https://github.github.io/fetch/) 的 options 参数
 
 ##### timeout
 
@@ -52,7 +54,7 @@ request.get(/* REQUEST_URL */);
 
 ##### interceptors.response( data )
 
-你应该继续返回一个处理后的数据对象，或者 Promise（可以是 rejection 状态）。
+你可以在这里对 data 做二次加工，但你应该始终返回一个处理后的数据对象。也可以返回 Promise，当你返回 rejection 状态时，会继续执行 `interceptors.error` 方法。
 
 ```js
 interceptors: {
@@ -67,17 +69,22 @@ interceptors: {
 },
 ```
 
-##### interceptors.error( err )
+##### interceptors.error( error, statusText, url )
 
-**err:** `{ url, message, statusText }`
+对异常消息的加工方法
 
-`statusText` 可能的值为：`"timeout"`、`"abort"`，或者 fetch 请求错误的状态字符串。你应该继续返回该 `err` 对象。
+**error:** 包含 `message` 属性的错误对象
+
+**statusText:** 错误状态字符串，可能的值为：`"timeout"`、`"abort"`
+
+你应该在 `interceptors.error` 中始终返回一个新的 Error 对象，因为 `error` 参数的 `message` 可能是只读的，比如 `DOMException`。
 
 ```js
 interceptors: {
-  error(err) {
-    err.message = `${err.url} -> error: ${err.message}, error status: ${err.statusText}, # interceptors.error`;
-    return err;
+  error(err, statusText, url) {
+    const message = `Request url: "${url}" failed, message: "${err.message}"${statusText
+      ? `, status: "${statusText}"` : ''}`;
+    return new Error(message);
   },
 },
 ```
@@ -90,7 +97,9 @@ interceptors: {
 * request.patch( url [, data [, options ] ] )
 * request.delete( url [, data [, options ] ] )
 
-`options` 可以单独配置一个请求。所有方法都返回 Promise 对象，包括一个取消请求的 `abort` 方法：
+每个请求方法，可以额外单独配置 `options`，它包含 [fetch api](https://github.github.io/fetch/) 的 options 参数和 timeout，参考 `http.create` 方法的 settings 参数说明。
+
+请求方法返回的 Promise 对象，同时包含了一个 `abort` 方法，用来取消（中止）请求：
 
 ```js
 ...
@@ -104,7 +113,7 @@ const data = await req;
 
 ### http( url, options [, interceptors] )
 
-fetch 的底层封装。返回包含 `abort` 方法的 Promise 对象。
+对 fetch 的底层请求逻辑封装，返回包含 `abort` 方法（如上）的 Promise 对象。
 
 #### url
 
@@ -112,11 +121,11 @@ fetch 的底层封装。返回包含 `abort` 方法的 Promise 对象。
 
 #### options
 
-fetch 的 options，[参考文档](https://github.github.io/fetch/)。另外还增加了 `timeout` 选项。
+[fetch api](https://github.github.io/fetch/) 的 options 参数和 timeout，参考 `http.create` 方法的 settings 参数说明
 
 #### interceptors
 
-可选，同上面 `interceptors.response` 和 `interceptors.error`
+可选，参数 `http.create` 方法的 settings 参数说明
 
 ## License
 

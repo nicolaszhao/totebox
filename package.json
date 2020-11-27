@@ -7,32 +7,37 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna run test",
+    "clean": "lerna clean",
     "postinstall": "npm run bootstrap"
   },
   "author": "NZ",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "@hammal/babel-preset-app": "^0.11.2",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.0.0",
-    "eslint-config-nicolaz": "^0.6.3",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.17.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
+    "@babel/core": "^7.11.1",
+    "@babel/register": "^7.10.5",
+    "@hammal/babel-preset-app": "^0.14.0",
+    "@rollup/plugin-babel": "^5.1.0",
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.0.0",
+    "eslint-config-nicolaz": "^0.7.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
     "husky": "^3.0.9",
-    "lerna": "^3.16.4",
+    "lerna": "^3.22.1",
     "lint-staged": "^9.4.2",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.14.1",
     "postcss-preset-env": "^6.7.0",
     "postcss-url": "^8.0.0",
-    "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-peer-deps-external": "^2.2.0",
-    "rollup-plugin-postcss": "^2.0.3"
+    "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-peer-deps-external": "^2.2.3",
+    "rollup-plugin-postcss": "^3.1.5",
+    "typescript": "^4.0.2"
   },
   "repository": {
     "type": "git",
@@ -48,7 +53,7 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint"
+    "*.{js?(x),ts?(x)}": "eslint"
   },
   "browserslist": [
     "last 2 versions"

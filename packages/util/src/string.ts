@@ -4,23 +4,24 @@ import { type } from './util';
  * Example: parseTextPlaceholder('Hello, {name}!', { name: 'Nicolas' })
  * returns 'Hello, Nicolas!'
  * dataReplaceable: true，将删除 data 中被 text 匹配到的值。常用于处理 rest url & post data
- * @param {String} text
- * @param {Object} data
- * @param {Boolean} dataReplaceable
  */
-export function parseTextPlaceholder(text, data, dataReplaceable = false) {
+export function parseTextPlaceholder(
+  text: string,
+  data: Record<string | number, unknown>,
+  dataReplaceable = false,
+): string {
   const regPlaceholder = /\{([^}]+)\}/g;
 
   if (regPlaceholder.test(text) && type(data) === 'object' && Object.keys(data).length) {
-    return text.replace(regPlaceholder, (match, placeholder) => {
-      const val = data[placeholder];
+    return text.replace(regPlaceholder, (match, placeholder): string => {
+      const val = data[placeholder] as string | number;
 
       if (type(val) !== 'undefined') {
         if (dataReplaceable) {
           delete data[placeholder];
         }
 
-        return val;
+        return `${val}`;
       }
 
       return match;
@@ -30,13 +31,15 @@ export function parseTextPlaceholder(text, data, dataReplaceable = false) {
   return text;
 }
 
-// Example: format('Do {0} love {1}? Yes, {2} love {0}!', 'you', 'me', 'I')
-// returns 'Do you love me? Yes, I love You!'
-export function parseNumberPlaceholder(text, ...params) {
+/**
+ * Example: format('Do {0} love {1}? Yes, {2} love {0}!', 'you', 'me', 'I')
+ * returns 'Do you love me? Yes, I love You!'
+ */
+export function parseNumberPlaceholder(text: string, ...params: string[]): string {
   return text.replace(/\{(\d+)\}/g, (m, i) => params[i]);
 }
 
-export function formatSize(bytes) {
+export function formatSize(bytes: number): string {
   let i = -1;
 
   do {
@@ -47,23 +50,27 @@ export function formatSize(bytes) {
   return parseFloat(Math.max(bytes, 0.1).toFixed(2)) + ['KB', 'MB', 'GB', 'TB', 'PB', 'EB'][i];
 }
 
-export function trim(text) {
+export function trim(text: string): string {
   return text.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
 
-export function entityify(text) {
-  const character = {
+interface HtmlCharacter {
+  [propName: string]: string;
+}
+
+export function entityify(text: string): string {
+  const character: HtmlCharacter = {
     '<': '&lt;',
     '>': '&gt;',
     '&': '&amp;',
     '"': '&quot;',
   };
 
-  return text.replace(/[<>"&]/g, (match) => character[match]);
+  return text.replace(/[<>"&]/g, (match): string => character[match]);
 }
 
-export function deentityify(text) {
-  const entity = {
+export function deentityify(text: string): string {
+  const entity: HtmlCharacter = {
     quot: '"',
     lt: '<',
     gt: '>',
@@ -71,16 +78,15 @@ export function deentityify(text) {
 
   return text.replace(/&([^&;]+);/g, (match, key) => {
     const ret = entity[key];
-
     return type(ret) === 'string' ? ret : match;
   });
 }
 
-export function strip(text) {
+export function strip(text: string): string {
   return text.replace(/<(?:.|\s)*?>/g, '');
 }
 
-export function escape(text) {
+export function escape(text: string): string {
   if (type(text) !== 'string') {
     return '';
   }
@@ -98,7 +104,7 @@ export function escape(text) {
     .replace(rinnerexpress, '');
 }
 
-export function filter(text, maxLength) {
+export function filter(text: string, maxLength?: number): string {
   if (text === '') {
     return '';
   }

@@ -7,7 +7,7 @@ function hasData(obj) {
 }
 
 // interceptors.response: (json) => Object|Promise
-// interceptors.error: (Error, url, statusText) => Error
+// interceptors.error: (Error, statusText, url) => Error
 function http(url, options, interceptors = {}) {
   const tasks = [];
   const { timeout } = options;
@@ -15,14 +15,22 @@ function http(url, options, interceptors = {}) {
   if (timeout) {
     const timeoutTask = new Promise((resolve, reject) => {
       setTimeout(() => {
-        const error = new Error('Request timeout');
-        error.statusText = 'timeout';
-        reject(error);
+        reject(new Error('Request timeout'));
       }, timeout);
     });
 
     delete options.timeout;
     tasks.push(timeoutTask);
+  }
+
+  let abort;
+  let abortController;
+
+  // 一个可以中止 Web 请求的试验性接口
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/FetchController
+  if (AbortController) {
+    abortController = new AbortController();
+    options.signal = abortController.signal;
   }
 
   const requestTask = fetch(url, options)
@@ -40,30 +48,33 @@ function http(url, options, interceptors = {}) {
       return json;
     });
 
-  let abort;
-
   const abortTask = new Promise((resolve, reject) => {
     abort = () => {
-      const error = new Error('Request abort');
-      error.statusText = 'abort';
-      reject(error);
+      reject(new Error('Request aborted'));
     };
   });
 
   tasks.push(requestTask, abortTask);
 
   const ret = Promise.race(tasks).catch((err) => {
-    err.url = url;
+    let statusText;
 
-    if (type(interceptors.error) === 'function') {
-      return Promise.reject(interceptors.error(err));
+    if (/timeout/i.test(err.message)) {
+      statusText = 'timeout';
+    }
+    if (/abort/i.test(err.message)) {
+      statusText = 'abort';
     }
 
-    err.message = `Request url "${url}" failed, error: ${err.message}${err.statusText ? `, error status: ${err.statusText}` : ''}`;
-    throw err;
+    if (type(interceptors.error) === 'function') {
+      return Promise.reject(interceptors.error(err, statusText, url));
+    }
+
+    throw new Error(`Request url: "${url}" failed, message: "${err.message}"${statusText
+      ? `, status: "${statusText}"` : ''}`);
   });
 
-  ret.abort = abort;
+  ret.abort = abortController ? () => abortController.abort() : abort;
 
   return ret;
 }
@@ -78,10 +89,9 @@ function http(url, options, interceptors = {}) {
 //       }
 //       return Promise.reject(json.message);
 //     },
-//     error(err) {
-//       const { url, message, statusText } = err;
-//       return `Request url "${url}" failed, error: ${message}${statusText ? `,
-//         error status: ${statusText}` : ''}`;
+//     error(err, statusText, url) {
+//       return new Error(`Request url: "${url}" failed, message: "${err.message}"${statusText
+//         ? `,status: "${statusText}"` : ''}`);
 //     },
 //   }
 // });

@@ -1,9 +1,10 @@
 import path from 'path';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import babel from 'rollup-plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import babel from '@rollup/plugin-babel';
 import external from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
+import clear from 'rollup-plugin-clear';
 import postcssPresetEnv from 'postcss-preset-env';
 import postcssUrl from 'postcss-url';
 
@@ -23,18 +24,23 @@ const toCamelCaseName = (name) => name.split('-')
 
 const umdName = (name) => `$totebox.${toCamelCaseName(name)}`;
 
+const extensions = [
+  '.js', '.jsx', '.ts', '.tsx',
+];
+
 export default {
   input: 'src/index.js',
   output: [
     process.env.INCLUDE_UMD === 'true' && {
       name: umdName(pkgName),
-      file: `dist/${pkgName}.js`,
+      file: 'dist/index.js',
       format: 'umd',
       banner: `/* ${umdName(pkgName)} v${pkg.version} by ${pkg.author} */`,
     },
     {
       file: pkg.main,
       format: 'cjs',
+      exports: 'named',
     },
     {
       file: pkg.module,
@@ -42,10 +48,12 @@ export default {
     },
   ].filter(Boolean),
   plugins: [
+    clear({ targets: ['dist'] }),
     external(),
     babel({
+      extensions,
       rootMode: 'upward',
-      runtimeHelpers: true,
+      babelHelpers: 'runtime',
       exclude: /node_modules/,
     }),
     process.env.EXTRACT_STYLE === 'true' && postcss({
@@ -60,7 +68,7 @@ export default {
         }),
       ],
     }),
-    resolve(),
+    resolve({ extensions }),
     commonjs(),
   ].filter(Boolean),
 };

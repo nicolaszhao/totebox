@@ -8,6 +8,8 @@ const chalk = require('chalk');
 const ini = require('ini');
 const client = require('scp2');
 const inquirer = require('inquirer');
+const { argv } = require('yargs')
+  .alias({ f: 'from', t: 'to' });
 
 const cwd = process.cwd();
 const CONFIG_NAME = '.ftpdeployconfig';
@@ -21,6 +23,14 @@ async function run(config) {
   let { from, to } = config;
   let time = Date.now();
 
+  if (typeof argv.from === 'string') {
+    from = argv.from;
+  }
+  if (typeof argv.to === 'string') {
+    to = argv.to;
+  }
+
+  const oriFrom = from;
   from = path.resolve(from);
 
   if (!to.startsWith('/')) {
@@ -33,7 +43,7 @@ async function run(config) {
   const { checked } = await inquirer.prompt([{
     type: 'confirm',
     name: 'checked',
-    message: `Is the remote path ${chalk.yellow(`"${to}"`)} right?`,
+    message: `Are you sure you want to deploy ${chalk.yellow(`"${oriFrom}"`)} to ${chalk.yellow(`"${to}"`)}?`,
     default: true,
   }]);
 

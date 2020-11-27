@@ -1,6 +1,6 @@
 {
   "name": "@totebox/history",
-  "version": "0.12.6",
+  "version": "0.13.0",
   "description": "A simple stack search tool similar to browser history",
   "main": "dist/history.cjs.js",
   "module": "dist/history.esm.js",

@@ -40,7 +40,7 @@ setTimeout(() => {
 
 ### ftp-deploy
 
-用于部署静态资源到 ftp 服务器，你需要在项目中配置一个文件 `.ftpdeployconfig`，这是完整示例：
+用于部署静态资源到 ftp 服务器，你需要在项目中配置一个文件 `.ftpdeployconfig`，这里是个完整示例：
 
 ```
 username = username
@@ -51,7 +51,21 @@ from = dist
 to = /data/awesome_project/
 ```
 
-**注意：** 此文件的内容为敏感信息，你应该始终把文件 `.ftpdeployconfig` 加入到 `.gitignore` 中忽略提交。
+**注意：** 此文件的内容为敏感信息，你应该始终把文件 `.ftpdeployconfig` 加入到 `.gitignore` 中。
+
+#### 可选参数
+
+`from` 和 `to` 两个选项，你可以通过在命名后面传递参数来覆盖配置文件的参数，比如：
+
+```
+ftp-deploy --from build --to /data/awesome_project_2/
+```
+
+`from` 和 `to` 也有两个简写别名：
+
+```
+ftp-deploy -f [from] -t [to]
+```
 
 ## License
 

@@ -1,14 +1,15 @@
 {
   "name": "@totebox/util",
-  "version": "0.12.9",
+  "version": "0.13.0",
   "description": "Uncategorized utilities.",
-  "main": "dist/util.cjs.js",
-  "module": "dist/util.esm.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production",
+    "build": "rollup -c ../../rollup.config.js --environment NODE_ENV:production --input src/index.ts && tsc",
     "test": "cross-env NODE_ENV=test mocha --require ../../register.js",
     "prepublishOnly": "npm run build"
   },
@@ -26,9 +27,10 @@
   },
   "homepage": "https://github.com/nicolaszhao/totebox",
   "devDependencies": {
-    "cross-env": "^5.2.0",
-    "mocha": "^5.0.5",
-    "rollup": "^1.21.2"
+    "cross-env": "^6.0.3",
+    "mocha": "^6.2.0",
+    "rollup": "^2.23.1",
+    "typescript": "^3.9.7"
   },
   "files": [
     "dist"
