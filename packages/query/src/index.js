@@ -1,13 +1,13 @@
-
 const regUrl = /^([^?#]+)(\?[^#]+)?(#.+)?/;
 const regQuery = /^([^=]+)(?:=(.*))?$/;
 const cache = {};
 
 export default function Query(url) {
   if (!url) {
-    url = typeof window !== 'undefined' && typeof window.location !== 'undefined'
-      ? window.location.href
-      : '';
+    url =
+      typeof window !== 'undefined' && typeof window.location !== 'undefined'
+        ? window.location.href
+        : '';
   }
 
   const [, baseUrl = '', search = '', hash = ''] = regUrl.exec(url) || [];
