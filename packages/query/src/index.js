@@ -30,14 +30,18 @@ export default function Query(url) {
           // maybe has: URI malformed error
           value = value ? decodeURIComponent(value) : '';
         } catch (err) {
-          console.log(`parse url querys error, ${name}=${value}`);
+          console.warn(`parse url querys error, ${name}=${value}`);
           value = '';
         }
 
         if (/^(true|false)$/.test(value)) {
           value = JSON.parse(RegExp.$1);
-        } else if (/^\d+$/.test(value)) {
-          value = +value;
+        } else if (/^-?\d+(?:\.\d+)?$/.test(value)) {
+          const number = +value;
+          // maybe > Number.MAX_SAFE_INTEGER or < Number.MIN_SAFE_INTEGER
+          if (`${number}` === value) {
+            value = number;
+          }
         }
 
         qs[name] = value;
