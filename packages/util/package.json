@@ -28,7 +28,7 @@
   "homepage": "https://github.com/nicolaszhao/totebox",
   "devDependencies": {
     "cross-env": "^6.0.3",
-    "mocha": "^6.2.0",
+    "mocha": "^10.2.0",
     "rollup": "^2.23.1",
     "typescript": "^3.9.7"
   },
